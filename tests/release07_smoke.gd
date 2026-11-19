@@ -43,6 +43,17 @@ func run_tests() -> void:
 	check(arena.ATTACK_CENTER.distance_to(Vector2(130, 570)) > arena.ATTACK_TOUCH_RADIUS + 73.0, "ataque separado do joystick")
 	check("HP" in arena.hud.text and "Partida" in arena.status_hud.text, "HUD mostra vida e cronômetro")
 	check(arena.hud_layer is CanvasLayer and arena.hud.get_parent() == arena.hud_layer and arena.hud_view.get_parent() == arena.hud_layer, "HUD independente das coordenadas do mundo")
+	check(arena.camera is Camera2D and arena.camera.get_parent() == arena.player and arena.camera.zoom == Vector2(0.85, 0.85), "câmera afastada acompanha personagem")
+	check(arena.ARENA.size == Vector2(2456, 1336) and not Rect2(0, 0, 1280, 720).has_point(arena.match_controller.SPAWNS[1]), "mapa e spawn ultrapassam uma tela")
+	var touch := InputEventScreenTouch.new()
+	touch.index = 4
+	touch.pressed = true
+	touch.position = Vector2(1140, 570)
+	arena.player.position = Vector2(1800, 1000)
+	arena._input(touch)
+	check(arena.attack_held, "ataque continua em coordenadas de tela após mover no mundo")
+	touch.pressed = false
+	arena._input(touch)
 	check(arena.game_audio.streams.size() == 4 and arena.game_audio.streams["pickup"].data.size() > 0, "efeitos de áudio disponíveis")
 	arena.queue_free()
 	if failures == 0:

@@ -50,7 +50,7 @@ func test_crate(level: int, hits_needed: int) -> void:
 	if crate == null:
 		return
 	check(crate.hp == 45, "caixa inicia com 45 HP")
-	check(arena.wooden_blocks == 12, "12 caixas no mapa")
+	check(arena.wooden_blocks == 24, "24 caixas no mapa ampliado")
 	arena.player.position = Vector2(194, 210)
 	arena.player.facing = Vector2.DOWN
 	for i in range(hits_needed):
@@ -59,7 +59,7 @@ func test_crate(level: int, hits_needed: int) -> void:
 		if i < hits_needed - 1:
 			check(is_instance_valid(crate) and crate.hp > 0, "nível %d: caixa resiste ao golpe %d" % [level, i + 1])
 	check(arena.destroyed_blocks == 1, "nível %d: destrói em %d golpes" % [level, hits_needed])
-	check(arena.wooden_blocks == 11, "contador de restantes atualizado")
+	check(arena.wooden_blocks == 23, "contador de restantes atualizado")
 	check("Caixas destruídas: 1" in arena.hud.text, "HUD mostra caixa destruída")
 	arena.attack_held = false
 	arena.attack_touch = -1
@@ -154,4 +154,4 @@ func test_restart() -> void:
 	await process_frame
 	await process_frame
 	var restarted := current_scene
-	check(restarted.destroyed_blocks == 0 and restarted.wooden_blocks == 12, "reinício limpa contadores")
+	check(restarted.destroyed_blocks == 0 and restarted.wooden_blocks == 24, "reinício limpa contadores")

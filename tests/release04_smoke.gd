@@ -80,7 +80,7 @@ func run_tests() -> void:
 	arena._input(restart_touch)
 	await process_frame
 	await process_frame
-	check(current_scene != old_arena and current_scene.match_controller.state == "active" and current_scene.progression.level == 1 and current_scene.inventory.slots[0]["id"] == "" and current_scene.wooden_blocks == 12 and current_scene.destroyed_blocks == 0, "botão de resultado inicia partida limpa e restaura caixas")
+	check(current_scene != old_arena and current_scene.match_controller.state == "active" and current_scene.progression.level == 1 and current_scene.inventory.slots[0]["id"] == "" and current_scene.wooden_blocks == 24 and current_scene.destroyed_blocks == 0, "botão de resultado inicia partida limpa e restaura caixas")
 	remove_arena(current_scene)
 	await process_frame
 	arena = make_arena(3)

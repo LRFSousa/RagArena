@@ -14,8 +14,9 @@ const CombatScript = preload("res://scripts/combat_system.gd")
 const MatchScript = preload("res://scripts/match_controller.gd")
 const GameAudioScript = preload("res://scripts/game_audio.gd")
 const ArenaHudScript = preload("res://scripts/arena_hud.gd")
-const ARENA := Rect2(52, 52, 1176, 616)
-const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vector2(1130, 570)]
+const WORLD_SIZE := Vector2(2560, 1440)
+const ARENA := Rect2(52, 52, 2456, 1336)
+const SPAWNS := [Vector2(150, 150), Vector2(2350, 150), Vector2(150, 1290), Vector2(2350, 1290)]
 
 @export var balance: GameBalance = preload("res://resources/balance.tres")
 @export var class_balance: ClassBalance = preload("res://resources/classes.tres")
@@ -27,6 +28,7 @@ const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vecto
 @export var attack_range := 92.0
 
 var player
+var camera: Camera2D
 var progression
 var inventory
 var combat
@@ -66,6 +68,17 @@ func _ready() -> void:
 	player = PlayerScene.instantiate()
 	player.position = SPAWNS[0]
 	add_child(player)
+	camera = Camera2D.new()
+	camera.name = "FollowingCamera"
+	camera.zoom = Vector2(0.85, 0.85)
+	camera.limit_left = 0
+	camera.limit_top = 0
+	camera.limit_right = int(WORLD_SIZE.x)
+	camera.limit_bottom = int(WORLD_SIZE.y)
+	camera.position_smoothing_enabled = true
+	camera.position_smoothing_speed = 7.0
+	player.add_child(camera)
+	camera.make_current()
 	combat = CombatScript.new()
 	add_child(combat)
 	combat.configure(self, player, inventory, progression, class_balance)
@@ -102,22 +115,33 @@ func _ready() -> void:
 
 func create_obstacles() -> void:
 	for wall in [
-		[Vector2(640, 36), Vector2(1208, 32)],
-		[Vector2(640, 684), Vector2(1208, 32)],
-		[Vector2(36, 360), Vector2(32, 648)],
-		[Vector2(1244, 360), Vector2(32, 648)],
+		[Vector2(1280, 36), Vector2(2496, 32)],
+		[Vector2(1280, 1404), Vector2(2496, 32)],
+		[Vector2(36, 720), Vector2(32, 1368)],
+		[Vector2(2524, 720), Vector2(32, 1368)],
 		[Vector2(275, 180), Vector2(75, 52)],
 		[Vector2(1005, 180), Vector2(75, 52)],
 		[Vector2(275, 540), Vector2(75, 52)],
 		[Vector2(1005, 540), Vector2(75, 52)],
 		[Vector2(600, 155), Vector2(110, 48)],
-		[Vector2(720, 565), Vector2(80, 65)]]:
+		[Vector2(720, 565), Vector2(80, 65)],
+		[Vector2(1690, 240), Vector2(100, 60)],
+		[Vector2(1950, 970), Vector2(90, 70)],
+		[Vector2(870, 1100), Vector2(120, 48)],
+		[Vector2(1440, 750), Vector2(80, 80)],
+		[Vector2(2230, 180), Vector2(75, 52)],
+		[Vector2(275, 1250), Vector2(75, 52)],
+		[Vector2(2230, 1250), Vector2(75, 52)]]:
 		add_obstacle(WallScene, wall[0], wall[1])
 	for pos in [
 		Vector2(194, 290), Vector2(410, 176), Vector2(490, 310),
 		Vector2(762, 223), Vector2(1090, 286), Vector2(270, 385),
 		Vector2(440, 470), Vector2(583, 538), Vector2(810, 425),
-		Vector2(944, 365), Vector2(1095, 438), Vector2(690, 122)]:
+		Vector2(944, 365), Vector2(1095, 438), Vector2(690, 122),
+		Vector2(1340, 270), Vector2(1510, 430), Vector2(1800, 340),
+		Vector2(2200, 440), Vector2(2010, 640), Vector2(1660, 900),
+		Vector2(2260, 1110), Vector2(1810, 1190), Vector2(1380, 1070),
+		Vector2(1040, 920), Vector2(560, 1130), Vector2(380, 980)]:
 		add_obstacle(CrateScene, pos, Vector2(68, 68))
 
 func add_obstacle(scene: PackedScene, at_position: Vector2, at_size: Vector2) -> void:
@@ -330,17 +354,17 @@ func restart_game() -> void:
 		get_tree().call_deferred("reload_current_scene")
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)), Color("192d2d"))
+	draw_rect(Rect2(Vector2.ZERO, WORLD_SIZE), Color("192d2d"))
 	draw_rect(ARENA, Color("304b42"))
 	if match_controller != null and match_controller.elapsed >= match_settings.shrink_start:
 		var safe: Rect2 = match_controller.current_safe_rect
 		var shade := Color(0.65, 0.1, 0.1, 0.56)
 		for strip in [Rect2(ARENA.position, Vector2(ARENA.size.x, safe.position.y - ARENA.position.y)), Rect2(Vector2(ARENA.position.x, safe.end.y), Vector2(ARENA.size.x, ARENA.end.y - safe.end.y)), Rect2(Vector2(ARENA.position.x, safe.position.y), Vector2(safe.position.x - ARENA.position.x, safe.size.y)), Rect2(Vector2(safe.end.x, safe.position.y), Vector2(ARENA.end.x - safe.end.x, safe.size.y))]:
 			draw_rect(strip, shade)
-	for x in range(80, 1230, 80):
-		draw_line(Vector2(x, 55), Vector2(x, 665), Color("365449"), 1)
-	for y in range(80, 670, 80):
-		draw_line(Vector2(55, y), Vector2(1225, y), Color("365449"), 1)
+	for x in range(80, int(ARENA.end.x), 80):
+		draw_line(Vector2(x, ARENA.position.y), Vector2(x, ARENA.end.y), Color("365449"), 1)
+	for y in range(80, int(ARENA.end.y), 80):
+		draw_line(Vector2(ARENA.position.x, y), Vector2(ARENA.end.x, y), Color("365449"), 1)
 	for spawn in SPAWNS:
 		draw_circle(spawn, 63, Color(0.29, 0.52, 0.53, 0.3))
 		draw_arc(spawn, 63, 0, TAU, 48, Color("6ca69c"), 2)

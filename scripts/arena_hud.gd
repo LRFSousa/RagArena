@@ -31,6 +31,18 @@ func _draw() -> void:
 		draw_string(ThemeDB.fallback_font, Vector2(968, 223), "T +60s teste", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
 	draw_rect(Rect2(958, 250, 240, 52), Color("283d48"))
 	draw_string(ThemeDB.fallback_font, Vector2(968, 283), "M Menu", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
+	# Minimap provisório: mostra limites, área segura e jogador, sem revelar oponentes.
+	var map_box := Rect2(1080, 320, 165, 96)
+	draw_rect(map_box, Color("13242be8"))
+	draw_rect(map_box, Color("79bcb0"), false, 2)
+	if arena.match_controller != null and arena.player != null:
+		var world: Rect2 = arena.ARENA
+		var inset := map_box.grow(-5)
+		var safe: Rect2 = arena.match_controller.current_safe_rect
+		var safe_box := Rect2(inset.position + (safe.position - world.position) / world.size * inset.size, safe.size / world.size * inset.size)
+		draw_rect(safe_box, Color("83bda878"), false, 2)
+		var dot: Vector2 = inset.position + (arena.player.position - world.position) / world.size * inset.size
+		draw_circle(dot, 4, Color("fff1b3"))
 	for i in range(3):
 		var box := Rect2(730 + i * 108, 600, 98, 68)
 		draw_rect(box, Color("284758"))

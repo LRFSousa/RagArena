@@ -2,6 +2,8 @@
 
 ## Implementado
 
+- Etapa seguinte: mundo de 2560×1440 unidades, câmera seguindo o jogador com zoom 0,85 e limites de mapa, 24 caixas, spawns afastados e cobertura perto dos quatro cantos. O HUD continua fixo em coordenadas de tela.
+- Minimap provisório mostra jogador e área segura sem expor a localização de oponentes.
 - Primeira etapa do mapa maior: HUD desenhado em `CanvasLayer`, independente da câmera futura. Ataque visual continua no mundo; posições de controles e tamanho atual da arena foram mantidos.
 - Guia de estilo provisório, fonte reproduzível e doze PNGs: quatro atlas de classes (64×64 por quadro, quatro colunas, cinco linhas), dois tiles 32×32 e seis ícones 16×16.
 - Personagem usa quadros de parado, caminhada, ataque, dano e morte; classe selecionada troca o atlas. Caixas, paredes e itens usam texturas pixeladas.
@@ -15,8 +17,11 @@ Godot 4.7.2 em modo headless: `release01_smoke`, `release02_smoke`, `release03_s
 
 Após separar o HUD, as mesmas sete suítes foram executadas novamente e passaram. `release07_smoke` agora verifica também que rótulos e controles pertencem ao `CanvasLayer`.
 
+Após adicionar câmera e ampliar o mapa, as sete suítes passaram novamente com código de saída zero e sem `SCRIPT ERROR`/`ERROR` nos logs. A suíte 0.7 verifica câmera, tamanho do mundo, spawn fora da tela e toque de ataque após deslocar o personagem no mundo. A exportação Web do Godot 4.7.2 gerou `index.html`, `index.js`, `index.wasm` e `index.pck`.
+
 ## Limites e problemas
 
 - Os sprites são provisórios e de baixa complexidade. Ainda faltam efeitos visuais específicos de habilidades, variantes direcionais mais ricas e revisão artística.
 - Testes headless não validam aparência final, desempenho, ergonomia nem áudio audível em Android. Uma tentativa de captura de viewport headless falhou porque esse modo usa renderizador sem textura de tela; isso não indica erro de execução do jogo.
 - A release não está marcada como concluída até teste em aparelhos reais e resolução dos itens pendentes.
+- O zoom 0,85, os novos spawns, 24 caixas e o fechamento de 480 unidades são provisórios. A câmera de espectador ainda não acompanha sobreviventes após eliminação.

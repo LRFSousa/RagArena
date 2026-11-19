@@ -49,6 +49,12 @@
 - Perfil, configurações selecionadas e histórico local de até 50 resultados ficam em `user://profile_v1.json`. Dados de combate não são persistidos. Reiniciar a partida começa no nível 1, HP cheio, XP zero e inventário vazio.
 - O histórico local serve para teste e não é confiável para ranking. Autenticação, unicidade global e persistência remota pertencem à release 0.6.
 
+## Protótipo visual 0.7
+
+- Arena de teste ampliada para 2560×1440 unidades, com área jogável interna de 2456×1336 e câmera seguindo o jogador em zoom 0,85 [Provisório]. O HUD permanece em coordenadas de tela.
+- Spawns nos quatro cantos protegidos; quinto spawn no centro [Provisório]. Caixas de teste aumentadas de 12 para 24 para cobrir o mapa maior. O fechamento máximo passa provisoriamente a 480 unidades por borda.
+- Minimap mostra somente o jogador e a área segura. Não revela a localização de oponentes fora da tela.
+
 ## Releases futuras
 
 As regras planejadas de classes, partida, conta e multiplayer estão em `BACKLOG.md`. Valores indicados como provisórios devem ser validados em testes de gameplay.

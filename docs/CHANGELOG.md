@@ -2,6 +2,8 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- Arena de teste ampliada para 2560×1440, com câmera seguindo o personagem em zoom 0,85 e HUD fixo. Spawns foram distribuídos pelo mapa; o total de caixas passou de 12 para 24.
+- Minimap provisório mostra posição do jogador e área segura sem revelar oponentes. Fechamento máximo foi ajustado provisoriamente para a escala nova.
 - HUD movido para um `CanvasLayer` independente do mundo; os efeitos de ataque permanecem no espaço da arena. Preparação para câmera móvel, sem mudar o tamanho do mapa nesta etapa.
 - Atlas provisórios originais para Paladino, Mago, Assassino e Arqueiro, com quadros de parado, caminhada, ataque, dano e morte.
 - Tiles de madeira e pedra e ícones para os seis itens substituem formas simples no jogo.

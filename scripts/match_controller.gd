@@ -3,8 +3,8 @@ class_name MatchController
 
 signal match_ended(result: Dictionary)
 
-const FULL_ARENA := Rect2(52, 52, 1176, 616)
-const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vector2(1130, 570), Vector2(640, 360)]
+const FULL_ARENA := Rect2(52, 52, 2456, 1336)
+const SPAWNS := [Vector2(150, 150), Vector2(2350, 150), Vector2(150, 1290), Vector2(2350, 1290), Vector2(1280, 720)]
 
 var settings: MatchSettings
 var arena: Node2D

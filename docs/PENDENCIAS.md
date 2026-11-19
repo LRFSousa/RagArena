@@ -2,6 +2,9 @@
 
 ## Release 0.7
 
+- Validar em celular real se o zoom 0,85 mantém personagem, projéteis, itens e minimapa legíveis; comparar com zoom 1,0 e ajustar se necessário.
+- Reavaliar distribuição das 24 caixas, distância entre spawns, quinto spawn e fechamento máximo de 480 unidades após playtest no mapa ampliado.
+- Câmera espectadora ainda acompanha o local da eliminação; seguir outro sobrevivente fica para uma etapa posterior.
 - Prototipar mundo maior e câmera mais afastada conforme referência do responsável; comparar zoom, legibilidade e navegação antes de fixar tamanho do mapa e spawns.
 - Com o HUD já separado, a próxima etapa é introduzir a câmera seguindo o personagem e converter o toque para coordenadas corretas de tela/mundo; só depois ampliar os limites da arena.
 
