@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — ciclo da partida local
+
+- Estado da partida, simulação configurável de 2 a 5 participantes, eliminação definitiva e modo espectador.
+- Encerramento imediato com sobrevivente único ou após oito minutos; empate provisório por tempo ou eliminação simultânea, sem desempate definitivo.
+- Aviso e fechamento progressivo da arena com paredes físicas, condução dos participantes para a área segura e remoção de itens cobertos.
+- Cronômetro, contagem de vivos, painel de resultado e botão de nova partida; regras provisórias em `resources/match.tres`.
+- Suíte headless para 2–5 participantes, fechamento, resultado e reinício; avanço de 60 segundos para teste manual.
+
 ## 0.3.0 — classes e combate local
 
 - Paladino, Mago, Assassino e Arqueiro com atributos configuráveis, ataque básico e três habilidades cada.

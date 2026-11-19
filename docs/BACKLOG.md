@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Status:** releases 0.1, 0.2 e 0.3 implementadas e validadas em modo headless; validação manual da 0.3 em celular pendente.
+**Status:** releases 0.1, 0.2, 0.3 e 0.4 implementadas e validadas em modo headless; validação manual da 0.4 em celular pendente.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  
 **Princípio:** validar gameplay com formas geométricas antes de sprites e interface final.
 
@@ -61,16 +61,18 @@
 
 ## Release 0.4 — Regras da partida
 **Objetivo:** concluir o ciclo de uma partida local.
-- [ ] Suportar 2–5 participantes na lógica de partida (bots inicialmente).
-- [ ] Posicionar jogadores em áreas iniciais protegidas; definir spawn do quinto participante [Pendente].
-- [ ] Eliminação definitiva, sem respawn; espectador após eliminação.
-- [ ] Encerrar imediatamente quando restar um sobrevivente, sem duração mínima.
-- [ ] Cronômetro com duração máxima de 8 minutos.
-- [ ] Iniciar aviso e fechamento progressivo da arena por volta de 5 minutos [Provisório].
-- [ ] Fechamento por paredes intransponíveis nas bordas; remover itens engolidos pelo fechamento.
-- [ ] Implementar condição de término aos 8 minutos e desempate/morte simultânea [Pendente].
-- [ ] Exibir resultado e permitir iniciar outra partida; limpar nível, XP, atributos temporários e itens.
+- [x] Suportar 2–5 participantes na lógica de partida (bots inicialmente).
+- [x] Posicionar jogadores em áreas iniciais protegidas; definir spawn do quinto participante [Pendente].
+- [x] Eliminação definitiva, sem respawn; espectador após eliminação.
+- [x] Encerrar imediatamente quando restar um sobrevivente, sem duração mínima.
+- [x] Cronômetro com duração máxima de 8 minutos.
+- [x] Iniciar aviso e fechamento progressivo da arena por volta de 5 minutos [Provisório].
+- [x] Fechamento por paredes intransponíveis nas bordas; remover itens engolidos pelo fechamento.
+- [x] Implementar condição de término aos 8 minutos e desempate/morte simultânea [Pendente].
+- [x] Exibir resultado e permitir iniciar outra partida; limpar nível, XP, atributos temporários e itens.
 **Aceite:** partida local termina por último sobrevivente ou limite de tempo, sem progressão de combate persistente.
+
+**Evidência 0.4:** `tests/release04_smoke.gd` passou para 2–5 participantes, fechamento, paredes físicas, remoção de itens, eliminação, espectador, limite de tempo, empate provisório e reinício por toque. Suítes 0.1–0.3 seguem passando; playtest em celular pendente.
 
 ## Release 0.5 — Identidade, personagem e configurações
 **Objetivo:** estruturar a experiência de conta sem conceder vantagens permanentes.

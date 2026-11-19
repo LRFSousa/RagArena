@@ -1,6 +1,6 @@
 # Teste do RagnArena no navegador
 
-A release 0.3 pode ser exportada para Web com o preset `Web` de `export_presets.cfg`. O projeto usa o renderer Compatibility e exportação sem threads, adequada a hospedagem estática.
+A release 0.4 pode ser exportada para Web com o preset `Web` de `export_presets.cfg`. O projeto usa o renderer Compatibility e exportação sem threads, adequada a hospedagem estática.
 
 ## Gerar
 

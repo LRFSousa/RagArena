@@ -8,11 +8,13 @@ const CombatRules = preload("res://scripts/combat_rules.gd")
 const ProgressionScript = preload("res://scripts/progression.gd")
 const InventoryScript = preload("res://scripts/player_inventory.gd")
 const CombatScript = preload("res://scripts/combat_system.gd")
+const MatchScript = preload("res://scripts/match_controller.gd")
 const ARENA := Rect2(52, 52, 1176, 616)
 const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vector2(1130, 570)]
 
 @export var balance: GameBalance = preload("res://resources/balance.tres")
 @export var class_balance: ClassBalance = preload("res://resources/classes.tres")
+@export var match_settings: MatchSettings = preload("res://resources/match.tres")
 @export_range(0, 30, 1) var test_level := 0
 @export var enable_debug_controls := true
 @export var attack_interval := 0.42
@@ -22,6 +24,7 @@ var player
 var progression
 var inventory
 var combat
+var match_controller: MatchController
 var rng := RandomNumberGenerator.new()
 var debug_item_index := 0
 var wooden_blocks := 0
@@ -51,8 +54,9 @@ func _ready() -> void:
 	combat = CombatScript.new()
 	add_child(combat)
 	combat.configure(self, player, inventory, progression, class_balance)
-	for at_position in [Vector2(700, 300), Vector2(1060, 500)]:
-		combat.spawn_bot(at_position)
+	match_controller = MatchScript.new()
+	add_child(match_controller)
+	match_controller.configure(self, combat, inventory, progression, match_settings)
 	hud = Label.new()
 	hud.position = Vector2(22, 12)
 	hud.add_theme_font_size_override("font_size", 18)
@@ -148,6 +152,14 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("restart"):
 		get_tree().call_deferred("reload_current_scene")
 		return
+	if match_controller.state == "results" or inventory.hp <= 0:
+		player.move_input = Vector2.ZERO
+		attack_held = false
+		if match_controller.state == "active":
+			match_controller.advance(delta)
+		update_hud()
+		queue_redraw()
+		return
 	var keys := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var direction: Vector2 = joystick_value if joystick_touch >= 0 else keys
 	player.move_input = direction
@@ -161,7 +173,9 @@ func _physics_process(delta: float) -> void:
 	if attack_held and attack_timer <= 0.0:
 		var attacked_crate := perform_attack()
 		attack_timer = attack_interval if attacked_crate or test_level > 0 else float(combat.stats()["interval"])
+	inventory.advance(delta)
 	combat.advance(delta)
+	match_controller.advance(delta)
 	collect_ground_items()
 	update_hud()
 	queue_redraw()
@@ -173,7 +187,7 @@ func perform_attack() -> bool:
 	var hit := get_world_2d().direct_space_state.intersect_ray(query)
 	attack_end = hit.get("position", end)
 	attack_flash = 0.12
-	if not hit.is_empty() and hit["collider"] is StaticBody2D and hit["collider"].destructible:
+	if not hit.is_empty() and hit["collider"] is StaticBody2D and hit["collider"].has_method("take_crate_damage") and hit["collider"].destructible:
 		var damage_level: int = test_level if test_level > 0 else progression.level
 		hit["collider"].take_crate_damage(CombatRules.crate_damage(damage_level))
 		return true
@@ -189,24 +203,34 @@ func _input(event: InputEvent) -> void:
 			debug_take_damage()
 		elif event.physical_keycode == KEY_J:
 			debug_spawn_next_item()
-		elif event.physical_keycode == KEY_TAB:
+		elif event.physical_keycode == KEY_T and enable_debug_controls:
+			match_controller.advance(60.0)
+		elif event.physical_keycode == KEY_TAB and match_controller.player_eliminated:
+			match_controller.next_spectator()
+		elif event.physical_keycode == KEY_TAB and match_controller.state == "active":
 			var classes := ["paladin", "mage", "assassin", "archer"]
 			combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
-		elif event.physical_keycode in [KEY_Q, KEY_E, KEY_F]:
+		elif event.physical_keycode in [KEY_Q, KEY_E, KEY_F] and match_controller.state == "active" and inventory.hp > 0:
 			combat.use_skill([KEY_Q, KEY_E, KEY_F].find(event.physical_keycode))
 	elif event is InputEventScreenTouch:
 		if event.pressed:
-			if event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 24 and event.position.x < 444:
+			if match_controller.state == "results" and Rect2(480, 430, 320, 70).has_point(event.position):
+				get_tree().call_deferred("reload_current_scene")
+			elif enable_debug_controls and Rect2(958, 190, 240, 52).has_point(event.position):
+				match_controller.advance(60.0)
+			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 24 and event.position.x < 444:
 				var slot_index := int((event.position.x - 24.0) / 105.0)
 				inventory.use_slot(slot_index)
 			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 958 and event.position.x < 1058:
 				debug_take_damage()
 			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 1070 and event.position.x < 1198:
 				debug_spawn_next_item()
-			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198:
+			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198 and match_controller.player_eliminated:
+				match_controller.next_spectator()
+			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198 and match_controller.state == "active":
 				var classes := ["paladin", "mage", "assassin", "archer"]
 				combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
-			elif event.position.y >= 600 and event.position.y <= 668 and event.position.x >= 730 and event.position.x < 1054:
+			elif event.position.y >= 600 and event.position.y <= 668 and event.position.x >= 730 and event.position.x < 1054 and match_controller.state == "active" and inventory.hp > 0:
 				combat.use_skill(int((event.position.x - 730.0) / 108.0))
 			elif event.position.x < 400 and joystick_touch < 0:
 				joystick_touch = event.index
@@ -239,11 +263,16 @@ func update_hud() -> void:
 	var buff_text := ", ".join(buffs) if not buffs.is_empty() else "nenhum"
 	var test_text := " (teste %d)" % test_level if test_level > 0 else ""
 	var combat_text := "Classe: %s | Habilidades Q/E/F: %.0f/%.0f/%.0f s | Bots: %d" % [combat.class_id, combat.cooldowns[0], combat.cooldowns[1], combat.cooldowns[2], combat.bots.filter(func(bot): return bot.active).size()]
-	hud.text = "HP %d/%d | Nível %d%s | XP %d/%s | Caixas destruídas: %d | Restantes: %d\nEfeitos: %s | Uso: %.1fs | 1–4: itens  Espaço: ataque  R: reiniciar\n%s" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks, buff_text, inventory.use_cooldown, combat_text]
+	hud.text = "HP %d/%d | Nível %d%s | XP %d/%s | Caixas destruídas: %d | Restantes: %d\nEfeitos: %s | Uso: %.1fs | 1–4: itens  Espaço: ataque  R: reiniciar\n%s\n%s" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks, buff_text, inventory.use_cooldown, combat_text, match_controller.status_text()]
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)), Color("192d2d"))
 	draw_rect(ARENA, Color("304b42"))
+	if match_controller != null and match_controller.elapsed >= match_settings.shrink_start:
+		var safe: Rect2 = match_controller.current_safe_rect
+		var shade := Color(0.65, 0.1, 0.1, 0.56)
+		for strip in [Rect2(ARENA.position, Vector2(ARENA.size.x, safe.position.y - ARENA.position.y)), Rect2(Vector2(ARENA.position.x, safe.end.y), Vector2(ARENA.size.x, ARENA.end.y - safe.end.y)), Rect2(Vector2(ARENA.position.x, safe.position.y), Vector2(safe.position.x - ARENA.position.x, safe.size.y)), Rect2(Vector2(safe.end.x, safe.position.y), Vector2(ARENA.end.x - safe.end.x, safe.size.y))]:
+			draw_rect(strip, shade)
 	for x in range(80, 1230, 80):
 		draw_line(Vector2(x, 55), Vector2(x, 665), Color("365449"), 1)
 	for y in range(80, 670, 80):
@@ -267,7 +296,9 @@ func _draw() -> void:
 			draw_rect(button[0], Color("d6b77b"), false, 2)
 			draw_string(ThemeDB.fallback_font, button[0].position + Vector2(10, 32), button[1], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("f3f0df"))
 		draw_rect(Rect2(1055, 125, 143, 52), Color("283d48"))
-		draw_string(ThemeDB.fallback_font, Vector2(1064, 157), "TAB Classe", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
+		draw_string(ThemeDB.fallback_font, Vector2(1064, 157), "TAB Ver" if match_controller != null and match_controller.player_eliminated else "TAB Classe", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
+		draw_rect(Rect2(958, 190, 240, 52), Color("283d48"))
+		draw_string(ThemeDB.fallback_font, Vector2(968, 223), "T +60s teste", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
 	for i in range(3):
 		var box := Rect2(730 + i * 108, 600, 98, 68)
 		draw_rect(box, Color("284758"))
@@ -281,3 +312,10 @@ func _draw() -> void:
 	draw_arc(Vector2(1130, 570), 66, 0, TAU, 48, Color("e6a66d"), 4)
 	if attack_flash > 0.0 and player != null:
 		draw_line(player.position + player.facing * 24, attack_end, Color("ffe0a0"), 12, true)
+	if match_controller != null and match_controller.state == "results":
+		draw_rect(Rect2(350, 250, 580, 290), Color(0.05, 0.1, 0.14, 0.96))
+		draw_rect(Rect2(350, 250, 580, 290), Color("d6b77b"), false, 4)
+		draw_string(ThemeDB.fallback_font, Vector2(400, 310), "RESULTADO: %s" % match_controller.result["winner"], HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Color("fff1b3"))
+		draw_string(ThemeDB.fallback_font, Vector2(400, 365), "Nível %d  |  XP %d  |  Caixas %d" % [match_controller.result["level"], match_controller.result["xp"], match_controller.result["crates"]], HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color("f3f0df"))
+		draw_rect(Rect2(480, 430, 320, 70), Color("356f63"))
+		draw_string(ThemeDB.fallback_font, Vector2(515, 475), "Nova partida (R)", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("f3f0df"))

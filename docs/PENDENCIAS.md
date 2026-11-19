@@ -2,6 +2,7 @@
 
 ## Testes em dispositivo
 
+- Validar aviso e paredes de fechamento, painel de resultado, botão de nova partida e observação após eliminação em Android real.
 - Validar a HUD de classes e os três botões de habilidade em Android real; testar latência visual, precisão do toque e desempenho com projéteis.
 - Validar controles de toque, slots, desempenho e legibilidade da release 0.2 em celular real em paisagem. Eventos de toque foram simulados em teste headless.
 - Testar ergonomia em telas de diferentes proporções e tamanhos; os parâmetros visuais continuam provisórios.
@@ -19,10 +20,18 @@
 - Refinar comportamento dos bots, animações e efeitos de habilidades. Bots atuais são alvos estacionários que atacam quando o jogador se aproxima; não representam um jogador real.
 - Testar cobertura, pressão corpo a corpo e equilíbrio das quatro classes em aparelho real. A Flecha de Impacto empurra apenas bots e a armadilha usa forma geométrica provisória.
 
+## Balanceamento provisório da release 0.4
+
+- Validar início do fechamento aos 5 minutos, aviso de 30 s, avanço das bordas e área final. Todos ficam em `resources/match.tres`.
+- Definir spawn definitivo do quinto participante; o centro do mapa é apenas posição de teste.
+- Decidir desempate ao fim dos oito minutos e em eliminações simultâneas. O protótipo registra empate nesses casos.
+- Refinar condução dos personagens alcançados pelo fechamento; o protótipo os desloca para dentro da área segura após aviso, sem causar dano.
+- Bots estacionários da 0.3 não disputam entre si. A simulação de 2–5 participantes valida o ciclo e os estados, mas ainda não reproduz uma partida competitiva.
+
 ## Releases posteriores
 
 - Refinar atributos, dano PvP e cooldowns após playtests; valores da release 0.3 ainda não são decisões finais.
-- Definir quinto spawn, tamanho final do mapa, cronograma de fechamento e desempate (release 0.4).
+- Revisar quinto spawn, mapa, fechamento e desempate a partir de playtests da 0.4.
 - Definir política de desconexão/reconexão, autenticação, hospedagem e matchmaking (release 0.6).
 - Verificar disponibilidade comercial e jurídica do nome provisório RagnArena antes de publicação.
 

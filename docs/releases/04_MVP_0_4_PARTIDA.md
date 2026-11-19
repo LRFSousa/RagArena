@@ -1,20 +1,20 @@
 # RagnArena — MVP 0.4 — Regras de partida
 
-**Status:** Planejada
+**Status:** Implementada; teste em celular real pendente
 
 ## Objetivo
 Fechar o ciclo de uma partida offline simulada antes de implementar rede.
 ## Tarefas
-- [ ] Criar estado da partida: preparação, em andamento, encerrada e resultados.
-- [ ] Suportar simulação de 2 a 5 participantes (jogador + bots/alvos automatizados para teste).
-- [ ] Todos iniciam nível 1, inventário vazio e atributos iniciais da classe.
-- [ ] Eliminação definitiva na partida, sem respawn; permitir observar os sobreviventes.
-- [ ] Encerrar imediatamente quando restar apenas um jogador, inclusive antes de 8 minutos.
-- [ ] Cronômetro com duração MÁXIMA de 8 minutos, sem duração mínima.
-- [ ] Após cerca de 5 minutos, avisar e iniciar fechamento gradual das bordas por paredes intransponíveis; ajustar cronograma em configuração.
-- [ ] Remover itens cobertos pela zona fechada; evitar prender personagens sem aviso/contrajogo razoável.
-- [ ] Tela de resultado com vencedor e estatísticas mínimas; empate ou desempate em eliminações simultâneas fica como decisão pendente.
-- [ ] Reiniciar estado integral entre partidas: nível, XP, HP, buffs, itens e caixas.
+- [x] Criar estado da partida: preparação, em andamento, encerrada e resultados.
+- [x] Suportar simulação de 2 a 5 participantes (jogador + bots/alvos automatizados para teste).
+- [x] Todos iniciam nível 1, inventário vazio e atributos iniciais da classe.
+- [x] Eliminação definitiva na partida, sem respawn; permitir observar os sobreviventes.
+- [x] Encerrar imediatamente quando restar apenas um jogador, inclusive antes de 8 minutos.
+- [x] Cronômetro com duração MÁXIMA de 8 minutos, sem duração mínima.
+- [x] Após cerca de 5 minutos, avisar e iniciar fechamento gradual das bordas por paredes intransponíveis; ajustar cronograma em configuração.
+- [x] Remover itens cobertos pela zona fechada; evitar prender personagens sem aviso/contrajogo razoável.
+- [x] Tela de resultado com vencedor e estatísticas mínimas; empate ou desempate em eliminações simultâneas fica como decisão pendente.
+- [x] Reiniciar estado integral entre partidas: nível, XP, HP, buffs, itens e caixas.
 ## Critérios de aceite
 - Partida termina por último sobrevivente ou regra de limite de tempo; nenhum estado de partida anterior vaza para a seguinte.
 - Fechamento e encerramento funcionam com 2, 3, 4 e 5 participantes simulados.

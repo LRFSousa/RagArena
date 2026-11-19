@@ -103,7 +103,7 @@ func hit_in_line(aim: Vector2, reach: float, damage: int, effect: String, skill 
 	if target is CombatBot:
 		hit_bot(target, damage, effect, skill)
 		return true
-	if target is StaticBody2D and target.destructible and skill:
+	if target is StaticBody2D and target.has_method("take_crate_damage") and target.destructible and skill:
 		hit_crate_from_skill(target, damage)
 	return false
 

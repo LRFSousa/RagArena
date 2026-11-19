@@ -33,6 +33,14 @@
 - Dano efetivo contra bots concede XP sem contar dano acima do HP restante; eliminação concede bônus. HP e dano crescem por nível; habilidades recebem bônus provisórios nos níveis 10, 20 e 30.
 - Dois bots locais estacionários atacam ao alcance e servem para testar combate offline. Troca de classe por `Tab` ou botão **Classe** reinicia HP e recargas para facilitar comparação no protótipo. Isso não define fluxo de seleção de classe da release 0.5.
 
+## Release 0.4
+
+- A partida offline começa com jogador e 1–4 bots locais, configurável em `resources/match.tres`. Todos começam no nível 1, sem itens. O quinto spawn provisório fica no centro da arena; precisa de playtest.
+- Eliminação não tem respawn. Quando o jogador morre, pode alternar o nome do sobrevivente observado; a arena inteira continua visível. A partida termina assim que resta um sobrevivente, mesmo antes do limite.
+- Limite máximo de oito minutos. Se houver mais de um sobrevivente no limite, o protótipo registra **empate por tempo**; se todos morrerem simultaneamente, registra **empate**. Desempate definitivo permanece pendente.
+- Aviso 30 s antes do fechamento, iniciado aos 5 minutos [Provisório]. Bordas avançam gradualmente até o fim do tempo. Paredes físicas bloqueiam movimento e projéteis; itens cobertos são removidos e participantes alcançados são conduzidos para dentro da área segura [Provisório].
+- Resultado mostra vencedor ou empate, nível, XP e caixas destruídas. Nova partida recarrega a cena e limpa progresso, itens, efeitos, bots e caixas.
+
 ## Releases futuras
 
 As regras planejadas de classes, partida, conta e multiplayer estão em `BACKLOG.md`. Valores indicados como provisórios devem ser validados em testes de gameplay.
