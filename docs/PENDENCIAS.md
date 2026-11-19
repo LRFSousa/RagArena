@@ -1,5 +1,14 @@
 # Pendências
 
+## Release 0.6 em desenvolvimento
+
+- Ligar contas e sala a transporte `wss://` com certificado confiável no dispositivo de teste; GitHub Pages continua offline até existir endpoint WSS confiável.
+- Construir simulação de partida no servidor, snapshots e cliente interpolado; validar que cliente não envia HP, dano, XP, itens ou resultado.
+- Registrar histórico e estatísticas somente após resultado calculado no servidor.
+- Testar partidas reais de 2, 3, 4 e 5 clientes, incluindo desconexão/reconexão em até 60 s, rede instável e ações simultâneas.
+- Definir abandono voluntário e desempate final para partidas online; a política de reconexão de 60 s está aprovada.
+- Fortalecer persistência de contas para falha de gravação e avaliar limite de tentativas antes de expor o servidor fora da rede local.
+
 ## Testes em dispositivo
 
 - Confirmar se projéteis vermelhos e o sinal de dano do personagem são legíveis na tela do celular.

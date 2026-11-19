@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 em desenvolvimento — infraestrutura multiplayer local
+
+- Definida arquitetura de teste com servidor Godot local, custo zero, email/senha e reconexão de até 60 segundos.
+- Criada base de contas do servidor com nome único, senha derivada com sal, sessão temporária e presets persistentes.
+- Criada lógica de sala para 2–5 jogadores, confirmação de prontidão, início e reserva de vaga durante desconexão.
+- Transporte, simulação autoritativa e testes com múltiplos clientes ainda pendentes; esta etapa não entrega partidas online jogáveis.
+
 ## 0.5.2 — dano dos bots visível
 
 - Bots agora disparam projéteis vermelhos. HP só diminui quando um projétil atinge o personagem; movimento e paredes podem evitar o dano.

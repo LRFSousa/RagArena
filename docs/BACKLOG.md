@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Status:** releases 0.1 a 0.5 implementadas e validadas em modo headless; validação manual da 0.5 em celular pendente.
+**Status:** releases 0.1 a 0.5 implementadas; release 0.6 em desenvolvimento. Validação manual da 0.5 em celular pendente.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  
 **Princípio:** validar gameplay com formas geométricas antes de sprites e interface final.
 
@@ -93,7 +93,9 @@
 
 ## Release 0.6 — Multiplayer online
 **Objetivo:** partidas reais de 2–5 jogadores.
-- [ ] Definir arquitetura de servidor dedicado autoritativo, preferencialmente Godot headless/GDScript na primeira versão.
+- [x] Definir arquitetura de servidor dedicado autoritativo, Godot headless/GDScript para testes locais sem custo; ver `NETWORK_ARCHITECTURE.md`.
+- [x] Implementar e testar base de contas de servidor com email/senha, nome global único, sessão e presets persistentes (ainda sem transporte de rede).
+- [x] Implementar e testar regras da sala para 2–5 participantes e janela de reconexão de 60 s (ainda sem clientes conectados).
 - [ ] Implementar autenticação real e persistência de conta, nome e presets.
 - [ ] Implementar criação/entrada em sala ou fila de 2–5 jogadores.
 - [ ] Sincronizar movimento, ataques, habilidades, colisões, destruição de blocos, drops, inventário, XP e eliminações.
