@@ -3,6 +3,7 @@
 ## Release 0.7
 
 - Prototipar mundo maior e câmera mais afastada conforme referência do responsável; comparar zoom, legibilidade e navegação antes de fixar tamanho do mapa e spawns.
+- Com o HUD já separado, a próxima etapa é introduzir a câmera seguindo o personagem e converter o toque para coordenadas corretas de tela/mundo; só depois ampliar os limites da arena.
 
 - Validar arte, contraste, áreas de toque e desempenho em celulares Android reais. Os testes atuais são headless e não medem quadros por segundo nem ergonomia.
 - Adicionar efeitos visuais específicos para cada habilidade, animações direcionais mais completas e revisão artística após playtest.

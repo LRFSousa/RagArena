@@ -13,6 +13,7 @@ const InventoryScript = preload("res://scripts/player_inventory.gd")
 const CombatScript = preload("res://scripts/combat_system.gd")
 const MatchScript = preload("res://scripts/match_controller.gd")
 const GameAudioScript = preload("res://scripts/game_audio.gd")
+const ArenaHudScript = preload("res://scripts/arena_hud.gd")
 const ARENA := Rect2(52, 52, 1176, 616)
 const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vector2(1130, 570)]
 
@@ -45,6 +46,8 @@ var joystick_value := Vector2.ZERO
 var hud: Label
 var status_hud: Label
 var effects_hud: Label
+var hud_layer: CanvasLayer
+var hud_view: Node2D
 var game_audio
 var previous_hp := -1
 var previous_match_state := ""
@@ -73,21 +76,27 @@ func _ready() -> void:
 	add_child(game_audio)
 	previous_hp = inventory.hp
 	previous_match_state = match_controller.state
+	hud_layer = CanvasLayer.new()
+	hud_layer.name = "FixedHUD"
+	add_child(hud_layer)
+	hud_view = ArenaHudScript.new()
+	hud_view.arena = self
+	hud_layer.add_child(hud_view)
 	hud = Label.new()
 	hud.position = Vector2(24, 9)
 	hud.add_theme_font_size_override("font_size", 18)
 	hud.add_theme_color_override("font_color", Color("f3f0df"))
-	add_child(hud)
+	hud_layer.add_child(hud)
 	status_hud = Label.new()
 	status_hud.position = Vector2(480, 8)
 	status_hud.add_theme_font_size_override("font_size", 19)
 	status_hud.add_theme_color_override("font_color", Color("fff1b3"))
-	add_child(status_hud)
+	hud_layer.add_child(status_hud)
 	effects_hud = Label.new()
 	effects_hud.position = Vector2(24, 130)
 	effects_hud.add_theme_font_size_override("font_size", 15)
 	effects_hud.add_theme_color_override("font_color", Color("bde3d6"))
-	add_child(effects_hud)
+	hud_layer.add_child(effects_hud)
 	update_hud()
 	queue_redraw()
 
@@ -312,6 +321,7 @@ func update_hud() -> void:
 	hud.text = "HP %d/%d   Nível %d%s   XP %d/%s\nCaixas destruídas: %d   Restantes: %d" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks]
 	status_hud.text = match_controller.status_text()
 	effects_hud.text = "%s  |  Efeitos: %s  |  Uso: %.1fs" % [combat.class_id.capitalize(), buff_text, inventory.use_cooldown]
+	hud_view.queue_redraw()
 
 func restart_game() -> void:
 	if restart_requested.has_connections():
@@ -322,9 +332,6 @@ func restart_game() -> void:
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)), Color("192d2d"))
 	draw_rect(ARENA, Color("304b42"))
-	draw_rect(Rect2(0, 0, 1280, 52), Color("13242be8"))
-	draw_rect(Rect2(12, 58, 438, 69), Color("13242bdc"))
-	draw_rect(Rect2(12, 125, 440, 32), Color("13242bdc"))
 	if match_controller != null and match_controller.elapsed >= match_settings.shrink_start:
 		var safe: Rect2 = match_controller.current_safe_rect
 		var shade := Color(0.65, 0.1, 0.1, 0.56)
@@ -337,48 +344,5 @@ func _draw() -> void:
 	for spawn in SPAWNS:
 		draw_circle(spawn, 63, Color(0.29, 0.52, 0.53, 0.3))
 		draw_arc(spawn, 63, 0, TAU, 48, Color("6ca69c"), 2)
-	if inventory != null:
-		for i in range(inventory.slots.size()):
-			var slot: Dictionary = inventory.slots[i]
-			var origin := Vector2(24 + i * 105, 66)
-			draw_rect(Rect2(origin, Vector2(98, 54)), Color(0.08, 0.14, 0.16, 0.85))
-			draw_rect(Rect2(origin, Vector2(98, 54)), Color("79bcb0"), false, 2)
-			var item_text: String = "vazio" if slot["id"] == "" else slot["id"].replace("health_potion", "Poção").replace("strength", "Força").replace("speed", "Botas").replace("shield", "Escudo").replace("elixir", "Elixir")
-			draw_string(ThemeDB.fallback_font, origin + Vector2(7, 22), "%d %s" % [i + 1, item_text], HORIZONTAL_ALIGNMENT_LEFT, 90, 15, Color("f3f0df"))
-			if slot["quantity"] > 1:
-				draw_string(ThemeDB.fallback_font, origin + Vector2(74, 46), "x%d" % slot["quantity"], HORIZONTAL_ALIGNMENT_LEFT, 25, 15, Color("ffe0a0"))
-	if enable_debug_controls:
-		for button in [[Rect2(958, 66, 100, 54), "H Dano"], [Rect2(1070, 66, 128, 54), "J Item"]]:
-			draw_rect(button[0], Color(0.16, 0.2, 0.25, 0.88))
-			draw_rect(button[0], Color("d6b77b"), false, 2)
-			draw_string(ThemeDB.fallback_font, button[0].position + Vector2(10, 32), button[1], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("f3f0df"))
-		if allow_class_change or match_controller != null and match_controller.player_eliminated:
-			draw_rect(Rect2(1055, 125, 143, 52), Color("283d48"))
-			draw_string(ThemeDB.fallback_font, Vector2(1064, 157), "TAB Ver" if match_controller != null and match_controller.player_eliminated else "TAB Classe", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
-		draw_rect(Rect2(958, 190, 240, 52), Color("283d48"))
-		draw_string(ThemeDB.fallback_font, Vector2(968, 223), "T +60s teste", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
-	draw_rect(Rect2(958, 250, 240, 52), Color("283d48"))
-	draw_string(ThemeDB.fallback_font, Vector2(968, 283), "M Menu", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
-	for i in range(3):
-		var box := Rect2(730 + i * 108, 600, 98, 68)
-		draw_rect(box, Color("284758"))
-		draw_rect(box, Color("a5c6c7"), false, 2)
-		draw_string(ThemeDB.fallback_font, box.position + Vector2(12, 28), ["Q", "E", "F"][i], HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("f3f0df"))
-		if combat != null:
-			draw_string(ThemeDB.fallback_font, box.position + Vector2(36, 55), "%.0fs" % combat.cooldowns[i] if combat.cooldowns[i] > 0.0 else "PRONTO", HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("f0d69c"))
-	var base := joystick_origin if joystick_touch >= 0 else Vector2(130, 570)
-	draw_circle(base, 73, Color(0.1, 0.17, 0.19, 0.45))
-	draw_arc(base, 73, 0, TAU, 48, Color("72b9ab"), 3)
-	draw_circle(base + joystick_value * 55, 28, Color(0.34, 0.75, 0.67, 0.7))
-	draw_circle(ATTACK_CENTER, 66, Color(0.45, 0.17, 0.13, 0.8))
-	draw_arc(ATTACK_CENTER, 66, 0, TAU, 48, Color("e6a66d"), 4)
-	draw_string(ThemeDB.fallback_font, ATTACK_CENTER + Vector2(-38, 7), "ATAQUE", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("fff1b3"))
 	if attack_flash > 0.0 and player != null:
 		draw_line(player.position + player.facing * 24, attack_end, Color("ffe0a0"), 12, true)
-	if match_controller != null and match_controller.state == "results":
-		draw_rect(Rect2(350, 250, 580, 290), Color(0.05, 0.1, 0.14, 0.96))
-		draw_rect(Rect2(350, 250, 580, 290), Color("d6b77b"), false, 4)
-		draw_string(ThemeDB.fallback_font, Vector2(400, 310), "RESULTADO: %s" % match_controller.result["winner"], HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Color("fff1b3"))
-		draw_string(ThemeDB.fallback_font, Vector2(400, 365), "Nível %d  |  XP %d  |  Caixas %d" % [match_controller.result["level"], match_controller.result["xp"], match_controller.result["crates"]], HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color("f3f0df"))
-		draw_rect(Rect2(480, 430, 320, 70), Color("356f63"))
-		draw_string(ThemeDB.fallback_font, Vector2(515, 475), "Nova partida (R)", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("f3f0df"))

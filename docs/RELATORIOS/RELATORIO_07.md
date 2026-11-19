@@ -2,6 +2,7 @@
 
 ## Implementado
 
+- Primeira etapa do mapa maior: HUD desenhado em `CanvasLayer`, independente da câmera futura. Ataque visual continua no mundo; posições de controles e tamanho atual da arena foram mantidos.
 - Guia de estilo provisório, fonte reproduzível e doze PNGs: quatro atlas de classes (64×64 por quadro, quatro colunas, cinco linhas), dois tiles 32×32 e seis ícones 16×16.
 - Personagem usa quadros de parado, caminhada, ataque, dano e morte; classe selecionada troca o atlas. Caixas, paredes e itens usam texturas pixeladas.
 - HUD reorganizado para HP, nível, XP, cronômetro, inventário, efeitos e recargas. Ataque e habilidades têm alvos de toque separados.
@@ -11,6 +12,8 @@
 ## Testes
 
 Godot 4.7.2 em modo headless: `release01_smoke`, `release02_smoke`, `release03_smoke`, `release04_smoke`, `release05_smoke` e `health_damage_regression` passaram com código de saída zero após integração visual. `release07_smoke` passou para atlas, troca de classe, quadros de ataque/dano/morte, HUD e separação dos botões de toque. A importação dos PNGs pelo editor Godot também foi executada.
+
+Após separar o HUD, as mesmas sete suítes foram executadas novamente e passaram. `release07_smoke` agora verifica também que rótulos e controles pertencem ao `CanvasLayer`.
 
 ## Limites e problemas
 

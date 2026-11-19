@@ -2,6 +2,7 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- HUD movido para um `CanvasLayer` independente do mundo; os efeitos de ataque permanecem no espaço da arena. Preparação para câmera móvel, sem mudar o tamanho do mapa nesta etapa.
 - Atlas provisórios originais para Paladino, Mago, Assassino e Arqueiro, com quadros de parado, caminhada, ataque, dano e morte.
 - Tiles de madeira e pedra e ícones para os seis itens substituem formas simples no jogo.
 - HUD mais compacto, recargas mostradas nas habilidades e alvo de ataque separado dos botões próximos.

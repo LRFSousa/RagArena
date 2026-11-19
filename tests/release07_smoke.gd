@@ -42,6 +42,7 @@ func run_tests() -> void:
 	check(not Rect2(730, 600, 98, 68).has_point(arena.ATTACK_CENTER) and arena.ATTACK_CENTER.distance_to(Vector2(1034, 634)) > arena.ATTACK_TOUCH_RADIUS, "ataque separado das habilidades")
 	check(arena.ATTACK_CENTER.distance_to(Vector2(130, 570)) > arena.ATTACK_TOUCH_RADIUS + 73.0, "ataque separado do joystick")
 	check("HP" in arena.hud.text and "Partida" in arena.status_hud.text, "HUD mostra vida e cronômetro")
+	check(arena.hud_layer is CanvasLayer and arena.hud.get_parent() == arena.hud_layer and arena.hud_view.get_parent() == arena.hud_layer, "HUD independente das coordenadas do mundo")
 	check(arena.game_audio.streams.size() == 4 and arena.game_audio.streams["pickup"].data.size() > 0, "efeitos de áudio disponíveis")
 	arena.queue_free()
 	if failures == 0:

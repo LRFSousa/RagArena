@@ -106,6 +106,7 @@
 ## Release 0.7 — Arte, animação e interface mobile
 **Objetivo:** substituir os placeholders sem comprometer a legibilidade.
 - [ ] Prototipar mapa maior que a tela, câmera seguindo o personagem com zoom comparativo e HUD fixo em `CanvasLayer`; validar a nova escala em celular.
+- [x] Separar o HUD em `CanvasLayer`, mantendo o mapa e os controles atuais como primeira etapa do protótipo.
 - [ ] Considerar minimapa ou indicadores de jogadores fora da tela sem comprometer a leitura do combate.
 - [x] Criar guia de estilo provisório e atlas pixelados originais das quatro classes com cinco estados de animação.
 - [x] Criar tiles pixelados de caixa e parede e ícones dos seis itens, gerados de forma reproduzível.
