@@ -2,6 +2,7 @@
 
 ## Release 0.7
 
+- Validar em celular o tamanho e a posição do minimapa no canto superior direito e a leitura do alcance de dois quadros. Ajustar os 152 px provisórios se a escala de arte mudar.
 - Validar em celular real se o zoom 0,85 mantém personagem, projéteis, itens e minimapa legíveis; comparar com zoom 1,0 e ajustar se necessário.
 - Reavaliar distribuição das 24 caixas, distância entre spawns, quinto spawn e fechamento máximo de 480 unidades após playtest no mapa ampliado.
 - Câmera espectadora ainda acompanha o local da eliminação; seguir outro sobrevivente fica para uma etapa posterior.

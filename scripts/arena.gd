@@ -25,7 +25,7 @@ const SPAWNS := [Vector2(150, 150), Vector2(2350, 150), Vector2(150, 1290), Vect
 @export var enable_debug_controls := true
 @export var allow_class_change := true
 @export var attack_interval := 0.42
-@export var attack_range := 92.0
+@export var attack_range := 152.0
 
 var player
 var camera: Camera2D
@@ -255,19 +255,37 @@ func update_feedback() -> void:
 func perform_attack() -> bool:
 	var start: Vector2 = player.position + player.facing * 24.0
 	var end: Vector2 = player.position + player.facing * attack_range
-	var query := PhysicsRayQueryParameters2D.create(start, end, 2, [player.get_rid()])
-	var hit := get_world_2d().direct_space_state.intersect_ray(query)
-	attack_end = hit.get("position", end)
+	var excludes: Array[RID] = [player.get_rid()]
+	var hit_crate := false
+	var melee: bool = combat.class_id == "paladin" or combat.class_id == "assassin"
+	attack_end = end
 	attack_flash = 0.12
 	player.show_attack()
-	if not hit.is_empty() and hit["collider"] is StaticBody2D and hit["collider"].has_method("take_crate_damage") and hit["collider"].destructible:
-		var damage_level: int = test_level if test_level > 0 else progression.level
-		hit["collider"].take_crate_damage(CombatRules.crate_damage(damage_level))
-		game_audio.play_cue("hit")
-		return true
-	else:
+	# O mesmo golpe percorre dois quadros. Alvos atingidos são excluídos da próxima
+	# consulta; pedra e paredes de fechamento interrompem o trajeto.
+	for i in range(8):
+		var query := PhysicsRayQueryParameters2D.create(start, end, 2 | 4, excludes)
+		var hit := get_world_2d().direct_space_state.intersect_ray(query)
+		if hit.is_empty():
+			break
+		var target: Object = hit["collider"]
+		if target is StaticBody2D:
+			if not target.has_method("take_crate_damage") or not target.destructible:
+				attack_end = hit["position"]
+				break
+			var damage_level: int = test_level if test_level > 0 else progression.level
+			target.take_crate_damage(CombatRules.crate_damage(damage_level))
+			hit_crate = true
+			game_audio.play_cue("hit")
+		elif target is CombatBot and melee:
+			combat.hit_bot(target, int(combat.stats()["damage"]))
+		excludes.append(target.get_rid())
+	if melee:
+		if combat.invisible > 0.0:
+			combat.invisible = 0.0
+	elif not hit_crate:
 		combat.fire_basic()
-	return false
+	return hit_crate
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -295,20 +313,9 @@ func _input(event: InputEvent) -> void:
 				restart_game()
 			elif Rect2(958, 250, 240, 52).has_point(event.position):
 				menu_requested.emit()
-			elif enable_debug_controls and Rect2(958, 190, 240, 52).has_point(event.position):
-				match_controller.advance(60.0)
 			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 24 and event.position.x < 444:
 				var slot_index := int((event.position.x - 24.0) / 105.0)
 				inventory.use_slot(slot_index)
-			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 958 and event.position.x < 1058:
-				debug_take_damage()
-			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 1070 and event.position.x < 1198:
-				debug_spawn_next_item()
-			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198 and match_controller.player_eliminated:
-				match_controller.next_spectator()
-			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198 and allow_class_change and match_controller.state == "active":
-				var classes := ["paladin", "mage", "assassin", "archer"]
-				combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
 			elif event.position.y >= 600 and event.position.y <= 668 and event.position.x >= 730 and event.position.x < 1054 and match_controller.state == "active" and inventory.hp > 0:
 				if combat.use_skill(int((event.position.x - 730.0) / 108.0)):
 					game_audio.play_cue("skill")

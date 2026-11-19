@@ -2,6 +2,7 @@ extends Node2D
 class_name ArenaHud
 
 var arena: Node2D
+const MINIMAP_RECT := Rect2(1055, 64, 190, 130)
 
 func _draw() -> void:
 	if arena == null:
@@ -19,20 +20,10 @@ func _draw() -> void:
 			draw_string(ThemeDB.fallback_font, origin + Vector2(7, 22), "%d %s" % [i + 1, item_text], HORIZONTAL_ALIGNMENT_LEFT, 90, 15, Color("f3f0df"))
 			if slot["quantity"] > 1:
 				draw_string(ThemeDB.fallback_font, origin + Vector2(74, 46), "x%d" % slot["quantity"], HORIZONTAL_ALIGNMENT_LEFT, 25, 15, Color("ffe0a0"))
-	if arena.enable_debug_controls:
-		for button in [[Rect2(958, 66, 100, 54), "H Dano"], [Rect2(1070, 66, 128, 54), "J Item"]]:
-			draw_rect(button[0], Color(0.16, 0.2, 0.25, 0.88))
-			draw_rect(button[0], Color("d6b77b"), false, 2)
-			draw_string(ThemeDB.fallback_font, button[0].position + Vector2(10, 32), button[1], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("f3f0df"))
-		if arena.allow_class_change or arena.match_controller != null and arena.match_controller.player_eliminated:
-			draw_rect(Rect2(1055, 125, 143, 52), Color("283d48"))
-			draw_string(ThemeDB.fallback_font, Vector2(1064, 157), "TAB Ver" if arena.match_controller != null and arena.match_controller.player_eliminated else "TAB Classe", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
-		draw_rect(Rect2(958, 190, 240, 52), Color("283d48"))
-		draw_string(ThemeDB.fallback_font, Vector2(968, 223), "T +60s teste", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
 	draw_rect(Rect2(958, 250, 240, 52), Color("283d48"))
 	draw_string(ThemeDB.fallback_font, Vector2(968, 283), "M Menu", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
 	# Minimap provisório: mostra limites, área segura e jogador, sem revelar oponentes.
-	var map_box := Rect2(1080, 320, 165, 96)
+	var map_box := MINIMAP_RECT
 	draw_rect(map_box, Color("13242be8"))
 	draw_rect(map_box, Color("79bcb0"), false, 2)
 	if arena.match_controller != null and arena.player != null:

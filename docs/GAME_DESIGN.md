@@ -51,6 +51,7 @@
 
 ## Protótipo visual 0.7
 
+- O ataque básico em linha alcança provisoriamente 152 unidades (aproximadamente dois quadros). Um golpe pode atingir o primeiro e o segundo alvo alinhados, cada um uma vez; parede de pedra ou fechamento interrompe o trajeto. Caixas mantêm o dano comum por nível; Paladino e Assassino também acertam oponentes nesse alcance. O terceiro quadro não é atingido.
 - Arena de teste ampliada para 2560×1440 unidades, com área jogável interna de 2456×1336 e câmera seguindo o jogador em zoom 0,85 [Provisório]. O HUD permanece em coordenadas de tela.
 - Spawns nos quatro cantos protegidos; quinto spawn no centro [Provisório]. Caixas de teste aumentadas de 12 para 24 para cobrir o mapa maior. O fechamento máximo passa provisoriamente a 480 unidades por borda.
 - Minimap mostra somente o jogador e a área segura. Não revela a localização de oponentes fora da tela.

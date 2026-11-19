@@ -200,6 +200,7 @@ func start_match(preset_id: String) -> void:
 		arena.queue_free()
 	arena = ArenaScene.instantiate()
 	arena.allow_class_change = false
+	arena.enable_debug_controls = false
 	add_child(arena)
 	arena.combat.select_class(str(preset["class_id"]))
 	arena.restart_requested.connect(_restart_match)

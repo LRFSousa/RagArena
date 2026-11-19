@@ -2,6 +2,8 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- Minimapa deslocado para o canto superior direito; botões de depuração removidos da interface jogável.
+- Ataque básico em linha percorre dois quadros e pode acertar dois alvos alinhados no mesmo golpe; paredes interrompem o ataque.
 - Arena de teste ampliada para 2560×1440, com câmera seguindo o personagem em zoom 0,85 e HUD fixo. Spawns foram distribuídos pelo mapa; o total de caixas passou de 12 para 24.
 - Minimap provisório mostra posição do jogador e área segura sem revelar oponentes. Fechamento máximo foi ajustado provisoriamente para a escala nova.
 - HUD movido para um `CanvasLayer` independente do mundo; os efeitos de ataque permanecem no espaço da arena. Preparação para câmera móvel, sem mudar o tamanho do mapa nesta etapa.

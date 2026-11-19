@@ -2,6 +2,8 @@
 
 ## Implementado
 
+- Minimap movido para o canto superior direito; interface jogável não mostra botões de depuração. O teclado de teste continua disponível em cenas de desenvolvimento.
+- Golpe básico em linha alcança provisoriamente 152 unidades e percorre dois quadros, atingindo alvos alinhados uma vez cada. Paredes de pedra e fechamento barram o golpe.
 - Etapa seguinte: mundo de 2560×1440 unidades, câmera seguindo o jogador com zoom 0,85 e limites de mapa, 24 caixas, spawns afastados e cobertura perto dos quatro cantos. O HUD continua fixo em coordenadas de tela.
 - Minimap provisório mostra jogador e área segura sem expor a localização de oponentes.
 - Primeira etapa do mapa maior: HUD desenhado em `CanvasLayer`, independente da câmera futura. Ataque visual continua no mundo; posições de controles e tamanho atual da arena foram mantidos.
@@ -18,6 +20,8 @@ Godot 4.7.2 em modo headless: `release01_smoke`, `release02_smoke`, `release03_s
 Após separar o HUD, as mesmas sete suítes foram executadas novamente e passaram. `release07_smoke` agora verifica também que rótulos e controles pertencem ao `CanvasLayer`.
 
 Após adicionar câmera e ampliar o mapa, as sete suítes passaram novamente com código de saída zero e sem `SCRIPT ERROR`/`ERROR` nos logs. A suíte 0.7 verifica câmera, tamanho do mundo, spawn fora da tela e toque de ataque após deslocar o personagem no mundo. A exportação Web do Godot 4.7.2 gerou `index.html`, `index.js`, `index.wasm` e `index.pck`.
+
+Após a correção do alcance e minimapa, passaram também `tests/release07_attack_range.gd` e as sete suítes anteriores, todas sem erros nos logs. O teste novo cobre duas caixas, dois oponentes, terceiro quadro fora de alcance e parede entre os alvos.
 
 A prévia foi publicada em `https://lrfsousa.github.io/RagArena/preview-07/` sem substituir a raiz estável. O fluxo `pages build and deployment` do commit `fd55d65` concluiu com sucesso. Página, `.pck` e `.wasm` responderam HTTP 200. O navegador integrado exibiu a tela de entrada local e não registrou erros de console; a navegação completa e o jogo em celular real ainda dependem de teste manual.
 

@@ -109,6 +109,8 @@
 - [ ] Comparar zoom e validar legibilidade da nova escala em celular.
 - [x] Separar o HUD em `CanvasLayer`, mantendo o mapa e os controles atuais como primeira etapa do protótipo.
 - [x] Adicionar minimapa provisório com limites, área segura e posição do jogador, sem revelar oponentes.
+- [x] Posicionar o minimapa no canto superior direito e retirar botões de depuração da interface jogável.
+- [x] Fazer o golpe em linha atingir alvos nos dois primeiros quadros sem atravessar paredes.
 - [x] Criar guia de estilo provisório e atlas pixelados originais das quatro classes com cinco estados de animação.
 - [x] Criar tiles pixelados de caixa e parede e ícones dos seis itens, gerados de forma reproduzível.
 - [x] Integrar sprites do personagem, obstáculos e itens; compactar HUD e separar alvos de toque de ataque e habilidades.
