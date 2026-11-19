@@ -2,6 +2,7 @@
 
 ## Testes em dispositivo
 
+- Testar entrada de nome pelo teclado virtual, persistência do perfil após fechar/reabrir o app e navegação do menu em Android real.
 - Validar aviso e paredes de fechamento, painel de resultado, botão de nova partida e observação após eliminação em Android real.
 - Validar a HUD de classes e os três botões de habilidade em Android real; testar latência visual, precisão do toque e desempenho com projéteis.
 - Validar controles de toque, slots, desempenho e legibilidade da release 0.2 em celular real em paisagem. Eventos de toque foram simulados em teste headless.
@@ -27,6 +28,13 @@
 - Decidir desempate ao fim dos oito minutos e em eliminações simultâneas. O protótipo registra empate nesses casos.
 - Refinar condução dos personagens alcançados pelo fechamento; o protótipo os desloca para dentro da área segura após aviso, sem causar dano.
 - Bots estacionários da 0.3 não disputam entre si. A simulação de 2–5 participantes valida o ciclo e os estados, mas ainda não reproduz uma partida competitiva.
+
+## Limites da release 0.5
+
+- O perfil usa armazenamento local do dispositivo/navegador. Limpar dados do app ou navegador apaga nome, configurações e histórico; ainda não há sincronização.
+- A regra de nome 3–16 caracteres ASCII e o limite de 24 caracteres para nome da configuração são provisórios. Unicidade global depende do backend futuro.
+- Histórico local serve apenas para testes; precisa de validação autoritativa para ranking ou estatísticas públicas.
+- Definir migração do formato `profile_v1.json` quando conta e backend forem implementados.
 
 ## Releases posteriores
 

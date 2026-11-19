@@ -1,17 +1,17 @@
 # RagnArena — MVP 0.5 — Conta, personagem e configurações
 
-**Status:** Planejada
+**Status:** Implementada; teste em celular real pendente
 
 ## Objetivo
 Definir identidade persistente e seleção de classe, inicialmente com armazenamento local simulado.
 ## Tarefas
-- [ ] Criar modelo de conta (ID interno), personagem/nome público único e histórico; separar dados persistentes dos dados de partida.
-- [ ] Criar fluxo provisório: entrar → criar nome → menu → Arena → escolher configuração/classe → iniciar.
-- [ ] Validar nome (proposta: 3–16 caracteres, letras/números/underscore); unicidade global só poderá ser garantida pelo backend futuro.
-- [ ] Permitir múltiplas configurações salvas como decks do Magic, inclusive da mesma classe; criar, renomear, selecionar e excluir.
-- [ ] Para o MVP, cada configuração salva apenas nome da configuração e classe; habilidades fixas por classe.
-- [ ] Nenhuma configuração concede HP, XP, nível, itens ou atributos permanentes; tudo reinicia na partida.
-- [ ] Registrar estatísticas locais de teste e preparar interface para persistência remota futura.
+- [x] Criar modelo de conta (ID interno), personagem/nome público único e histórico; separar dados persistentes dos dados de partida. Unicidade global permanece pendente do backend.
+- [x] Criar fluxo provisório: entrar → criar nome → menu → Arena → escolher configuração/classe → iniciar.
+- [x] Validar nome (proposta: 3–16 caracteres, letras/números/underscore); unicidade global só poderá ser garantida pelo backend futuro.
+- [x] Permitir múltiplas configurações salvas como decks do Magic, inclusive da mesma classe; criar, renomear, selecionar e excluir.
+- [x] Para o MVP, cada configuração salva apenas nome da configuração e classe; habilidades fixas por classe.
+- [x] Nenhuma configuração concede HP, XP, nível, itens ou atributos permanentes; tudo reinicia na partida.
+- [x] Registrar estatísticas locais de teste e preparar interface para persistência remota futura.
 ## Critérios de aceite
 - Jogador pode salvar duas configurações da mesma classe, selecionar uma e iniciar partida nível 1.
 - Reiniciar o aplicativo preserva configurações locais; reiniciar a partida não preserva progressão temporária.

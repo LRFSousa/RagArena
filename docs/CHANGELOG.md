@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 — identidade e configurações locais
+
+- Perfil local com ID interno, nome público imutável, validação provisória e histórico de partidas no dispositivo.
+- Entrada local, menu Arena/Perfil/Configurações e escolha de configuração antes da partida.
+- Criação, edição, seleção e exclusão de múltiplas configurações; cada uma salva somente nome e classe.
+- Classe escolhida aplicada à arena; nova partida reinicia nível, HP, XP e itens, preservando perfil e configurações.
+- Suíte headless de persistência e fluxo completo. Sem login real ou garantia de nome único global.
+
 ## 0.4.0 — ciclo da partida local
 
 - Estado da partida, simulação configurável de 2 a 5 participantes, eliminação definitiva e modo espectador.

@@ -41,6 +41,13 @@
 - Aviso 30 s antes do fechamento, iniciado aos 5 minutos [Provisório]. Bordas avançam gradualmente até o fim do tempo. Paredes físicas bloqueiam movimento e projéteis; itens cobertos são removidos e participantes alcançados são conduzidos para dentro da área segura [Provisório].
 - Resultado mostra vencedor ou empate, nível, XP e caixas destruídas. Nova partida recarrega a cena e limpa progresso, itens, efeitos, bots e caixas.
 
+## Release 0.5
+
+- Entrada local simulada. O dispositivo guarda um perfil com ID interno separado do nome do personagem. Nome de 3–16 caracteres ASCII, letras, números ou `_` [Provisório]; não pode ser alterado depois de criado neste perfil. Unicidade global dependerá do backend.
+- Menu com Arena, Perfil e Configurações. Antes da arena, o jogador escolhe uma configuração salva. Podem existir várias configurações da mesma classe; cada uma guarda apenas ID, nome e classe. Habilidades permanecem fixas por classe.
+- Perfil, configurações selecionadas e histórico local de até 50 resultados ficam em `user://profile_v1.json`. Dados de combate não são persistidos. Reiniciar a partida começa no nível 1, HP cheio, XP zero e inventário vazio.
+- O histórico local serve para teste e não é confiável para ranking. Autenticação, unicidade global e persistência remota pertencem à release 0.6.
+
 ## Releases futuras
 
 As regras planejadas de classes, partida, conta e multiplayer estão em `BACKLOG.md`. Valores indicados como provisórios devem ser validados em testes de gameplay.

@@ -100,10 +100,10 @@ func test_inventory_and_effects() -> void:
 	inventory.free()
 
 func load_arena() -> Node:
-	change_scene_to_file("res://scenes/main.tscn")
+	change_scene_to_file("res://scenes/arena.tscn")
 	await process_frame
 	await process_frame
-	var arena := current_scene.get_node("Arena")
+	var arena := current_scene
 	var balance = Balance.new()
 	arena.balance = balance
 	arena.progression.configure(balance)
@@ -190,6 +190,6 @@ func test_restart() -> void:
 	Input.action_release("restart")
 	await process_frame
 	await process_frame
-	var restarted := current_scene.get_node("Arena")
+	var restarted := current_scene
 	check(restarted.progression.level == 1 and restarted.progression.xp == 0, "reinício zera nível e XP")
 	check(restarted.inventory.slots[0]["id"] == "" and restarted.inventory.active.is_empty(), "reinício zera itens e efeitos")

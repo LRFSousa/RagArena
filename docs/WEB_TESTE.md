@@ -1,6 +1,6 @@
 # Teste do RagnArena no navegador
 
-A release 0.4 pode ser exportada para Web com o preset `Web` de `export_presets.cfg`. O projeto usa o renderer Compatibility e exportação sem threads, adequada a hospedagem estática.
+A release 0.5 pode ser exportada para Web com o preset `Web` de `export_presets.cfg`. O projeto usa o renderer Compatibility e exportação sem threads, adequada a hospedagem estática.
 
 ## Gerar
 
@@ -21,4 +21,6 @@ O repositório `LRFSousa/RagArena` foi tornado público por autorização do res
 
 ## Limites de validação
 
-A exportação, a integridade do WebAssembly, o carregamento público dos arquivos e a renderização da arena no navegador integrado foram verificados. O console não mostrou erros. Ainda falta validar controles por toque e desempenho em celular real em paisagem.
+O perfil local usa os dados do navegador. Abrir em outro navegador ou limpar os dados cria um perfil separado.
+
+A exportação, a integridade do WebAssembly, o carregamento público dos arquivos e a renderização da arena no navegador integrado foram verificados na release anterior. A entrada e o menu da 0.5 passaram em testes headless; validação visual no navegador ainda está pendente. Ainda falta validar controles por toque e desempenho em celular real em paisagem.

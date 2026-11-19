@@ -1,5 +1,8 @@
 extends Node2D
 
+signal restart_requested
+signal menu_requested
+
 const PlayerScene = preload("res://scenes/player.tscn")
 const CrateScene = preload("res://scenes/crate.tscn")
 const WallScene = preload("res://scenes/wall.tscn")
@@ -17,6 +20,7 @@ const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vecto
 @export var match_settings: MatchSettings = preload("res://resources/match.tres")
 @export_range(0, 30, 1) var test_level := 0
 @export var enable_debug_controls := true
+@export var allow_class_change := true
 @export var attack_interval := 0.42
 @export var attack_range := 92.0
 
@@ -150,7 +154,7 @@ func debug_take_damage() -> void:
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("restart"):
-		get_tree().call_deferred("reload_current_scene")
+		restart_game()
 		return
 	if match_controller.state == "results" or inventory.hp <= 0:
 		player.move_input = Vector2.ZERO
@@ -197,7 +201,9 @@ func perform_attack() -> bool:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.physical_keycode >= KEY_1 and event.physical_keycode <= KEY_4:
+		if event.physical_keycode == KEY_M:
+			menu_requested.emit()
+		elif event.physical_keycode >= KEY_1 and event.physical_keycode <= KEY_4:
 			inventory.use_slot(event.physical_keycode - KEY_1)
 		elif event.physical_keycode == KEY_H:
 			debug_take_damage()
@@ -207,7 +213,7 @@ func _input(event: InputEvent) -> void:
 			match_controller.advance(60.0)
 		elif event.physical_keycode == KEY_TAB and match_controller.player_eliminated:
 			match_controller.next_spectator()
-		elif event.physical_keycode == KEY_TAB and match_controller.state == "active":
+		elif event.physical_keycode == KEY_TAB and allow_class_change and match_controller.state == "active":
 			var classes := ["paladin", "mage", "assassin", "archer"]
 			combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
 		elif event.physical_keycode in [KEY_Q, KEY_E, KEY_F] and match_controller.state == "active" and inventory.hp > 0:
@@ -215,7 +221,9 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventScreenTouch:
 		if event.pressed:
 			if match_controller.state == "results" and Rect2(480, 430, 320, 70).has_point(event.position):
-				get_tree().call_deferred("reload_current_scene")
+				restart_game()
+			elif Rect2(958, 250, 240, 52).has_point(event.position):
+				menu_requested.emit()
 			elif enable_debug_controls and Rect2(958, 190, 240, 52).has_point(event.position):
 				match_controller.advance(60.0)
 			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 24 and event.position.x < 444:
@@ -227,7 +235,7 @@ func _input(event: InputEvent) -> void:
 				debug_spawn_next_item()
 			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198 and match_controller.player_eliminated:
 				match_controller.next_spectator()
-			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198 and match_controller.state == "active":
+			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198 and allow_class_change and match_controller.state == "active":
 				var classes := ["paladin", "mage", "assassin", "archer"]
 				combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
 			elif event.position.y >= 600 and event.position.y <= 668 and event.position.x >= 730 and event.position.x < 1054 and match_controller.state == "active" and inventory.hp > 0:
@@ -265,6 +273,12 @@ func update_hud() -> void:
 	var combat_text := "Classe: %s | Habilidades Q/E/F: %.0f/%.0f/%.0f s | Bots: %d" % [combat.class_id, combat.cooldowns[0], combat.cooldowns[1], combat.cooldowns[2], combat.bots.filter(func(bot): return bot.active).size()]
 	hud.text = "HP %d/%d | Nível %d%s | XP %d/%s | Caixas destruídas: %d | Restantes: %d\nEfeitos: %s | Uso: %.1fs | 1–4: itens  Espaço: ataque  R: reiniciar\n%s\n%s" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks, buff_text, inventory.use_cooldown, combat_text, match_controller.status_text()]
 
+func restart_game() -> void:
+	if restart_requested.has_connections():
+		restart_requested.emit()
+	else:
+		get_tree().call_deferred("reload_current_scene")
+
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)), Color("192d2d"))
 	draw_rect(ARENA, Color("304b42"))
@@ -295,10 +309,13 @@ func _draw() -> void:
 			draw_rect(button[0], Color(0.16, 0.2, 0.25, 0.88))
 			draw_rect(button[0], Color("d6b77b"), false, 2)
 			draw_string(ThemeDB.fallback_font, button[0].position + Vector2(10, 32), button[1], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("f3f0df"))
-		draw_rect(Rect2(1055, 125, 143, 52), Color("283d48"))
-		draw_string(ThemeDB.fallback_font, Vector2(1064, 157), "TAB Ver" if match_controller != null and match_controller.player_eliminated else "TAB Classe", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
+		if allow_class_change or match_controller != null and match_controller.player_eliminated:
+			draw_rect(Rect2(1055, 125, 143, 52), Color("283d48"))
+			draw_string(ThemeDB.fallback_font, Vector2(1064, 157), "TAB Ver" if match_controller != null and match_controller.player_eliminated else "TAB Classe", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
 		draw_rect(Rect2(958, 190, 240, 52), Color("283d48"))
 		draw_string(ThemeDB.fallback_font, Vector2(968, 223), "T +60s teste", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
+	draw_rect(Rect2(958, 250, 240, 52), Color("283d48"))
+	draw_string(ThemeDB.fallback_font, Vector2(968, 283), "M Menu", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
 	for i in range(3):
 		var box := Rect2(730 + i * 108, 600, 98, 68)
 		draw_rect(box, Color("284758"))

@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Status:** releases 0.1, 0.2, 0.3 e 0.4 implementadas e validadas em modo headless; validação manual da 0.4 em celular pendente.
+**Status:** releases 0.1 a 0.5 implementadas e validadas em modo headless; validação manual da 0.5 em celular pendente.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  
 **Princípio:** validar gameplay com formas geométricas antes de sprites e interface final.
 
@@ -76,16 +76,18 @@
 
 ## Release 0.5 — Identidade, personagem e configurações
 **Objetivo:** estruturar a experiência de conta sem conceder vantagens permanentes.
-- [ ] Criar fluxo de login/cadastro (primeiro simulado localmente; autenticação real ligada ao backend na fase online).
-- [ ] Criar um nome permanente de personagem por conta; ID interno separado do nome.
-- [ ] Validar nome único ignorando caixa, de 3 a 16 caracteres, letras/números/sublinhado [regras provisórias].
-- [ ] Criar menu principal com Arena, Perfil e Configurações.
-- [ ] Criar tela de configurações salvas, inspirada em decks do Magic Arena: criar, nomear, editar, excluir e selecionar presets.
-- [ ] Cada preset inicial contém nome da configuração e classe escolhida; permitir vários presets da mesma classe.
-- [ ] Na entrada da Arena, selecionar preset/classe antes de entrar na fila.
-- [ ] Preservar apenas identidade, presets e histórico; reiniciar nível 1, XP, atributos e inventário a cada partida.
-- [ ] Planejar armazenamento de histórico, vitórias e derrotas; ranking pode vir depois.
+- [x] Criar fluxo de login/cadastro (primeiro simulado localmente; autenticação real ligada ao backend na fase online).
+- [x] Criar um nome permanente de personagem por conta; ID interno separado do nome.
+- [x] Validar nome único ignorando caixa, de 3 a 16 caracteres, letras/números/sublinhado [regras provisórias].
+- [x] Criar menu principal com Arena, Perfil e Configurações.
+- [x] Criar tela de configurações salvas, inspirada em decks do Magic Arena: criar, nomear, editar, excluir e selecionar presets.
+- [x] Cada preset inicial contém nome da configuração e classe escolhida; permitir vários presets da mesma classe.
+- [x] Na entrada da Arena, selecionar preset/classe antes de entrar na fila.
+- [x] Preservar apenas identidade, presets e histórico; reiniciar nível 1, XP, atributos e inventário a cada partida.
+- [x] Planejar armazenamento de histórico, vitórias e derrotas; ranking pode vir depois.
 **Aceite:** jogador mantém nome e configurações entre partidas, mas não leva vantagens de combate permanentes.
+
+**Evidência 0.5:** `tests/release05_smoke.gd` passou para validação do nome, ID interno, dois presets da mesma classe, edição, seleção, exclusão, persistência, histórico local e reinício sem vantagem. As suítes 0.1–0.4 seguem passando; unicidade global e login real dependem do backend.
 
 ## Release 0.6 — Multiplayer online
 **Objetivo:** partidas reais de 2–5 jogadores.

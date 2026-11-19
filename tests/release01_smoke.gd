@@ -32,10 +32,10 @@ func run_tests() -> void:
 	quit(0 if failures == 0 else 1)
 
 func load_arena() -> Node:
-	change_scene_to_file("res://scenes/main.tscn")
+	change_scene_to_file("res://scenes/arena.tscn")
 	await process_frame
 	await process_frame
-	return current_scene.get_node("Arena")
+	return current_scene
 
 func test_crate(level: int, hits_needed: int) -> void:
 	var arena := await load_arena()
@@ -156,5 +156,5 @@ func test_restart() -> void:
 	Input.action_release("restart")
 	await process_frame
 	await process_frame
-	var restarted := current_scene.get_node("Arena")
+	var restarted := current_scene
 	check(restarted.destroyed_blocks == 0 and restarted.wooden_blocks == 12, "reinício limpa contadores")
