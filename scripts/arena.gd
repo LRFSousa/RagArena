@@ -7,10 +7,12 @@ const GroundItemScene = preload("res://scenes/ground_item.tscn")
 const CombatRules = preload("res://scripts/combat_rules.gd")
 const ProgressionScript = preload("res://scripts/progression.gd")
 const InventoryScript = preload("res://scripts/player_inventory.gd")
+const CombatScript = preload("res://scripts/combat_system.gd")
 const ARENA := Rect2(52, 52, 1176, 616)
 const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vector2(1130, 570)]
 
 @export var balance: GameBalance = preload("res://resources/balance.tres")
+@export var class_balance: ClassBalance = preload("res://resources/classes.tres")
 @export_range(0, 30, 1) var test_level := 0
 @export var enable_debug_controls := true
 @export var attack_interval := 0.42
@@ -19,6 +21,7 @@ const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vecto
 var player
 var progression
 var inventory
+var combat
 var rng := RandomNumberGenerator.new()
 var debug_item_index := 0
 var wooden_blocks := 0
@@ -45,6 +48,11 @@ func _ready() -> void:
 	player = PlayerScene.instantiate()
 	player.position = SPAWNS[0]
 	add_child(player)
+	combat = CombatScript.new()
+	add_child(combat)
+	combat.configure(self, player, inventory, progression, class_balance)
+	for at_position in [Vector2(700, 300), Vector2(1060, 500)]:
+		combat.spawn_bot(at_position)
 	hud = Label.new()
 	hud.position = Vector2(22, 12)
 	hud.add_theme_font_size_override("font_size", 18)
@@ -143,7 +151,7 @@ func _physics_process(delta: float) -> void:
 	var keys := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var direction: Vector2 = joystick_value if joystick_touch >= 0 else keys
 	player.move_input = direction
-	player.speed = balance.base_move_speed * inventory.movement_speed_multiplier()
+	player.speed = float(combat.stats()["speed"]) * inventory.movement_speed_multiplier() * combat.speed_multiplier()
 	if direction.length_squared() > 0.01:
 		player.facing = direction.normalized()
 	if attack_touch < 0:
@@ -152,7 +160,8 @@ func _physics_process(delta: float) -> void:
 	attack_flash = maxf(0.0, attack_flash - delta)
 	if attack_held and attack_timer <= 0.0:
 		perform_attack()
-		attack_timer = attack_interval
+		attack_timer = attack_interval if test_level > 0 else float(combat.stats()["interval"])
+	combat.advance(delta)
 	collect_ground_items()
 	update_hud()
 	queue_redraw()
@@ -164,9 +173,11 @@ func perform_attack() -> void:
 	var hit := get_world_2d().direct_space_state.intersect_ray(query)
 	attack_end = hit.get("position", end)
 	attack_flash = 0.12
-	if not hit.is_empty() and hit["collider"].destructible:
+	if not hit.is_empty() and hit["collider"] is StaticBody2D and hit["collider"].destructible:
 		var damage_level: int = test_level if test_level > 0 else progression.level
 		hit["collider"].take_crate_damage(CombatRules.crate_damage(damage_level))
+	else:
+		combat.fire_basic()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -176,6 +187,11 @@ func _input(event: InputEvent) -> void:
 			debug_take_damage()
 		elif event.physical_keycode == KEY_J:
 			debug_spawn_next_item()
+		elif event.physical_keycode == KEY_TAB:
+			var classes := ["paladin", "mage", "assassin", "archer"]
+			combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
+		elif event.physical_keycode in [KEY_Q, KEY_E, KEY_F]:
+			combat.use_skill([KEY_Q, KEY_E, KEY_F].find(event.physical_keycode))
 	elif event is InputEventScreenTouch:
 		if event.pressed:
 			if event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 24 and event.position.x < 444:
@@ -185,6 +201,11 @@ func _input(event: InputEvent) -> void:
 				debug_take_damage()
 			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 1070 and event.position.x < 1198:
 				debug_spawn_next_item()
+			elif event.position.y >= 125 and event.position.y <= 177 and event.position.x >= 1055 and event.position.x < 1198:
+				var classes := ["paladin", "mage", "assassin", "archer"]
+				combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
+			elif event.position.y >= 600 and event.position.y <= 668 and event.position.x >= 730 and event.position.x < 1054:
+				combat.use_skill(int((event.position.x - 730.0) / 108.0))
 			elif event.position.x < 400 and joystick_touch < 0:
 				joystick_touch = event.index
 				joystick_origin = event.position
@@ -215,7 +236,8 @@ func update_hud() -> void:
 			buffs.append(label_text)
 	var buff_text := ", ".join(buffs) if not buffs.is_empty() else "nenhum"
 	var test_text := " (teste %d)" % test_level if test_level > 0 else ""
-	hud.text = "HP %d/%d | Nível %d%s | XP %d/%s | Caixas destruídas: %d | Restantes: %d\nEfeitos: %s | Uso: %.1fs | 1–4: itens  Espaço: ataque  R: reiniciar" % [inventory.hp, balance.max_hp, progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks, buff_text, inventory.use_cooldown]
+	var combat_text := "Classe: %s | Habilidades Q/E/F: %.0f/%.0f/%.0f s | Bots: %d" % [combat.class_id, combat.cooldowns[0], combat.cooldowns[1], combat.cooldowns[2], combat.bots.filter(func(bot): return bot.active).size()]
+	hud.text = "HP %d/%d | Nível %d%s | XP %d/%s | Caixas destruídas: %d | Restantes: %d\nEfeitos: %s | Uso: %.1fs | 1–4: itens  Espaço: ataque  R: reiniciar\n%s" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks, buff_text, inventory.use_cooldown, combat_text]
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)), Color("192d2d"))
@@ -242,6 +264,13 @@ func _draw() -> void:
 			draw_rect(button[0], Color(0.16, 0.2, 0.25, 0.88))
 			draw_rect(button[0], Color("d6b77b"), false, 2)
 			draw_string(ThemeDB.fallback_font, button[0].position + Vector2(10, 32), button[1], HORIZONTAL_ALIGNMENT_LEFT, -1, 17, Color("f3f0df"))
+		draw_rect(Rect2(1055, 125, 143, 52), Color("283d48"))
+		draw_string(ThemeDB.fallback_font, Vector2(1064, 157), "TAB Classe", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("f3f0df"))
+	for i in range(3):
+		var box := Rect2(730 + i * 108, 600, 98, 68)
+		draw_rect(box, Color("284758"))
+		draw_rect(box, Color("a5c6c7"), false, 2)
+		draw_string(ThemeDB.fallback_font, box.position + Vector2(12, 28), ["Q", "E", "F"][i], HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("f3f0df"))
 	var base := joystick_origin if joystick_touch >= 0 else Vector2(130, 570)
 	draw_circle(base, 73, Color(0.1, 0.17, 0.19, 0.45))
 	draw_arc(base, 73, 0, TAU, 48, Color("72b9ab"), 3)

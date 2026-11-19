@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Status:** releases 0.1 e 0.2 implementadas e validadas em modo headless; validação manual da 0.2 em celular pendente.
+**Status:** releases 0.1, 0.2 e 0.3 implementadas e validadas em modo headless; validação manual da 0.3 em celular pendente.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  
 **Princípio:** validar gameplay com formas geométricas antes de sprites e interface final.
 
@@ -45,17 +45,19 @@
 
 ## Release 0.3 — Classes e combate PvP local
 **Objetivo:** validar diferenças entre as quatro classes antes da rede.
-- [ ] Implementar Paladino (resistência, ataque corpo a corpo, proteção contra dano à distância, autocura, Determinação/Endure).
-- [ ] Implementar Mago (baixa resistência, magia à distância, Rajada de Gelo/congelamento, Barreira Arcana, Bola de Fogo).
-- [ ] Implementar Assassino (corpo a corpo rápido, Invisibilidade, Lâmina Arremessada, Passos Velozes; permitir invisibilidade + velocidade).
-- [ ] Implementar Arqueiro (longo alcance, Rajada de Flechas, Flecha de Impacto/repulsão, Armadilha/imobilização).
-- [ ] Implementar ataque básico e três habilidades ativas por classe, acionadas manualmente.
-- [ ] Implementar HP, dano PvP, defesa, alcance, velocidade e recargas configuráveis por classe.
-- [ ] Implementar colisão de projéteis com blocos e paredes; cobertura relevante para classes corpo a corpo.
-- [ ] Implementar XP por dano efetivamente causado e bônus por eliminação.
-- [ ] Implementar crescimento de atributos por nível e melhorias de habilidades próximas aos níveis 10, 20 e 30 [marcos provisórios].
-- [ ] Criar alvos/bots locais simples para testes; sem matchmaking nesta release.
+- [x] Implementar Paladino (resistência, ataque corpo a corpo, proteção contra dano à distância, autocura, Determinação/Endure).
+- [x] Implementar Mago (baixa resistência, magia à distância, Rajada de Gelo/congelamento, Barreira Arcana, Bola de Fogo).
+- [x] Implementar Assassino (corpo a corpo rápido, Invisibilidade, Lâmina Arremessada, Passos Velozes; permitir invisibilidade + velocidade).
+- [x] Implementar Arqueiro (longo alcance, Rajada de Flechas, Flecha de Impacto/repulsão, Armadilha/imobilização).
+- [x] Implementar ataque básico e três habilidades ativas por classe, acionadas manualmente.
+- [x] Implementar HP, dano PvP, defesa, alcance, velocidade e recargas configuráveis por classe.
+- [x] Implementar colisão de projéteis com blocos e paredes; cobertura relevante para classes corpo a corpo.
+- [x] Implementar XP por dano efetivamente causado e bônus por eliminação.
+- [x] Implementar crescimento de atributos por nível e melhorias de habilidades próximas aos níveis 10, 20 e 30 [marcos provisórios].
+- [x] Criar alvos/bots locais simples para testes; sem matchmaking nesta release.
 **Aceite:** quatro classes com estilos distintos e habilidades funcionais, sem alterar a regra comum de dano a blocos.
+
+**Evidência 0.3:** `tests/release03_smoke.gd` cobre atributos, crescimento, XP por dano efetivo e eliminação, proteção, cura, recargas, congelamento, barreira, invisibilidade com velocidade, armadilha e cobertura por caixa/parede. As suítes 0.1 e 0.2 seguem passando. Playtest em celular pendente.
 
 ## Release 0.4 — Regras da partida
 **Objetivo:** concluir o ciclo de uma partida local.

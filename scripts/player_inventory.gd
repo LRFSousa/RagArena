@@ -10,6 +10,7 @@ var balance: GameBalance
 var slots: Array[Dictionary] = []
 var active: Dictionary = {}
 var hp := 100
+var max_hp_override := 0
 var shield_points := 0
 var use_cooldown := 0.0
 
@@ -20,6 +21,7 @@ func configure(settings: GameBalance) -> void:
 		slots.append({"id": "", "quantity": 0})
 	active.clear()
 	hp = balance.max_hp
+	max_hp_override = 0
 	shield_points = 0
 	use_cooldown = 0.0
 	changed.emit()
@@ -55,13 +57,13 @@ func use_slot(index: int) -> bool:
 		return false
 	match item_id:
 		"health_potion":
-			if hp >= balance.max_hp:
+			if hp >= maximum_hp():
 				return false
-			hp = mini(balance.max_hp, hp + roundi(balance.max_hp * balance.health_potion_fraction))
+			hp = mini(maximum_hp(), hp + roundi(maximum_hp() * balance.health_potion_fraction))
 		"elixir":
-			if hp >= balance.max_hp:
+			if hp >= maximum_hp():
 				return false
-			hp = mini(balance.max_hp, hp + roundi(balance.max_hp * balance.elixir_fraction))
+			hp = mini(maximum_hp(), hp + roundi(maximum_hp() * balance.elixir_fraction))
 		"strength":
 			active[item_id] = balance.strength_duration
 		"speed":
@@ -94,6 +96,9 @@ func advance(delta: float) -> void:
 
 func effect_remaining(item_id: String) -> float:
 	return float(active.get(item_id, 0.0))
+
+func maximum_hp() -> int:
+	return max_hp_override if max_hp_override > 0 else balance.max_hp
 
 func pvp_damage_multiplier() -> float:
 	return 1.0 + (balance.strength_bonus if active.has("strength") else 0.0)

@@ -1,20 +1,20 @@
 # RagnArena — MVP 0.3 — Quatro classes e PvP local
 
-**Status:** Planejada
+**Status:** Implementada; teste em celular real pendente
 
 ## Objetivo
 Implementar combate e habilidades contra alvos de teste/bots simples, sem rede.
 ## Tarefas
-- [ ] Criar dados de classe independentes de sprites: Paladino (resistência), Mago (controle), Assassino (mobilidade), Arqueiro (alcance).
-- [ ] Definir atributos PvP por classe em dados configuráveis: HP, dano, defesa, alcance, velocidade, cadência e cooldown.
-- [ ] Implementar ataque básico direcional com pressionar-e-segurar; NÃO implementar travamento de alvo no MVP.
-- [ ] Paladino: ataque corpo a corpo, proteção contra dano à distância, autocura, Determinação/Endure contra empurrões/interrupções leves (não anula congelamento).
-- [ ] Mago: Rajada de Gelo (congelamento curto), Barreira Arcana, Bola de Fogo.
-- [ ] Assassino: Invisibilidade (termina ao atacar), Lâmina Arremessada, Passos Velozes; permitir combinação invisibilidade + velocidade.
-- [ ] Arqueiro: Rajada de Flechas, Flecha de Impacto (empurrão), Armadilha (imobilização).
-- [ ] Criar alvos/bots simples para testar alcance, projéteis, colisão com caixas/paredes, estados, dano, cura e morte.
-- [ ] Conceder XP por dano PvP efetivamente causado e bônus por eliminação; evitar XP por dano acima da vida restante.
-- [ ] Garantir dano contra caixas igual por faixa de nível para todas as classes, independentemente da cadência de PvP; balancear dano em área contra caixas.
+- [x] Criar dados de classe independentes de sprites: Paladino (resistência), Mago (controle), Assassino (mobilidade), Arqueiro (alcance).
+- [x] Definir atributos PvP por classe em dados configuráveis: HP, dano, defesa, alcance, velocidade, cadência e cooldown.
+- [x] Implementar ataque básico direcional com pressionar-e-segurar; NÃO implementar travamento de alvo no MVP.
+- [x] Paladino: ataque corpo a corpo, proteção contra dano à distância, autocura, Determinação/Endure contra empurrões/interrupções leves (não anula congelamento).
+- [x] Mago: Rajada de Gelo (congelamento curto), Barreira Arcana, Bola de Fogo.
+- [x] Assassino: Invisibilidade (termina ao atacar), Lâmina Arremessada, Passos Velozes; permitir combinação invisibilidade + velocidade.
+- [x] Arqueiro: Rajada de Flechas, Flecha de Impacto (empurrão), Armadilha (imobilização).
+- [x] Criar alvos/bots simples para testar alcance, projéteis, colisão com caixas/paredes, estados, dano, cura e morte.
+- [x] Conceder XP por dano PvP efetivamente causado e bônus por eliminação; evitar XP por dano acima da vida restante.
+- [x] Garantir dano contra caixas igual por faixa de nível para todas as classes, independentemente da cadência de PvP; balancear dano em área contra caixas.
 ## Critérios de aceite
 - Cada classe possui ataque + três habilidades utilizáveis e testáveis; controles direcionais funcionam.
 - Colisões bloqueiam projéteis, cooldowns impedem spam e condições de controle expiram.

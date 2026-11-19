@@ -24,6 +24,15 @@
 - Uso manual tem intervalo global de 2 s [Provisório]. Slots usam teclas 1–4 ou toque. Buffs e itens são limpos ao reiniciar.
 - XP por dano PvP efetivo e eliminação tem funções preparadas, sem inimigos ou concessão fictícia nesta release.
 
+## Release 0.3
+
+- Quatro classes com atributos PvP provisórios em `resources/classes.tres`: Paladino resistente e corpo a corpo; Mago de controle e projéteis; Assassino ágil e furtivo; Arqueiro de alcance e armadilhas. HP, dano, defesa, alcance, velocidade, cadência e três recargas são configuráveis.
+- Ataque básico na direção do olhar, repetido enquanto pressionado. A regra comum de dano e cadência contra caixas permanece independente da cadência PvP. Paredes e caixas bloqueiam projéteis; habilidades não multiplicam dano contra caixas.
+- Paladino: autocura, Determinação contra empurrão e golpe; redução passiva de dano à distância. Determinação não impede congelamento.
+- Mago: gelo com congelamento curto, barreira absorvente e bola de fogo. Assassino: invisibilidade até atacar, lâmina arremessada e velocidade; invisibilidade e velocidade podem coexistir. Arqueiro: rajada, impacto com empurrão e armadilha que imobiliza.
+- Dano efetivo contra bots concede XP sem contar dano acima do HP restante; eliminação concede bônus. HP e dano crescem por nível; habilidades recebem bônus provisórios nos níveis 10, 20 e 30.
+- Dois bots locais estacionários atacam ao alcance e servem para testar combate offline. Troca de classe por `Tab` ou botão **Classe** reinicia HP e recargas para facilitar comparação no protótipo. Isso não define fluxo de seleção de classe da release 0.5.
+
 ## Releases futuras
 
 As regras planejadas de classes, partida, conta e multiplayer estão em `BACKLOG.md`. Valores indicados como provisórios devem ser validados em testes de gameplay.

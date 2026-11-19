@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 — classes e combate local
+
+- Paladino, Mago, Assassino e Arqueiro com atributos configuráveis, ataque básico e três habilidades cada.
+- Bots locais, dano PvP efetivo e XP por eliminação; projéteis bloqueados por paredes e caixas.
+- Recargas, congelamento, imobilização, empurrão, barreira, invisibilidade, velocidade e proteção do Paladino.
+- Crescimento de HP/dano por nível e marcos provisórios de habilidade nos níveis 10, 20 e 30.
+- Controles de teclado e toque para classes e habilidades; testes headless da release 0.3.
+
 ## 0.2.0 — progressão, drops e inventário
 
 - Níveis 1–30 por partida, XP por caixa e curva configurável; fontes futuras de XP PvP preparadas sem inimigos.
