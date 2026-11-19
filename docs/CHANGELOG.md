@@ -2,6 +2,7 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- Os quatro ícones enviados para ataque, Proteção Divina, Cura e Determinação foram adicionados aos botões do Espadachim no HUD. Outras classes mantêm os controles provisórios.
 - Espadachim/Paladino ganhou arco luminoso no golpe básico, escudo dourado na Proteção Divina (Q), aura verde na Cura (E) e energia dourada na Determinação (F). Q agora absorve dano, E cura e F mantém a resistência a empurrão; as três habilidades seguem suas recargas existentes.
 - Personagem foi colocado acima das caixas na ordem de desenho para manter os efeitos visíveis durante o combate.
 - HUD da Arena reorganizado: quatro itens de uso rápido com ícones acima das três habilidades no canto inferior direito; ataque permanece separado à direita.

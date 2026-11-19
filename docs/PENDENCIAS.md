@@ -2,6 +2,7 @@
 
 ## Release 0.7
 
+- Avaliar no celular a leitura dos novos ícones de habilidade em tamanho reduzido e o contraste das recargas.
 - Conferir em celular real a leitura dos quatro efeitos do Espadachim sobre diferentes fundos, a duração da aura de proteção e a fluidez do arco de ataque.
 - Conferir em celular real a ergonomia dos itens e habilidades no canto inferior direito, especialmente em telas com proporções diferentes de 16:9.
 - Confirmar em aparelho real se o Espadachim em 25% de escala está legível no zoom atual. A associação com Paladino é provisória; faltam arte própria de parado, ataque, dano e morte e decisão sobre o nome/classe final.

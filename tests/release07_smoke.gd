@@ -45,6 +45,7 @@ func run_tests() -> void:
 	check(arena.ATTACK_CENTER.distance_to(Vector2(130, 570)) > arena.ATTACK_TOUCH_RADIUS + 73.0, "ataque separado do joystick")
 	check(arena.hud_view.item_slot_at(Vector2(805, 500)) == 0 and arena.hud_view.item_slot_at(Vector2(1090, 500)) == 3 and arena.hud_view.item_slot_at(Vector2(50, 80)) == -1, "itens acima das habilidades no canto direito")
 	check(arena.hud_view.skill_slot_at(Vector2(830, 650)) == 0 and arena.hud_view.skill_slot_at(Vector2(1025, 650)) == 2, "habilidades na faixa inferior direita")
+	check(arena.hud_view.SWORDSMAN_ICONS.get_size() == Vector2(1536, 1024) and arena.hud_view.SWORDSMAN_ICON_RECTS.size() == 4, "quatro ícones do Espadachim carregados no HUD")
 	arena.inventory.pickup_item("health_potion")
 	arena.inventory.hp = 40
 	var item_touch := InputEventScreenTouch.new()
