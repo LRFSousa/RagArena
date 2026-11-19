@@ -41,21 +41,21 @@ func run_tests() -> void:
 	arena.player.visual_dead = true
 	arena.player._physics_process(0.016)
 	check(arena.player.visual_sprite.frame_coords.y == 4, "eliminação mostra animação")
-	check(arena.hud_view.skill_slot_at(arena.ATTACK_CENTER) == -1 and arena.ATTACK_CENTER.distance_to(Vector2(1104, 658)) > arena.ATTACK_TOUCH_RADIUS, "ataque separado das habilidades")
+	check(arena.hud_view.skill_slot_at(arena.ATTACK_CENTER) == -1 and arena.ATTACK_CENTER.distance_to(arena.hud_view.SKILL_CENTERS[2]) > arena.ATTACK_TOUCH_RADIUS + arena.hud_view.SKILL_RADIUS, "ataque separado das habilidades")
 	check(arena.ATTACK_CENTER.distance_to(Vector2(130, 570)) > arena.ATTACK_TOUCH_RADIUS + 73.0, "ataque separado do joystick")
-	check(arena.hud_view.item_slot_at(Vector2(805, 500)) == 0 and arena.hud_view.item_slot_at(Vector2(1090, 500)) == 3 and arena.hud_view.item_slot_at(Vector2(50, 80)) == -1, "itens acima das habilidades no canto direito")
-	check(arena.hud_view.skill_slot_at(Vector2(830, 650)) == 0 and arena.hud_view.skill_slot_at(Vector2(1025, 650)) == 2, "habilidades na faixa inferior direita")
+	check(arena.hud_view.item_slot_at(Vector2(824, 465)) == 0 and arena.hud_view.item_slot_at(Vector2(1106, 465)) == 3 and arena.hud_view.item_slot_at(Vector2(859, 500)) == -1, "poções circulares acima das habilidades")
+	check(arena.hud_view.skill_slot_at(Vector2(842, 608)) == 0 and arena.hud_view.skill_slot_at(Vector2(944, 564)) == 1 and arena.hud_view.skill_slot_at(Vector2(1044, 612)) == 2 and arena.hud_view.skill_slot_at(Vector2(880, 646)) == -1, "habilidades circulares acompanham a composição mobile")
 	check(arena.hud_view.SWORDSMAN_ICONS.get_size() == Vector2(1536, 1024) and arena.hud_view.SWORDSMAN_ICON_RECTS.size() == 4, "quatro ícones do Espadachim carregados no HUD")
 	arena.inventory.pickup_item("health_potion")
 	arena.inventory.hp = 40
 	var item_touch := InputEventScreenTouch.new()
 	item_touch.index = 5
 	item_touch.pressed = true
-	item_touch.position = Vector2(830, 520)
+	item_touch.position = Vector2(824, 465)
 	arena._input(item_touch)
 	check(arena.inventory.hp > 40 and arena.inventory.slots[0]["id"] == "", "toque no item usa poção")
 	arena.combat.select_class("paladin")
-	item_touch.position = Vector2(840, 650)
+	item_touch.position = Vector2(842, 608)
 	arena._input(item_touch)
 	check(arena.combat.cooldowns[0] > 0.0, "toque na habilidade inferior ativa Q")
 	check(arena.player.skill_kind == 0 and arena.player.skill_flash > 0.0, "proteção inicia efeito visual")

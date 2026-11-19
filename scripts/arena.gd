@@ -53,8 +53,8 @@ var hud_view: Node2D
 var game_audio
 var previous_hp := -1
 var previous_match_state := ""
-const ATTACK_CENTER := Vector2(1192, 628)
-const ATTACK_TOUCH_RADIUS := 64.0
+const ATTACK_CENTER := Vector2(1184, 624)
+const ATTACK_TOUCH_RADIUS := 68.0
 
 func _ready() -> void:
 	rng.randomize()

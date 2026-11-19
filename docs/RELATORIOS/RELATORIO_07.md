@@ -42,6 +42,10 @@ Prévia final: `https://lrfsousa.github.io/RagArena/preview-07-swordsman-effects
 
 A imagem de referência seguinte foi preservada em `assets/ui/swordsman/skill_icons_reference.png`. O HUD usa regiões da própria imagem para mostrar ataque, Proteção Divina, Cura e Determinação nos controles do Paladino/Espadachim. Nenhum pixel do original foi alterado. O importador Godot e `release07_smoke.gd` passaram. Prévia: `https://lrfsousa.github.io/RagArena/preview-07-swordsman-icons/` (`gh-pages` commit `256154f`).
 
+O layout mobile foi ajustado conforme a nova referência: os quatro itens de inventário ficam em círculos na faixa superior direita, Q/E/F formam uma disposição diagonal abaixo, e o ataque maior ocupa a ponta inferior direita. Os toques são reconhecidos somente dentro de cada círculo. `release07_smoke.gd` passou, cobrindo posições, espaços vazios e acionamento de item e habilidade.
+
+Prévia dessa disposição: `https://lrfsousa.github.io/RagArena/preview-07-mobile-controls/` (`gh-pages` commit `be3060f`).
+
 A correção foi exportada para Web e publicada em `https://lrfsousa.github.io/RagArena/preview-07-swordsman-aligned/` (`gh-pages` commit `6ab8cc7`). Ainda é necessária a conferência da sensação de caminhada em celular real.
 
 A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.
