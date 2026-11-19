@@ -53,8 +53,8 @@ var hud_view: Node2D
 var game_audio
 var previous_hp := -1
 var previous_match_state := ""
-const ATTACK_CENTER := Vector2(1140, 570)
-const ATTACK_TOUCH_RADIUS := 72.0
+const ATTACK_CENTER := Vector2(1192, 628)
+const ATTACK_TOUCH_RADIUS := 64.0
 
 func _ready() -> void:
 	rng.randomize()
@@ -313,11 +313,10 @@ func _input(event: InputEvent) -> void:
 				restart_game()
 			elif Rect2(958, 250, 240, 52).has_point(event.position):
 				menu_requested.emit()
-			elif event.position.y >= 65 and event.position.y <= 122 and event.position.x >= 24 and event.position.x < 444:
-				var slot_index := int((event.position.x - 24.0) / 105.0)
-				inventory.use_slot(slot_index)
-			elif event.position.y >= 600 and event.position.y <= 668 and event.position.x >= 730 and event.position.x < 1054 and match_controller.state == "active" and inventory.hp > 0:
-				if combat.use_skill(int((event.position.x - 730.0) / 108.0)):
+			elif hud_view.item_slot_at(event.position) >= 0:
+				inventory.use_slot(hud_view.item_slot_at(event.position))
+			elif hud_view.skill_slot_at(event.position) >= 0 and match_controller.state == "active" and inventory.hp > 0:
+				if combat.use_skill(hud_view.skill_slot_at(event.position)):
 					game_audio.play_cue("skill")
 			elif event.position.x < 400 and joystick_touch < 0:
 				joystick_touch = event.index

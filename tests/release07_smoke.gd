@@ -41,8 +41,22 @@ func run_tests() -> void:
 	arena.player.visual_dead = true
 	arena.player._physics_process(0.016)
 	check(arena.player.visual_sprite.frame_coords.y == 4, "eliminação mostra animação")
-	check(not Rect2(730, 600, 98, 68).has_point(arena.ATTACK_CENTER) and arena.ATTACK_CENTER.distance_to(Vector2(1034, 634)) > arena.ATTACK_TOUCH_RADIUS, "ataque separado das habilidades")
+	check(arena.hud_view.skill_slot_at(arena.ATTACK_CENTER) == -1 and arena.ATTACK_CENTER.distance_to(Vector2(1104, 658)) > arena.ATTACK_TOUCH_RADIUS, "ataque separado das habilidades")
 	check(arena.ATTACK_CENTER.distance_to(Vector2(130, 570)) > arena.ATTACK_TOUCH_RADIUS + 73.0, "ataque separado do joystick")
+	check(arena.hud_view.item_slot_at(Vector2(805, 500)) == 0 and arena.hud_view.item_slot_at(Vector2(1090, 500)) == 3 and arena.hud_view.item_slot_at(Vector2(50, 80)) == -1, "itens acima das habilidades no canto direito")
+	check(arena.hud_view.skill_slot_at(Vector2(830, 650)) == 0 and arena.hud_view.skill_slot_at(Vector2(1025, 650)) == 2, "habilidades na faixa inferior direita")
+	arena.inventory.pickup_item("health_potion")
+	arena.inventory.hp = 40
+	var item_touch := InputEventScreenTouch.new()
+	item_touch.index = 5
+	item_touch.pressed = true
+	item_touch.position = Vector2(830, 520)
+	arena._input(item_touch)
+	check(arena.inventory.hp > 40 and arena.inventory.slots[0]["id"] == "", "toque no item usa poção")
+	arena.combat.select_class("paladin")
+	item_touch.position = Vector2(840, 650)
+	arena._input(item_touch)
+	check(arena.combat.cooldowns[0] > 0.0, "toque na habilidade inferior ativa Q")
 	check("HP" in arena.hud.text and "Partida" in arena.status_hud.text, "HUD mostra vida e cronômetro")
 	check(arena.hud_layer is CanvasLayer and arena.hud.get_parent() == arena.hud_layer and arena.hud_view.get_parent() == arena.hud_layer, "HUD independente das coordenadas do mundo")
 	check(arena.camera is Camera2D and arena.camera.get_parent() == arena.player and arena.camera.zoom == Vector2(0.85, 0.85), "câmera afastada acompanha personagem")
@@ -50,7 +64,7 @@ func run_tests() -> void:
 	var touch := InputEventScreenTouch.new()
 	touch.index = 4
 	touch.pressed = true
-	touch.position = Vector2(1140, 570)
+	touch.position = arena.ATTACK_CENTER
 	arena.player.position = Vector2(1800, 1000)
 	arena._input(touch)
 	check(arena.attack_held, "ataque continua em coordenadas de tela após mover no mundo")
@@ -58,6 +72,7 @@ func run_tests() -> void:
 	arena._input(touch)
 	check(arena.game_audio.streams.size() == 4 and arena.game_audio.streams["pickup"].data.size() > 0, "efeitos de áudio disponíveis")
 	arena.queue_free()
+	await process_frame
 	if failures == 0:
 		print("RELEASE 0.7: todos os testes passaram")
 	quit(0 if failures == 0 else 1)

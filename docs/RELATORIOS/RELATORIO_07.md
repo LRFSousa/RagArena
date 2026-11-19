@@ -30,6 +30,10 @@ Os nove conjuntos de testes passaram após a integração. O código foi publica
 
 Após o relato de salto na caminhada, a medição dos pixels mostrou que a figura se deslocava horizontalmente dentro das seis células de cada folha. Foram adicionados deslocamentos de exibição por quadro e direção, preservando os PNGs originais. O teste `release07_swordsman.gd` verifica que o centro visível dos 24 quadros permanece a até 5 px do centro da célula; ele e `release07_smoke.gd` passaram no Godot 4.7.2 em modo headless.
 
+O HUD foi reorganizado conforme a referência mobile: itens com ícones em uma faixa acima das habilidades Q/E/F no canto inferior direito, com o ataque ao lado. As regiões de toque usam os mesmos retângulos desenhados. O teste `release07_smoke.gd` cobre posição, separação dos botões e acionamento de poção e habilidade por toque.
+
+A prévia Web foi publicada em `https://lrfsousa.github.io/RagArena/preview-07-mobile-hud/` (`gh-pages` commit `64b3979`). O navegador integrado abriu uma partida em paisagem, mostrou os quatro espaços de itens acima das habilidades e não registrou erros no console. A ergonomia em celular real continua pendente.
+
 A correção foi exportada para Web e publicada em `https://lrfsousa.github.io/RagArena/preview-07-swordsman-aligned/` (`gh-pages` commit `6ab8cc7`). Ainda é necessária a conferência da sensação de caminhada em celular real.
 
 A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.

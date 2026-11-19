@@ -2,6 +2,7 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- HUD da Arena reorganizado: quatro itens de uso rápido com ícones acima das três habilidades no canto inferior direito; ataque permanece separado à direita.
 - Caminhada do Espadachim alinhada quadro a quadro nas quatro direções; corrigido o salto lateral causado pela posição do desenho dentro das células do sprite.
 - Sprites de caminhada do Espadachim fornecidos pelo responsável integrados às quatro direções no Paladino, com seis quadros por direção e escala visual de 25%.
 - Minimapa deslocado para o canto superior direito; botões de depuração removidos da interface jogável.
