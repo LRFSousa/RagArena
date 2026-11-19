@@ -6,6 +6,12 @@ const SWORDSMAN_WALK := {
 	"up": preload("res://assets/characters/swordsman/ragnarena_espachim_walk_up.png"),
 	"down": preload("res://assets/characters/swordsman/ragnarena_espachim_walk_down.png"),
 }
+const SWORDSMAN_FRAME_OFFSET := {
+	"right": [-59, -41, -20, 2, 29, 47],
+	"left": [-50, -36, -16, 9, 29, 46],
+	"up": [-56, -46, -25, -2, 21, 44],
+	"down": [-57, -47, -24, -9, 20, 42],
+}
 
 @export var speed := 260.0
 var move_input := Vector2.ZERO
@@ -31,11 +37,13 @@ func apply_visual_class() -> void:
 		visual_sprite.hframes = 6
 		visual_sprite.vframes = 1
 		visual_sprite.scale = Vector2(0.25, 0.25)
+		visual_sprite.offset = Vector2(SWORDSMAN_FRAME_OFFSET[visual_direction][0], 0)
 	else:
 		visual_sprite.texture = load("res://assets/pixel/%s.png" % visual_class)
 		visual_sprite.hframes = 4
 		visual_sprite.vframes = 5
 		visual_sprite.scale = Vector2.ONE
+		visual_sprite.offset = Vector2.ZERO
 	visual_sprite.frame = 0
 
 func facing_direction() -> String:
@@ -72,6 +80,7 @@ func _physics_process(delta: float) -> void:
 			visual_direction = next_direction
 			visual_sprite.texture = SWORDSMAN_WALK[visual_direction]
 		visual_sprite.frame = 0 if visual_dead or damage_flash > 0.0 or move_input.length_squared() <= 0.01 else 2 if attack_visual > 0.0 else int(visual_time * 8.0) % 6
+		visual_sprite.offset.x = SWORDSMAN_FRAME_OFFSET[visual_direction][visual_sprite.frame]
 		visual_sprite.modulate = Color(0.55, 0.55, 0.55, 0.7) if visual_dead else Color("ffaaa4") if damage_flash > 0.0 else Color("fff0c0") if attack_visual > 0.0 else Color.WHITE
 		visual_sprite.flip_h = false
 	else:

@@ -15,12 +15,16 @@ func check(value: bool, label: String) -> void:
 		push_error("FAIL: " + label)
 
 func run_tests() -> void:
+	var player = PlayerScene.instantiate()
 	for direction in DIRECTIONS:
 		var path := "res://assets/characters/swordsman/ragnarena_espachim_walk_%s.png" % direction
 		var texture: Texture2D = load(path)
 		check(texture != null and texture.get_size() == Vector2(1536, 256), "%s: seis quadros de 256 px" % direction)
 		check(texture.get_image().get_pixel(0, 0).a == 0.0, "%s: transparência preservada" % direction)
-	var player = PlayerScene.instantiate()
+		for frame in range(6):
+			var rect := texture.get_image().get_region(Rect2i(frame * 256, 0, 256, 256)).get_used_rect()
+			var center_x: float = rect.position.x + rect.size.x / 2.0 + player.SWORDSMAN_FRAME_OFFSET[direction][frame]
+			check(absf(center_x - 128.0) < 5.0, "%s quadro %d: personagem centralizado" % [direction, frame])
 	root.add_child(player)
 	await process_frame
 	check(player.visual_class == "paladin" and player.visual_sprite.hframes == 6 and player.visual_sprite.vframes == 1 and player.visual_sprite.scale == Vector2(0.25, 0.25), "Espadachim substitui visual provisório do Paladino")

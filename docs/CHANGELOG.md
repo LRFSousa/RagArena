@@ -2,6 +2,7 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- Caminhada do Espadachim alinhada quadro a quadro nas quatro direções; corrigido o salto lateral causado pela posição do desenho dentro das células do sprite.
 - Sprites de caminhada do Espadachim fornecidos pelo responsável integrados às quatro direções no Paladino, com seis quadros por direção e escala visual de 25%.
 - Minimapa deslocado para o canto superior direito; botões de depuração removidos da interface jogável.
 - Ataque básico em linha percorre dois quadros e pode acertar dois alvos alinhados no mesmo golpe; paredes interrompem o ataque.
