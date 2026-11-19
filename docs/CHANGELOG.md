@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3 — preparação da versão Web
+
+- Preset Web sem threads e guia para hospedagem estática/GitHub Pages.
+- Exportação HTML5 concluída; WebAssembly validado; teste visual em navegador pendente.
+
 ## 0.1.2 — APK de teste Android
 
 - Preset de exportação Android e importação ETC2/ASTC configurados.

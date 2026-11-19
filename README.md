@@ -35,3 +35,7 @@ O alvo é Android em paisagem, mas ainda falta uma validação manual em aparelh
 ## Teste no Android
 
 O APK de depuração e as instruções de instalação estão descritos em `docs/ANDROID_TESTE.md`.
+
+## Teste no navegador
+
+O preset Web está configurado; veja `docs/WEB_TESTE.md` para exportação e hospedagem.
