@@ -2,6 +2,7 @@
 
 ## Release 0.7
 
+- Confirmar em aparelho real se o Espadachim em 25% de escala está legível no zoom atual. A associação com Paladino é provisória; faltam arte própria de parado, ataque, dano e morte e decisão sobre o nome/classe final.
 - Validar em celular o tamanho e a posição do minimapa no canto superior direito e a leitura do alcance de dois quadros. Ajustar os 152 px provisórios se a escala de arte mudar.
 - Validar em celular real se o zoom 0,85 mantém personagem, projéteis, itens e minimapa legíveis; comparar com zoom 1,0 e ajustar se necessário.
 - Reavaliar distribuição das 24 caixas, distância entre spawns, quinto spawn e fechamento máximo de 480 unidades após playtest no mapa ampliado.

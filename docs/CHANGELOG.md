@@ -2,6 +2,7 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- Sprites de caminhada do Espadachim fornecidos pelo responsável integrados às quatro direções no Paladino, com seis quadros por direção e escala visual de 25%.
 - Minimapa deslocado para o canto superior direito; botões de depuração removidos da interface jogável.
 - Ataque básico em linha percorre dois quadros e pode acertar dois alvos alinhados no mesmo golpe; paredes interrompem o ataque.
 - Arena de teste ampliada para 2560×1440, com câmera seguindo o personagem em zoom 0,85 e HUD fixo. Spawns foram distribuídos pelo mapa; o total de caixas passou de 12 para 24.

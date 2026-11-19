@@ -2,6 +2,7 @@
 
 ## Implementado
 
+- Pasta de assets do Espadachim criada com os quatro PNGs enviados pelo responsável. Animação de caminhada em direita/esquerda/cima/baixo com seis quadros cada; Paladino usa o visual para esta prova de conceito, sem alterar regras de combate.
 - Minimap movido para o canto superior direito; interface jogável não mostra botões de depuração. O teclado de teste continua disponível em cenas de desenvolvimento.
 - Golpe básico em linha alcança provisoriamente 152 unidades e percorre dois quadros, atingindo alvos alinhados uma vez cada. Paredes de pedra e fechamento barram o golpe.
 - Etapa seguinte: mundo de 2560×1440 unidades, câmera seguindo o jogador com zoom 0,85 e limites de mapa, 24 caixas, spawns afastados e cobertura perto dos quatro cantos. O HUD continua fixo em coordenadas de tela.
@@ -23,6 +24,8 @@ Após adicionar câmera e ampliar o mapa, as sete suítes passaram novamente com
 
 Após a correção do alcance e minimapa, passaram também `tests/release07_attack_range.gd` e as sete suítes anteriores, todas sem erros nos logs. O teste novo cobre duas caixas, dois oponentes, terceiro quadro fora de alcance e parede entre os alvos.
 
+Na etapa dos sprites do Espadachim, o Godot importou os quatro PNGs sem erro. `tests/release07_swordsman.gd` passou para tamanho, transparência, quadro, escala, quatro direções, parada e preservação das outras classes. `tests/release07_smoke.gd` também passou após a integração.
+
 A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.
 
 Para evitar cache da prévia anterior, a mesma revisão também foi publicada em `https://lrfsousa.github.io/RagArena/preview-07-range2/` (`gh-pages` commit `3b99b78`). O fluxo do Pages concluiu com sucesso e a página e o pacote responderam HTTP 200.
@@ -35,3 +38,4 @@ A prévia foi publicada em `https://lrfsousa.github.io/RagArena/preview-07/` sem
 - Testes headless não validam aparência final, desempenho, ergonomia nem áudio audível em Android. Uma tentativa de captura de viewport headless falhou porque esse modo usa renderizador sem textura de tela; isso não indica erro de execução do jogo.
 - A release não está marcada como concluída até teste em aparelhos reais e resolução dos itens pendentes.
 - O zoom 0,85, os novos spawns, 24 caixas e o fechamento de 480 unidades são provisórios. A câmera de espectador ainda não acompanha sobreviventes após eliminação.
+- Ainda não existem sprites específicos do Espadachim para ataque, dano e morte; a caminhada usa coloração provisória nesses estados. O teste automatizado não substitui a conferência visual no celular.

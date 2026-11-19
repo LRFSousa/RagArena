@@ -13,6 +13,10 @@ Fantasia original em pixel art top-down 3/4. Silhuetas simples, contorno azul es
 | Assassino | Capuz baixo e lâmina curta | verde escuro, carvão, vermelho |
 | Arqueiro | Boné/chapéu baixo e arco | couro, verde claro, areia |
 
+### Teste do Espadachim
+
+As quatro folhas de caminhada fornecidas pelo responsável ficam em `assets/characters/swordsman/`, com nomes originais preservados. Cada PNG transparente tem 1536×256 px: seis quadros de 256×256. No jogo, são renderizados a 25% para caber na escala atual. Nesta etapa, o visual do Espadachim está associado provisoriamente à classe jogável **Paladino**; atributos, habilidades e nome da classe não mudaram. Parado usa o primeiro quadro da direção atual. Enquanto não houver folhas próprias de ataque, dano e morte, esses estados usam a mesma arte com mudança de cor. Mago, Assassino e Arqueiro mantêm seus atlas provisórios.
+
 Cada atlas tem quatro colunas de quadros e cinco linhas: parado, caminhada, ataque, dano e morte. O script `tools/generate_art.gd` é a fonte reproduzível dos PNGs. As poses e o acabamento são provisórios; movimento, tamanho e contraste precisam de validação em aparelho real.
 
 ## Interface

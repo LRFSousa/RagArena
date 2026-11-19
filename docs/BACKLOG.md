@@ -105,6 +105,8 @@
 
 ## Release 0.7 — Arte, animação e interface mobile
 **Objetivo:** substituir os placeholders sem comprometer a legibilidade.
+- [x] Criar pasta `assets/characters/swordsman/` e integrar as quatro animações de caminhada fornecidas pelo responsável como teste visual da classe Paladino.
+- [ ] Receber ou criar folhas de ataque, dano, morte e parado para o Espadachim; decidir se ele substitui definitivamente o Paladino ou será uma classe distinta.
 - [x] Prototipar mapa maior que a tela, câmera seguindo o personagem e HUD fixo em `CanvasLayer`.
 - [ ] Comparar zoom e validar legibilidade da nova escala em celular.
 - [x] Separar o HUD em `CanvasLayer`, mantendo o mapa e os controles atuais como primeira etapa do protótipo.

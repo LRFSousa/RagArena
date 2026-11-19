@@ -29,7 +29,9 @@ func run_tests() -> void:
 	check(arena.player.visual_sprite != null and arena.player.visual_sprite.texture != null, "personagem renderiza atlas")
 	for id in ["mage", "assassin", "archer", "paladin"]:
 		arena.player.set_visual_class(id)
-		check(arena.player.visual_class == id and arena.player.visual_sprite.texture.resource_path.ends_with("/%s.png" % id), "troca visual para %s" % id)
+		var expected := "ragnarena_espachim_walk_right.png" if id == "paladin" else "%s.png" % id
+		check(arena.player.visual_class == id and arena.player.visual_sprite.texture.resource_path.ends_with(expected), "troca visual para %s" % id)
+	arena.player.set_visual_class("mage")
 	arena.player.show_attack()
 	arena.player._physics_process(0.016)
 	check(arena.player.visual_sprite.frame_coords.y == 2, "ataque mostra animação")
