@@ -62,6 +62,8 @@ func _draw() -> void:
 		draw_rect(box, Color("284758"))
 		draw_rect(box, Color("a5c6c7"), false, 2)
 		draw_string(ThemeDB.fallback_font, box.position + Vector2(12, 32), ["Q", "E", "F"][i], HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color("f3f0df"))
+		if arena.combat != null and arena.combat.class_id == "paladin":
+			draw_string(ThemeDB.fallback_font, box.position + Vector2(38, 30), ["Proteção", "Cura", "Determ."][i], HORIZONTAL_ALIGNMENT_LEFT, 48, 11, Color("ffe6aa"))
 		if arena.combat != null:
 			draw_string(ThemeDB.fallback_font, box.position + Vector2(9, 59), "%.0fs" % arena.combat.cooldowns[i] if arena.combat.cooldowns[i] > 0.0 else "PRONTO", HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("f0d69c"))
 	var base: Vector2 = arena.joystick_origin if arena.joystick_touch >= 0 else Vector2(130, 570)

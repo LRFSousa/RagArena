@@ -34,6 +34,12 @@ O HUD foi reorganizado conforme a referência mobile: itens com ícones em uma f
 
 A prévia Web foi publicada em `https://lrfsousa.github.io/RagArena/preview-07-mobile-hud/` (`gh-pages` commit `64b3979`). O navegador integrado abriu uma partida em paisagem, mostrou os quatro espaços de itens acima das habilidades e não registrou erros no console. A ergonomia em celular real continua pendente.
 
+Os efeitos do Espadachim foram desenhados pelo Godot sobre o personagem: arco luminoso no ataque básico, escudo dourado persistente enquanto há barreira, anel e partículas verdes na Cura e chamas douradas enquanto Determinação está ativa. Para corresponder à ordem solicitada, Q ativa Proteção Divina (barreira), E ativa Cura e F ativa Determinação (resistência a empurrão). Os testes das releases 0.3 e 0.7 passaram, incluindo absorção de dano e disparo dos efeitos. A sensação visual em celular ainda requer conferência.
+
+A primeira conferência no navegador revelou que caixas podiam cobrir o personagem e os efeitos. A ordem de desenho foi corrigida e incluída no teste de sprites. A prévia final desta etapa usa um endereço separado para evitar cache do pacote anterior.
+
+Prévia final: `https://lrfsousa.github.io/RagArena/preview-07-swordsman-effects/` (`gh-pages` commit `fdc4ce3`).
+
 A correção foi exportada para Web e publicada em `https://lrfsousa.github.io/RagArena/preview-07-swordsman-aligned/` (`gh-pages` commit `6ab8cc7`). Ainda é necessária a conferência da sensação de caminhada em celular real.
 
 A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.

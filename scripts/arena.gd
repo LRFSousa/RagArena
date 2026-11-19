@@ -238,6 +238,8 @@ func _physics_process(delta: float) -> void:
 		attack_timer = attack_interval if attacked_crate or test_level > 0 else float(combat.stats()["interval"])
 	inventory.advance(delta)
 	combat.advance(delta)
+	player.protection_active = combat.class_id == "paladin" and combat.barrier > 0
+	player.determination_active = combat.class_id == "paladin" and combat.endure > 0.0
 	match_controller.advance(delta)
 	collect_ground_items()
 	update_feedback()
@@ -375,4 +377,11 @@ func _draw() -> void:
 		draw_circle(spawn, 63, Color(0.29, 0.52, 0.53, 0.3))
 		draw_arc(spawn, 63, 0, TAU, 48, Color("6ca69c"), 2)
 	if attack_flash > 0.0 and player != null:
-		draw_line(player.position + player.facing * 24, attack_end, Color("ffe0a0"), 12, true)
+		if combat.class_id == "paladin":
+			var angle: float = player.facing.angle()
+			var alpha: float = attack_flash / 0.12
+			var center: Vector2 = player.position + player.facing * 68.0
+			draw_arc(center, 52, angle - 1.05, angle + 1.05, 28, Color(1.0, 0.72, 0.19, alpha * 0.55), 18.0, true)
+			draw_arc(center, 52, angle - 1.05, angle + 1.05, 28, Color(1.0, 0.97, 0.71, alpha), 5.0, true)
+		else:
+			draw_line(player.position + player.facing * 24, attack_end, Color("ffe0a0"), 12, true)

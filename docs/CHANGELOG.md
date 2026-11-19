@@ -2,6 +2,8 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- Espadachim/Paladino ganhou arco luminoso no golpe básico, escudo dourado na Proteção Divina (Q), aura verde na Cura (E) e energia dourada na Determinação (F). Q agora absorve dano, E cura e F mantém a resistência a empurrão; as três habilidades seguem suas recargas existentes.
+- Personagem foi colocado acima das caixas na ordem de desenho para manter os efeitos visíveis durante o combate.
 - HUD da Arena reorganizado: quatro itens de uso rápido com ícones acima das três habilidades no canto inferior direito; ataque permanece separado à direita.
 - Caminhada do Espadachim alinhada quadro a quadro nas quatro direções; corrigido o salto lateral causado pela posição do desenho dentro das células do sprite.
 - Sprites de caminhada do Espadachim fornecidos pelo responsável integrados às quatro direções no Paladino, com seis quadros por direção e escala visual de 25%.

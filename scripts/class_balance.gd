@@ -14,6 +14,8 @@ class_name ClassBalance
 @export var skill_bonus_per_milestone := 0.1
 @export var paladin_ranged_reduction := 0.3
 @export var paladin_heal_fraction := 0.25
+@export var paladin_protection_capacity := 35
+@export var paladin_protection_duration := 5.0
 @export var paladin_endure_duration := 5.0
 @export var mage_freeze_duration := 1.5
 @export var mage_barrier_capacity := 35

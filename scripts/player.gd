@@ -23,6 +23,10 @@ var visual_dead := false
 var visual_time := 0.0
 var visual_sprite: Sprite2D
 var visual_direction := "right"
+var skill_flash := 0.0
+var skill_kind := -1
+var protection_active := false
+var determination_active := false
 
 func set_visual_class(id: String) -> void:
 	if id == visual_class:
@@ -33,12 +37,14 @@ func set_visual_class(id: String) -> void:
 
 func apply_visual_class() -> void:
 	if visual_class == "paladin":
+		visual_sprite.z_index = 0
 		visual_sprite.texture = SWORDSMAN_WALK[visual_direction]
 		visual_sprite.hframes = 6
 		visual_sprite.vframes = 1
 		visual_sprite.scale = Vector2(0.25, 0.25)
 		visual_sprite.offset = Vector2(SWORDSMAN_FRAME_OFFSET[visual_direction][0], 0)
 	else:
+		visual_sprite.z_index = 0
 		visual_sprite.texture = load("res://assets/pixel/%s.png" % visual_class)
 		visual_sprite.hframes = 4
 		visual_sprite.vframes = 5
@@ -58,9 +64,15 @@ func show_damage() -> void:
 	damage_flash = 0.35
 	queue_redraw()
 
+func show_skill(index: int) -> void:
+	skill_kind = index
+	skill_flash = 0.65
+	queue_redraw()
+
 func _ready() -> void:
 	collision_layer = 1
 	collision_mask = 2
+	z_index = 2
 	visual_sprite = Sprite2D.new()
 	visual_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	add_child(visual_sprite)
@@ -69,6 +81,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	damage_flash = maxf(0.0, damage_flash - delta)
 	attack_visual = maxf(0.0, attack_visual - delta)
+	skill_flash = maxf(0.0, skill_flash - delta)
 	visual_time += delta
 	velocity = move_input.normalized() * speed
 	move_and_slide()
@@ -93,6 +106,25 @@ func _physics_process(delta: float) -> void:
 func _draw() -> void:
 	if visual_class != "paladin":
 		draw_ellipse_shadow()
+		return
+	var pulse := 0.65 + 0.2 * sin(visual_time * 11.0)
+	if protection_active or (skill_kind == 0 and skill_flash > 0.0):
+		draw_arc(Vector2(0, -7), 38, -PI * 0.85, PI * 0.85, 32, Color(1.0, 0.78, 0.25, pulse), 4.0)
+		draw_colored_polygon(PackedVector2Array([Vector2(0, -29), Vector2(22, -20), Vector2(19, 12), Vector2(0, 30), Vector2(-19, 12), Vector2(-22, -20)]), Color(1.0, 0.76, 0.12, 0.22))
+		draw_arc(Vector2(0, -3), 25, 0, TAU, 24, Color("ffe49b"), 2.0)
+	if skill_kind == 1 and skill_flash > 0.0:
+		var strength := skill_flash / 0.65
+		draw_arc(Vector2(0, 18), 22 + (1.0 - strength) * 25, 0, TAU, 32, Color(0.33, 1.0, 0.47, strength * 0.85), 4.0)
+		for i in range(6):
+			var p := Vector2(-28 + i * 11, 20 - fmod(visual_time * 80.0 + i * 17.0, 65.0))
+			draw_line(p + Vector2(-5, 0), p + Vector2(5, 0), Color(0.65, 1.0, 0.65, strength), 3.0)
+			draw_line(p + Vector2(0, -5), p + Vector2(0, 5), Color(0.65, 1.0, 0.65, strength), 3.0)
+	if determination_active or (skill_kind == 2 and skill_flash > 0.0):
+		draw_arc(Vector2(0, 15), 28 + pulse * 6.0, PI, TAU, 20, Color(1.0, 0.7, 0.15, pulse), 4.0)
+		for i in range(7):
+			var x := -27.0 + i * 9.0
+			var height := 16.0 + 13.0 * (0.5 + 0.5 * sin(visual_time * 13.0 + i * 1.7))
+			draw_line(Vector2(x, 27), Vector2(x + 3, 27 - height), Color(1.0, 0.68, 0.12, pulse), 3.0)
 
 func draw_ellipse_shadow() -> void:
 	draw_circle(Vector2(0, 16), 20, Color("13232a88"))

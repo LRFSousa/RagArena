@@ -25,6 +25,8 @@ Prévia com o salto entre quadros corrigido: https://lrfsousa.github.io/RagArena
 
 Prévia do HUD mobile com itens acima das habilidades no canto inferior direito: https://lrfsousa.github.io/RagArena/preview-07-mobile-hud/. Abra em paisagem, crie ou selecione um personagem Paladino e entre na Arena.
 
+Prévia dos efeitos do Espadachim: https://lrfsousa.github.io/RagArena/preview-07-swordsman-effects/. Selecione Paladino; use o ataque básico e os botões Q (Proteção Divina), E (Cura) e F (Determinação).
+
 Os arquivos exportados podem ser colocados na raiz de um branch `gh-pages`, junto com `.nojekyll`. Depois, em **Settings → Pages**, escolha esse branch como origem. O endereço público é `https://lrfsousa.github.io/RagArena/`.
 
 O repositório `LRFSousa/RagArena` foi tornado público por autorização do responsável em 19/11/2026. O Pages usa a branch `gh-pages` e está disponível em https://lrfsousa.github.io/RagArena/.

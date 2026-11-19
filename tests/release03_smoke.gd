@@ -64,9 +64,14 @@ func run_tests() -> void:
 	combat.select_class("paladin")
 	combat.take_player_hit(20, true)
 	check(arena.inventory.hp == combat.max_hp() - roundi((20 - int(combat.stats()["defense"])) * (1.0 - data.paladin_ranged_reduction)), "paladino reduz dano à distância")
-	check(combat.use_skill(0) and arena.inventory.hp > 0, "paladino usa autocura")
+	check(combat.use_skill(0) and combat.barrier > 0, "paladino ativa proteção")
+	var protected_hp: int = arena.inventory.hp
+	combat.take_player_hit(10, false)
+	check(arena.inventory.hp == protected_hp and combat.barrier < data.paladin_protection_capacity, "proteção absorve dano")
 	check(not combat.use_skill(0), "recarga impede spam")
-	check(combat.use_skill(1) and combat.endure > 0.0, "paladino ativa determinação")
+	check(combat.use_skill(1) and arena.inventory.hp > 0 and arena.player.skill_kind == 1, "paladino usa autocura com aura verde")
+	check(combat.use_skill(2) and combat.endure > 0.0, "paladino ativa determinação")
+	check(arena.player.skill_kind == 2 and arena.player.skill_flash > 0.0, "determinação inicia aura dourada")
 	var before_push: Vector2 = arena.player.position
 	combat.take_player_hit(0, false, true)
 	check(arena.player.position == before_push, "determinação impede empurrão")

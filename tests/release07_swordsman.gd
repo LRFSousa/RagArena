@@ -28,6 +28,7 @@ func run_tests() -> void:
 	root.add_child(player)
 	await process_frame
 	check(player.visual_class == "paladin" and player.visual_sprite.hframes == 6 and player.visual_sprite.vframes == 1 and player.visual_sprite.scale == Vector2(0.25, 0.25), "Espadachim substitui visual provisório do Paladino")
+	check(player.z_index > 0 and player.visual_sprite.z_index == 0, "personagem e efeitos aparecem sobre as caixas")
 	for direction in DIRECTIONS:
 		var vector := Vector2.RIGHT if direction == "right" else Vector2.LEFT if direction == "left" else Vector2.UP if direction == "up" else Vector2.DOWN
 		player.facing = vector

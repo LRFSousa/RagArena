@@ -57,6 +57,7 @@ func run_tests() -> void:
 	item_touch.position = Vector2(840, 650)
 	arena._input(item_touch)
 	check(arena.combat.cooldowns[0] > 0.0, "toque na habilidade inferior ativa Q")
+	check(arena.player.skill_kind == 0 and arena.player.skill_flash > 0.0, "proteção inicia efeito visual")
 	check("HP" in arena.hud.text and "Partida" in arena.status_hud.text, "HUD mostra vida e cronômetro")
 	check(arena.hud_layer is CanvasLayer and arena.hud.get_parent() == arena.hud_layer and arena.hud_view.get_parent() == arena.hud_layer, "HUD independente das coordenadas do mundo")
 	check(arena.camera is Camera2D and arena.camera.get_parent() == arena.player and arena.camera.zoom == Vector2(0.85, 0.85), "câmera afastada acompanha personagem")

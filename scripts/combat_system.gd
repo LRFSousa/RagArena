@@ -177,9 +177,11 @@ func use_skill(index: int) -> bool:
 	match class_id:
 		"paladin":
 			match index:
-				0: inventory.hp = mini(max_hp(), inventory.hp + roundi(max_hp() * settings.paladin_heal_fraction * multiplier))
-				1: endure = settings.paladin_endure_duration * multiplier
-				2: hit_in_line(aim, 100.0, roundi(24 * multiplier), "")
+				0:
+					barrier = roundi(settings.paladin_protection_capacity * multiplier)
+					barrier_time = settings.paladin_protection_duration * multiplier
+				1: inventory.hp = mini(max_hp(), inventory.hp + roundi(max_hp() * settings.paladin_heal_fraction * multiplier))
+				2: endure = settings.paladin_endure_duration * multiplier
 		"mage":
 			match index:
 				0: launch(aim, roundi(8 * multiplier), 330.0, "freeze")
@@ -204,4 +206,6 @@ func use_skill(index: int) -> bool:
 					trap.position = player.position + aim * 65.0
 					arena.add_child(trap)
 	cooldowns[index] = float(stats()["cooldowns"][index])
+	if class_id == "paladin" and player.has_method("show_skill"):
+		player.show_skill(index)
 	return true
