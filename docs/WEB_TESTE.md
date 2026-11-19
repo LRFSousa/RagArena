@@ -23,4 +23,4 @@ O repositório `LRFSousa/RagArena` foi tornado público por autorização do res
 
 O perfil local usa os dados do navegador. Abrir em outro navegador ou limpar os dados cria um perfil separado.
 
-A exportação, a integridade do WebAssembly, o carregamento público dos arquivos e a renderização da arena no navegador integrado foram verificados na release anterior. A entrada e o menu da 0.5 passaram em testes headless; validação visual no navegador ainda está pendente. Ainda falta validar controles por toque e desempenho em celular real em paisagem.
+A exportação, a integridade do WebAssembly e o carregamento público dos arquivos foram verificados. A tela de criação do personagem da 0.5 renderizou no navegador integrado; o fluxo completo passou em testes headless. Ainda falta validar toda a navegação no navegador e os controles por toque e desempenho em celular real em paisagem.

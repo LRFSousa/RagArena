@@ -28,7 +28,7 @@ godot --headless --path . --script res://tests/release05_smoke.gd
 godot --headless --path . --quit-after 60
 ```
 
-As cinco suítes passaram sem erros. A 0.5 cobre nome válido/inválido, permanência do nome, ID, dois presets da mesma classe, edição, seleção, exclusão, persistência após nova instância, histórico, menu, classe selecionada, bloqueio de mudança durante a partida, reinício sem itens/XP e retorno ao menu. As suítes antigas foram adaptadas para abrir `arena.tscn` diretamente, pois `main.tscn` agora contém o fluxo de entrada.
+As cinco suítes passaram sem erros. A 0.5 cobre nome válido/inválido, permanência do nome, ID, dois presets da mesma classe, edição, seleção, exclusão, persistência após nova instância, histórico, menu, classe selecionada, bloqueio de mudança durante a partida, reinício sem itens/XP e retorno ao menu. As suítes antigas foram adaptadas para abrir `arena.tscn` diretamente, pois `main.tscn` agora contém o fluxo de entrada. A tela de criação do personagem também foi inspecionada visualmente no navegador integrado após publicação.
 
 ## Validação manual
 
