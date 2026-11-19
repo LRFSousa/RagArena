@@ -25,6 +25,8 @@ Após a correção do alcance e minimapa, passaram também `tests/release07_atta
 
 A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.
 
+Para evitar cache da prévia anterior, a mesma revisão também foi publicada em `https://lrfsousa.github.io/RagArena/preview-07-range2/` (`gh-pages` commit `3b99b78`). O fluxo do Pages concluiu com sucesso e a página e o pacote responderam HTTP 200.
+
 A prévia foi publicada em `https://lrfsousa.github.io/RagArena/preview-07/` sem substituir a raiz estável. O fluxo `pages build and deployment` do commit `fd55d65` concluiu com sucesso. Página, `.pck` e `.wasm` responderam HTTP 200. O navegador integrado exibiu a tela de entrada local e não registrou erros de console; a navegação completa e o jogo em celular real ainda dependem de teste manual.
 
 ## Limites e problemas
