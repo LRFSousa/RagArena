@@ -370,7 +370,7 @@ func plan_auto_path() -> void:
 	grid.update()
 	for body in get_children():
 		if body is StaticBody2D and body.collision_layer & 2 and body.has_method("take_crate_damage"):
-			var blocked := Rect2(body.global_position - body.size * 0.5, body.size).grow(32.0)
+			var blocked := Rect2(body.global_position - body.size * 0.5, body.size).grow(21.0)
 			for y in range(maxi(0, floori(blocked.position.y / AUTO_GRID_CELL)), mini(grid.region.end.y, ceili(blocked.end.y / AUTO_GRID_CELL))):
 				for x in range(maxi(0, floori(blocked.position.x / AUTO_GRID_CELL)), mini(grid.region.end.x, ceili(blocked.end.x / AUTO_GRID_CELL))):
 					grid.set_point_solid(Vector2i(x, y))

@@ -19,6 +19,20 @@ func run_tests() -> void:
 	var arena = ArenaScene.instantiate()
 	root.add_child(arena)
 	await physics_frame
+	var opening_crate: StaticBody2D
+	for child in arena.get_children():
+		if child is StaticBody2D and child.destructible and child.position == Vector2(410, 176):
+			opening_crate = child
+			break
+	arena.selected_target = opening_crate
+	arena.target_attack_pending = true
+	for i in range(600):
+		await physics_frame
+		if opening_crate.hp < opening_crate.max_hp:
+			break
+	check(opening_crate.hp < opening_crate.max_hp, "caixa inicial atrás da quina é alcançada")
+	arena.selected_target = null
+	arena.target_attack_pending = false
 	arena.player.position = Vector2(1527, 600)
 	arena.player.facing = Vector2.RIGHT
 	var close_crate = CrateScene.instantiate()
