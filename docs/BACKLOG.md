@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Status:** release 0.1 implementada e validada em modo headless; validação manual em Android pendente.  
+**Status:** releases 0.1 e 0.2 implementadas e validadas em modo headless; validação manual da 0.2 em celular pendente.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  
 **Princípio:** validar gameplay com formas geométricas antes de sprites e interface final.
 
@@ -27,19 +27,21 @@
 
 ## Release 0.2 — Progressão, drops e inventário
 **Objetivo:** validar a recompensa por destruir obstáculos e a gestão de itens.
-- [ ] Implementar XP por bloco destruído e evolução automática de nível 1 a 30.
-- [ ] Criar curva de XP configurável: níveis iniciais rápidos, progressão posterior mais lenta; sem exigir nível 30 em toda partida.
-- [ ] Implementar chance inicial de 30% de drop por bloco destruído [Provisório].
-- [ ] Implementar distribuição ponderada de seis itens [pesos pendentes].
-- [ ] Implementar coleta automática e quatro espaços de inventário rápido.
-- [ ] Se inventário cheio, deixar item no chão.
-- [ ] Implementar Poção de Vida (+30% HP máximo), Bônus de Força (+20% dano PvP, 15 s), Botas de Velocidade (+15% velocidade, 12 s), Escudo Protetor (absorve 30 de dano ou dura 15 s), Elixir de Recuperação (+60% HP máximo) e Amuleto de XP (+25% XP, 15 s, ativação automática sem ocupar espaço).
-- [ ] Implementar uso manual dos cinco itens armazenáveis e intervalo global provisório de 2 s.
-- [ ] Implementar empilhamento inicial de até três poções iguais por slot; buffs ocupam um slot por unidade [Provisório].
-- [ ] Impedir cura acima do HP máximo; buffs iguais não acumulam, nova coleta renova duração.
-- [ ] Exibir quantidade e duração dos efeitos na HUD provisória.
-- [ ] Remover itens no chão após até 20 s [Provisório].
+- [x] Implementar XP por bloco destruído e evolução automática de nível 1 a 30.
+- [x] Criar curva de XP configurável: níveis iniciais rápidos, progressão posterior mais lenta; sem exigir nível 30 em toda partida.
+- [x] Implementar chance inicial de 30% de drop por bloco destruído [Provisório].
+- [x] Implementar distribuição ponderada de seis itens [pesos pendentes].
+- [x] Implementar coleta automática e quatro espaços de inventário rápido.
+- [x] Se inventário cheio, deixar item no chão.
+- [x] Implementar Poção de Vida (+30% HP máximo), Bônus de Força (+20% dano PvP, 15 s), Botas de Velocidade (+15% velocidade, 12 s), Escudo Protetor (absorve 30 de dano ou dura 15 s), Elixir de Recuperação (+60% HP máximo) e Amuleto de XP (+25% XP, 15 s, ativação automática sem ocupar espaço).
+- [x] Implementar uso manual dos cinco itens armazenáveis e intervalo global provisório de 2 s.
+- [x] Implementar empilhamento inicial de até três poções iguais por slot; buffs ocupam um slot por unidade [Provisório].
+- [x] Impedir cura acima do HP máximo; buffs iguais não acumulam, nova coleta renova duração.
+- [x] Exibir quantidade e duração dos efeitos na HUD provisória.
+- [x] Remover itens no chão após até 20 s [Provisório].
 **Aceite:** destruir bloco, ganhar XP, subir nível, coletar e usar itens com efeitos e limites corretos.
+
+**Evidência 0.2:** `tests/release02_smoke.gd` passou para XP, nível máximo, drop, coleta, inventário cheio, empilhamento, cura, cooldown, buffs, escudo, expiração, controles e reinício. Testes da 0.1 seguem passando. Validação manual em celular pendente.
 
 ## Release 0.3 — Classes e combate PvP local
 **Objetivo:** validar diferenças entre as quatro classes antes da rede.
@@ -136,4 +138,3 @@
 - `docs/BACKLOG.md`: releases, critérios de aceite, tarefas e pendências (este conteúdo).
 - `docs/CHANGELOG.md`: alterações implementadas por versão.
 - Em cada solicitação futura ao Codex, exigir atualização desses arquivos Markdown e indicação dos testes executados.
-

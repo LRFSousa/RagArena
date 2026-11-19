@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 — progressão, drops e inventário
+
+- Níveis 1–30 por partida, XP por caixa e curva configurável; fontes futuras de XP PvP preparadas sem inimigos.
+- Drop ponderado de seis itens com chance configurável; coleta automática e expiração de itens no chão.
+- Quatro slots, empilhamento de poções, uso manual, cooldown global e efeitos temporários com renovação sem soma.
+- HP, XP, nível, quantidades e efeitos mostrados na HUD provisória; teclas 1–4 e toque nos slots.
+- Parâmetros iniciais reunidos em `resources/balance.tres` e suíte headless da release 0.2.
+
 ## 0.1.4 — publicação Web
 
 - Repositório `LRFSousa/RagArena` tornado público e Pages ativado na branch `gh-pages`.

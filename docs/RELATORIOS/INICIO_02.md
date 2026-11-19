@@ -1,6 +1,6 @@
 # Início da release 0.2 — preparação
 
-**Estado:** planejamento iniciado após concluir a implementação e os testes headless da release 0.1. Sem código da release 0.2 nesta entrega.
+**Estado:** planejamento inicial concluído; implementação e testes da release 0.2 registrados em `RELATORIO_02.md`.
 
 ## Base disponível
 

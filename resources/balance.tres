@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="GameBalance" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/game_balance.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+max_level = 30
+xp_first_level = 20
+xp_growth = 1.22
+xp_per_crate = 20
+xp_per_pvp_damage = 1.0
+xp_per_elimination = 60
+drop_chance = 0.3
+drop_weights = {"health_potion": 30, "strength": 15, "speed": 15, "shield": 15, "elixir": 10, "xp_amulet": 15}
+ground_item_lifetime = 20.0
+pickup_radius = 38.0
+manual_use_cooldown = 2.0
+inventory_slots = 4
+potion_stack_limit = 3
+max_hp = 100
+base_move_speed = 260.0
+health_potion_fraction = 0.3
+elixir_fraction = 0.6
+strength_bonus = 0.2
+speed_bonus = 0.15
+xp_amulet_bonus = 0.25
+strength_duration = 15.0
+speed_duration = 12.0
+shield_duration = 15.0
+shield_capacity = 30
+xp_amulet_duration = 15.0
