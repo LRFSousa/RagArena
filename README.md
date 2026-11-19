@@ -31,3 +31,7 @@ godot --headless --path . --quit-after 60
 ```
 
 O alvo é Android em paisagem, mas ainda falta uma validação manual em aparelho real.
+
+## Teste no Android
+
+O APK de depuração e as instruções de instalação estão descritos em `docs/ANDROID_TESTE.md`.

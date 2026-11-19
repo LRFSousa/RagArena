@@ -1,7 +1,7 @@
 # Relatório da release 0.1 — Arena e controles
 
 - **Data:** 18/11/2026
-- **Branch / commit / PR:** branch local `main`; commit local preparado nesta etapa; sem PR.
+- **Branch / commit / PR:** branch local `main`; commit inicial `57ac639`; configuração de exportação Android em commit posterior; sem PR.
 - **Escopo entregue:** projeto Godot 4 com cenas `main`, `arena`, `player`, `crate`, `wall`; mapa offline com quatro áreas de spawn de teste, paredes e 12 caixas; personagem geométrico, movimento 360°, joystick virtual, teclado, ataque direcional repetido, colisões, HUD e reinício.
 - **Balanceamento de teste:** caixas com 45 HP; dano exclusivo contra caixas de 15/23/45 conforme nível 1–3/4–7/8–30. Nível de teste, alcance e cadência configuráveis na cena de arena. Sem XP, itens ou PvP nesta release.
 
@@ -52,4 +52,9 @@ Nenhum erro bloqueante conhecido na execução headless. A experiência visual e
 
 Preparar a release 0.2 a partir de `docs/releases/02_MVP_0_2_PROGRESSAO_ITENS.md`. O planejamento inicial consta de `docs/RELATORIOS/INICIO_02.md`; nenhum código da release 0.2 foi implementado durante esta entrega.
 
+
+
+## Complemento de 19/11/2026 — Android
+
+APK de depuração exportado com Godot 4.7.2. Assinatura v2/v3 verificada com `apksigner`, manifesto inspecionado com `aapt` (pacote `com.lrfsousa.ragnarena`, orientação paisagem, API mínima 24). Não havia dispositivo conectado a `adb devices`; teste físico permanece pendente. Ver `docs/ANDROID_TESTE.md`.
 

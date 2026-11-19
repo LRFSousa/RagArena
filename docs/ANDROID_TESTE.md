@@ -1,0 +1,30 @@
+# Teste do RagnArena no Android
+
+## Instalar o APK de depuração
+
+1. Copie `RagnArena-0.1.0-debug.apk` para o celular Android (por USB, nuvem ou outro meio de transferência de arquivos).
+2. No celular, abra o APK pelo gerenciador de arquivos. Se o Android pedir, permita a instalação de apps desta origem para o aplicativo usado para abrir o arquivo.
+3. Instale e abra **RagnArena** com o aparelho em paisagem.
+
+Este APK é apenas para teste da release 0.1. Ele usa uma assinatura de depuração e não é uma versão para loja. Requer Android 7.0 (API 24) ou superior. O pacote é `com.lrfsousa.ragnarena`.
+
+## O que testar
+
+- Arraste o joystick virtual à esquerda e confirme movimento em qualquer direção.
+- Encoste em pedras, caixas e bordas; o personagem deve parar sem atravessar.
+- Aponte para uma caixa movendo-se, pare e segure o botão de ataque à direita. No nível de teste 1, a caixa deve desaparecer após 3 golpes.
+- Observe se a arena, os controles e os textos cabem na tela e se o jogo permanece em paisagem.
+- Feche e abra o app novamente para reiniciar a arena.
+
+O nível de teste 4 ou 8 pode ser configurado no editor Godot, na cena `scenes/arena.tscn`, antes de gerar outro APK. A tecla `R` reinicia a cena somente no desktop; no celular, feche e reabra o aplicativo.
+
+## Gerar outro APK
+
+Instale Godot 4.7.2 e configure Java SDK e Android SDK conforme a [documentação oficial de exportação Android](https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_android.html). Instale os templates de exportação da mesma versão do Godot. O preset `Android` está em `export_presets.cfg`.
+
+```text
+godot --headless --path . --editor --quit
+godot --headless --path . --export-debug Android RagnArena-0.1.0-debug.apk
+```
+
+Para instalar por USB com depuração ativada, execute `adb install -r RagnArena-0.1.0-debug.apk`. Se já houver um app com o mesmo pacote assinado por outra chave, desinstale-o antes de instalar este APK.
