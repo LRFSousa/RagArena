@@ -15,6 +15,8 @@ Sirva a pasta `web_build` por HTTP/HTTPS; abrir `index.html` diretamente como `f
 
 ## GitHub Pages
 
+Prévia isolada da release 0.7 (câmera e mapa ampliado): https://lrfsousa.github.io/RagArena/preview-07/. Abra no celular em paisagem. A página principal continua na versão estável 0.5.2. A prévia usa o mesmo fluxo local de personagem e configuração antes da Arena.
+
 Os arquivos exportados podem ser colocados na raiz de um branch `gh-pages`, junto com `.nojekyll`. Depois, em **Settings → Pages**, escolha esse branch como origem. O endereço público é `https://lrfsousa.github.io/RagArena/`.
 
 O repositório `LRFSousa/RagArena` foi tornado público por autorização do responsável em 19/11/2026. O Pages usa a branch `gh-pages` e está disponível em https://lrfsousa.github.io/RagArena/.

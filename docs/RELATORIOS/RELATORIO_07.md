@@ -19,6 +19,8 @@ Após separar o HUD, as mesmas sete suítes foram executadas novamente e passara
 
 Após adicionar câmera e ampliar o mapa, as sete suítes passaram novamente com código de saída zero e sem `SCRIPT ERROR`/`ERROR` nos logs. A suíte 0.7 verifica câmera, tamanho do mundo, spawn fora da tela e toque de ataque após deslocar o personagem no mundo. A exportação Web do Godot 4.7.2 gerou `index.html`, `index.js`, `index.wasm` e `index.pck`.
 
+A prévia foi publicada em `https://lrfsousa.github.io/RagArena/preview-07/` sem substituir a raiz estável. O fluxo `pages build and deployment` do commit `fd55d65` concluiu com sucesso. Página, `.pck` e `.wasm` responderam HTTP 200. O navegador integrado exibiu a tela de entrada local e não registrou erros de console; a navegação completa e o jogo em celular real ainda dependem de teste manual.
+
 ## Limites e problemas
 
 - Os sprites são provisórios e de baixa complexidade. Ainda faltam efeitos visuais específicos de habilidades, variantes direcionais mais ricas e revisão artística.
