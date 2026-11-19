@@ -169,7 +169,7 @@ func test_slot_controls() -> void:
 	arena.inventory.pickup_item("strength")
 	var touch := InputEventScreenTouch.new()
 	touch.index = 2
-	touch.position = Vector2(60, 90)
+	touch.position = Vector2(824, 465)
 	touch.pressed = true
 	arena._input(touch)
 	check(arena.inventory.effect_remaining("strength") > 0.0 and arena.joystick_touch == -1, "toque no slot usa item sem mover joystick")

@@ -2,6 +2,7 @@
 
 ## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
 
+- Golpe do Paladino agora parte do centro físico e acerta caixas encostadas. Toque ou clique em caixa/oponente seleciona alvo; fora do alcance, o Paladino se aproxima e golpeia ao chegar. O botão de ataque usa o alvo selecionado.
 - Espadachim ampliado visualmente de 25% para 50% do sprite, mantendo a câmera em zoom 1,05 e alinhando os pés ao ponto anterior.
 - Câmera aproximada de zoom 0,85 para 1,05 a pedido do responsável; personagem, alvos e efeitos ficam maiores, com HUD fixo.
 - Controles de itens e habilidades redesenhados em círculos: quatro poções na faixa superior, três habilidades em diagonal e ataque maior no canto inferior direito. As áreas de toque seguem os limites circulares.

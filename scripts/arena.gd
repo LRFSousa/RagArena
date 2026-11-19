@@ -15,6 +15,7 @@ const MatchScript = preload("res://scripts/match_controller.gd")
 const GameAudioScript = preload("res://scripts/game_audio.gd")
 const ArenaHudScript = preload("res://scripts/arena_hud.gd")
 const WORLD_SIZE := Vector2(2560, 1440)
+const AUTO_GRID_CELL := 32
 const CAMERA_ZOOM := Vector2(1.05, 1.05)
 const ARENA := Rect2(52, 52, 2456, 1336)
 const SPAWNS := [Vector2(150, 150), Vector2(2350, 150), Vector2(150, 1290), Vector2(2350, 1290)]
@@ -42,6 +43,12 @@ var attack_held := false
 var attack_timer := 0.0
 var attack_flash := 0.0
 var attack_end := Vector2.ZERO
+var selected_target: Node2D
+var target_attack_pending := false
+var auto_waypoints: Array[Vector2] = []
+var auto_waypoint_index := 0
+var auto_path_target_position := Vector2.ZERO
+var mouse_ui_press := false
 var joystick_touch := -1
 var attack_touch := -1
 var joystick_origin := Vector2.ZERO
@@ -217,6 +224,7 @@ func _physics_process(delta: float) -> void:
 		player.move_input = Vector2.ZERO
 		player.visual_dead = inventory.hp <= 0
 		attack_held = false
+		target_attack_pending = false
 		if match_controller.state == "active":
 			match_controller.advance(delta)
 		update_feedback()
@@ -225,18 +233,35 @@ func _physics_process(delta: float) -> void:
 		return
 	var keys := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var direction: Vector2 = joystick_value if joystick_touch >= 0 else keys
+	if not target_is_available():
+		selected_target = null
+		target_attack_pending = false
+		auto_waypoints.clear()
+	if direction.length_squared() > 0.01:
+		target_attack_pending = false
+		auto_waypoints.clear()
+	elif target_attack_pending and combat.class_id == "paladin" and selected_target != null:
+		if target_in_attack_line():
+			direction = Vector2.ZERO
+		else:
+			direction = auto_approach_direction()
 	player.move_input = direction
 	player.set_visual_class(combat.class_id)
 	player.speed = float(combat.stats()["speed"]) * inventory.movement_speed_multiplier() * combat.speed_multiplier()
 	if direction.length_squared() > 0.01:
 		player.facing = direction.normalized()
 	if attack_touch < 0:
-		attack_held = Input.is_action_pressed("attack")
+		attack_held = Input.is_action_pressed("attack") and not mouse_ui_press
 	attack_timer = maxf(0.0, attack_timer - delta)
 	attack_flash = maxf(0.0, attack_flash - delta)
-	if attack_held and attack_timer <= 0.0:
+	if selected_target != null and (target_attack_pending or attack_held):
+		player.facing = (selected_target.global_position - player.global_position).normalized()
+		if attack_held and combat.class_id == "paladin" and not target_in_attack_line():
+			target_attack_pending = true
+	if (attack_held or target_attack_pending) and attack_timer <= 0.0 and (selected_target == null or target_in_attack_line()):
 		var attacked_crate := perform_attack()
 		attack_timer = attack_interval if attacked_crate or test_level > 0 else float(combat.stats()["interval"])
+		target_attack_pending = false
 	inventory.advance(delta)
 	combat.advance(delta)
 	player.protection_active = combat.class_id == "paladin" and combat.barrier > 0
@@ -256,7 +281,7 @@ func update_feedback() -> void:
 	previous_match_state = match_controller.state
 
 func perform_attack() -> bool:
-	var start: Vector2 = player.position + player.facing * 24.0
+	var start: Vector2 = player.position
 	var end: Vector2 = player.position + player.facing * attack_range
 	var excludes: Array[RID] = [player.get_rid()]
 	var hit_crate := false
@@ -290,6 +315,103 @@ func perform_attack() -> bool:
 		combat.fire_basic()
 	return hit_crate
 
+func target_is_available() -> bool:
+	if not is_instance_valid(selected_target):
+		return false
+	if selected_target is CombatBot:
+		return selected_target.active
+	return selected_target is StaticBody2D and selected_target.destructible and selected_target.hp > 0
+
+func target_in_attack_line() -> bool:
+	if not target_is_available():
+		return false
+	var range_limit: float = attack_range if combat.class_id == "paladin" else float(combat.stats()["range"])
+	return target_visible_from(player.global_position) and player.global_position.distance_to(target_hit_point_from(player.global_position)) <= range_limit
+
+func target_hit_point_from(origin: Vector2) -> Vector2:
+	var query := PhysicsRayQueryParameters2D.create(origin, selected_target.global_position, 2 | 4, [player.get_rid()])
+	var hit := get_world_2d().direct_space_state.intersect_ray(query)
+	return hit["position"] if not hit.is_empty() and hit["collider"] == selected_target else Vector2.INF
+
+func target_visible_from(origin: Vector2) -> bool:
+	return target_hit_point_from(origin) != Vector2.INF
+
+func auto_approach_direction() -> Vector2:
+	if auto_waypoints.is_empty() and target_visible_from(player.global_position) and walk_path_clear_to_target():
+		return (selected_target.global_position - player.global_position).normalized()
+	if auto_waypoints.is_empty() or selected_target.global_position.distance_to(auto_path_target_position) > 40.0:
+		plan_auto_path()
+	while auto_waypoint_index < auto_waypoints.size() and player.global_position.distance_to(auto_waypoints[auto_waypoint_index]) < 18.0:
+		auto_waypoint_index += 1
+	if auto_waypoint_index < auto_waypoints.size():
+		return (auto_waypoints[auto_waypoint_index] - player.global_position).normalized()
+	return (selected_target.global_position - player.global_position).normalized()
+
+func walk_path_clear_to_target() -> bool:
+	var shape := CircleShape2D.new()
+	shape.radius = 21.0
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = shape
+	query.transform = Transform2D(0.0, player.global_position)
+	query.motion = selected_target.global_position - player.global_position
+	query.collision_mask = 2
+	query.exclude = [player.get_rid(), selected_target.get_rid()]
+	var fractions := get_world_2d().direct_space_state.cast_motion(query)
+	return fractions.is_empty() or fractions[0] >= 0.99
+
+func plan_auto_path() -> void:
+	auto_waypoints.clear()
+	auto_waypoint_index = 0
+	auto_path_target_position = selected_target.global_position
+	var grid := AStarGrid2D.new()
+	grid.region = Rect2i(0, 0, int(WORLD_SIZE.x) / AUTO_GRID_CELL, int(WORLD_SIZE.y) / AUTO_GRID_CELL)
+	grid.cell_size = Vector2(AUTO_GRID_CELL, AUTO_GRID_CELL)
+	grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+	grid.update()
+	for body in get_children():
+		if body is StaticBody2D and body.collision_layer & 2 and body.has_method("take_crate_damage"):
+			var blocked := Rect2(body.global_position - body.size * 0.5, body.size).grow(32.0)
+			for y in range(maxi(0, floori(blocked.position.y / AUTO_GRID_CELL)), mini(grid.region.end.y, ceili(blocked.end.y / AUTO_GRID_CELL))):
+				for x in range(maxi(0, floori(blocked.position.x / AUTO_GRID_CELL)), mini(grid.region.end.x, ceili(blocked.end.x / AUTO_GRID_CELL))):
+					grid.set_point_solid(Vector2i(x, y))
+	var start_id := Vector2i(floori(player.global_position.x / AUTO_GRID_CELL), floori(player.global_position.y / AUTO_GRID_CELL))
+	if not grid.is_in_boundsv(start_id):
+		return
+	grid.set_point_solid(start_id, false)
+	var best_path: Array[Vector2i] = []
+	for i in range(16):
+		var candidate: Vector2 = selected_target.global_position + Vector2.RIGHT.rotated(i * TAU / 16.0) * 104.0
+		var goal_id := Vector2i(floori(candidate.x / AUTO_GRID_CELL), floori(candidate.y / AUTO_GRID_CELL))
+		if not grid.is_in_boundsv(goal_id) or grid.is_point_solid(goal_id) or not target_visible_from(candidate):
+			continue
+		var path: Array[Vector2i] = grid.get_id_path(start_id, goal_id)
+		if not path.is_empty() and (best_path.is_empty() or path.size() < best_path.size()):
+			best_path = path
+	for id in best_path:
+		auto_waypoints.append((Vector2(id) + Vector2(0.5, 0.5)) * AUTO_GRID_CELL)
+
+func target_at_world_point(point: Vector2) -> Node2D:
+	var query := PhysicsPointQueryParameters2D.new()
+	query.position = point
+	query.collision_mask = 2 | 4
+	for hit in get_world_2d().direct_space_state.intersect_point(query, 8):
+		var candidate: Object = hit["collider"]
+		if candidate is CombatBot and candidate.active:
+			return candidate
+		if candidate is StaticBody2D and candidate.has_method("take_crate_damage") and candidate.destructible:
+			return candidate
+	return null
+
+func select_target_at_screen_point(point: Vector2) -> bool:
+	var world_point: Vector2 = get_viewport().get_canvas_transform().affine_inverse() * point
+	var target := target_at_world_point(world_point)
+	if target == null:
+		return false
+	selected_target = target
+	target_attack_pending = true
+	auto_waypoints.clear()
+	return true
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.physical_keycode == KEY_M:
@@ -310,6 +432,23 @@ func _input(event: InputEvent) -> void:
 		elif event.physical_keycode in [KEY_Q, KEY_E, KEY_F] and match_controller.state == "active" and inventory.hp > 0:
 			if combat.use_skill([KEY_Q, KEY_E, KEY_F].find(event.physical_keycode)):
 				game_audio.play_cue("skill")
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if not event.pressed:
+			mouse_ui_press = false
+		elif Rect2(958, 250, 240, 52).has_point(event.position):
+			mouse_ui_press = true
+			menu_requested.emit()
+		elif hud_view.item_slot_at(event.position) >= 0:
+			mouse_ui_press = true
+			inventory.use_slot(hud_view.item_slot_at(event.position))
+		elif hud_view.skill_slot_at(event.position) >= 0 and match_controller.state == "active" and inventory.hp > 0:
+			mouse_ui_press = true
+			if combat.use_skill(hud_view.skill_slot_at(event.position)):
+				game_audio.play_cue("skill")
+		elif event.position.distance_to(ATTACK_CENTER) >= ATTACK_TOUCH_RADIUS and match_controller.state == "active":
+			if not select_target_at_screen_point(event.position):
+				selected_target = null
+				target_attack_pending = false
 	elif event is InputEventScreenTouch:
 		if event.pressed:
 			if match_controller.state == "results" and Rect2(480, 430, 320, 70).has_point(event.position):
@@ -321,13 +460,15 @@ func _input(event: InputEvent) -> void:
 			elif hud_view.skill_slot_at(event.position) >= 0 and match_controller.state == "active" and inventory.hp > 0:
 				if combat.use_skill(hud_view.skill_slot_at(event.position)):
 					game_audio.play_cue("skill")
+			elif event.position.distance_to(ATTACK_CENTER) < ATTACK_TOUCH_RADIUS and attack_touch < 0:
+				attack_touch = event.index
+				attack_held = true
+			elif match_controller.state == "active" and select_target_at_screen_point(event.position):
+				pass
 			elif event.position.x < 400 and joystick_touch < 0:
 				joystick_touch = event.index
 				joystick_origin = event.position
 				joystick_value = Vector2.ZERO
-			elif event.position.distance_to(ATTACK_CENTER) < ATTACK_TOUCH_RADIUS and attack_touch < 0:
-				attack_touch = event.index
-				attack_held = true
 		else:
 			if event.index == joystick_touch:
 				joystick_touch = -1
@@ -386,3 +527,5 @@ func _draw() -> void:
 			draw_arc(center, 52, angle - 1.05, angle + 1.05, 28, Color(1.0, 0.97, 0.71, alpha), 5.0, true)
 		else:
 			draw_line(player.position + player.facing * 24, attack_end, Color("ffe0a0"), 12, true)
+	if target_is_available():
+		draw_arc(selected_target.global_position, 43, 0, TAU, 36, Color("ffe39b"), 3.0)

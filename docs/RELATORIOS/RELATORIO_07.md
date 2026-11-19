@@ -50,6 +50,10 @@ A câmera foi aproximada para zoom 1,05 a pedido do responsável, sem mover o HU
 
 O Espadachim foi ampliado de 25% para 50% de escala visual, sem alterar o zoom 1,05, a colisão ou os controles. O sprite foi deslocado verticalmente para preservar a posição dos pés. `release07_swordsman.gd` e `release07_smoke.gd` passaram. Prévia: `https://lrfsousa.github.io/RagArena/preview-07-swordsman-x2/` (`gh-pages` commit `f939647`).
 
+O raio do ataque básico passou a partir do centro físico do jogador, corrigindo caixas encostadas que ficavam antes do início do raio antigo. Toque e clique em caixas ou bots selecionam o alvo; o Paladino caminha automaticamente até a linha de ataque e golpeia. O botão de ataque usa o alvo selecionado, e um anel dourado indica a seleção. A aproximação contorna obstáculos estáticos com uma grade de navegação simples. `release07_target_attack.gd` cobre caixa encostada, toque em caixa distante, clique em bot, aproximação, botão de ataque e uma parede entre jogador e alvo. Ainda é necessário validar casos densos e alvos móveis em aparelho real.
+
+A prévia Web foi publicada em `https://lrfsousa.github.io/RagArena/preview-07-target-attack/` e atualizada no commit `60c76e1` de `gh-pages`. A conferência no navegador revelou uma quina em que o centro do personagem tinha linha livre, mas seu corpo colidia; a rota passou a considerar um círculo de 21 unidades. O teste automatizado ganhou esse caso e passou. Os testes antigos de toque das releases 0.1 e 0.2 foram atualizados para as posições atuais do ataque e dos itens; ambas as suítes passaram novamente.
+
 A correção foi exportada para Web e publicada em `https://lrfsousa.github.io/RagArena/preview-07-swordsman-aligned/` (`gh-pages` commit `6ab8cc7`). Ainda é necessária a conferência da sensação de caminhada em celular real.
 
 A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.

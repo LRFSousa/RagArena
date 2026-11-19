@@ -126,7 +126,7 @@ func test_touch_controls() -> void:
 	check(arena.joystick_value == Vector2.ZERO, "joystick solto para movimento")
 	var attack := InputEventScreenTouch.new()
 	attack.index = 1
-	attack.position = Vector2(1130, 570)
+	attack.position = arena.ATTACK_CENTER
 	attack.pressed = true
 	arena._input(attack)
 	check(arena.attack_held, "toque segura ataque")

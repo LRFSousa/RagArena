@@ -35,6 +35,8 @@ Prévia com câmera mais próxima (zoom 1,05): https://lrfsousa.github.io/RagAre
 
 Prévia com o Espadachim em tamanho dobrado e câmera mantida em 1,05: https://lrfsousa.github.io/RagArena/preview-07-swordsman-x2/. Selecione Paladino para conferir o sprite.
 
+Prévia do ataque por seleção: https://lrfsousa.github.io/RagArena/preview-07-target-attack/. Toque numa caixa ou bot; o Paladino se aproxima e ataca. Também é possível usar o botão de ataque com o alvo selecionado.
+
 Os arquivos exportados podem ser colocados na raiz de um branch `gh-pages`, junto com `.nojekyll`. Depois, em **Settings → Pages**, escolha esse branch como origem. O endereço público é `https://lrfsousa.github.io/RagArena/`.
 
 O repositório `LRFSousa/RagArena` foi tornado público por autorização do responsável em 19/11/2026. O Pages usa a branch `gh-pages` e está disponível em https://lrfsousa.github.io/RagArena/.

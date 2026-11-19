@@ -2,6 +2,7 @@
 
 ## Release 0.7
 
+- Validar em celular o toque para selecionar caixa/oponente e a aproximação automática em mapas com muitos obstáculos e alvos em movimento. O contorno por grade já cobre uma parede simples.
 - Validar no celular a ergonomia da nova disposição circular, especialmente com os quatro espaços de itens e os ícones das habilidades em telas pequenas.
 - Avaliar no celular a leitura dos novos ícones de habilidade em tamanho reduzido e o contraste das recargas.
 - Conferir em celular real a leitura dos quatro efeitos do Espadachim sobre diferentes fundos, a duração da aura de proteção e a fluidez do arco de ataque.
