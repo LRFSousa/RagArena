@@ -2,6 +2,7 @@ extends SceneTree
 
 const ArenaScene = preload("res://scenes/arena.tscn")
 const ClassData = preload("res://scripts/class_balance.gd")
+const CombatRules = preload("res://scripts/combat_rules.gd")
 var failures := 0
 
 func _initialize() -> void:
@@ -40,6 +41,26 @@ func run_tests() -> void:
 	check(effective == combat.settings.bot_hp, "dano efetivo não excede HP restante")
 	check(arena.progression.total_xp == xp_before + effective + arena.balance.xp_per_elimination, "XP de dano efetivo e eliminação")
 	check(combat.hit_bot(target, 999) == 0, "alvo eliminado não concede XP duplicado")
+	var crate_target: StaticBody2D
+	for child in arena.get_children():
+		if child is StaticBody2D and child.destructible and child.position == Vector2(490, 310):
+			crate_target = child
+	check(crate_target != null, "caixa de teste de cadência presente")
+	arena.player.position = Vector2(395, 310)
+	arena.player.facing = Vector2.RIGHT
+	await physics_frame
+	for class_id in ["paladin", "mage", "assassin", "archer"]:
+		combat.select_class(class_id)
+		crate_target.hp = crate_target.max_hp
+		var prior_hp: int = crate_target.hp
+		arena.attack_timer = 0.0
+		Input.action_press("attack")
+		arena._physics_process(0.016)
+		Input.action_release("attack")
+		check(crate_target.hp == prior_hp - CombatRules.crate_damage(arena.progression.level) and is_equal_approx(arena.attack_timer, arena.attack_interval), class_id + " usa dano e cadência comum nas caixas")
+	crate_target.hp = crate_target.max_hp
+	arena.player.position = Vector2(300, 300)
+	arena.player.facing = Vector2.RIGHT
 	combat.select_class("paladin")
 	combat.take_player_hit(20, true)
 	check(arena.inventory.hp == combat.max_hp() - roundi((20 - int(combat.stats()["defense"])) * (1.0 - data.paladin_ranged_reduction)), "paladino reduz dano à distância")

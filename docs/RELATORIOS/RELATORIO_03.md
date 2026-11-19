@@ -29,7 +29,7 @@ godot --headless --path . --script res://tests/release03_smoke.gd
 godot --headless --path . --quit-after 60
 ```
 
-As três suítes passaram. A suíte 0.3 verificou atributos, marcos de nível, XP efetivo, XP de eliminação, recargas, cura, proteção, barreira, congelamento, invisibilidade com velocidade, armadilha, colisão de projéteis com caixa e parede. As regras de dano contra caixas da 0.1 e o inventário da 0.2 não regrediram.
+As três suítes passaram. A suíte 0.3 verificou atributos, marcos de nível, XP efetivo, XP de eliminação, recargas, cura, proteção, barreira, congelamento, invisibilidade com velocidade, armadilha, colisão de projéteis com caixa e parede, além de dano e cadência comuns contra caixas nas quatro classes. As regras da 0.1 e o inventário da 0.2 não regrediram.
 
 ## Como validar manualmente
 

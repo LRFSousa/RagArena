@@ -159,14 +159,14 @@ func _physics_process(delta: float) -> void:
 	attack_timer = maxf(0.0, attack_timer - delta)
 	attack_flash = maxf(0.0, attack_flash - delta)
 	if attack_held and attack_timer <= 0.0:
-		perform_attack()
-		attack_timer = attack_interval if test_level > 0 else float(combat.stats()["interval"])
+		var attacked_crate := perform_attack()
+		attack_timer = attack_interval if attacked_crate or test_level > 0 else float(combat.stats()["interval"])
 	combat.advance(delta)
 	collect_ground_items()
 	update_hud()
 	queue_redraw()
 
-func perform_attack() -> void:
+func perform_attack() -> bool:
 	var start: Vector2 = player.position + player.facing * 24.0
 	var end: Vector2 = player.position + player.facing * attack_range
 	var query := PhysicsRayQueryParameters2D.create(start, end, 2, [player.get_rid()])
@@ -176,8 +176,10 @@ func perform_attack() -> void:
 	if not hit.is_empty() and hit["collider"] is StaticBody2D and hit["collider"].destructible:
 		var damage_level: int = test_level if test_level > 0 else progression.level
 		hit["collider"].take_crate_damage(CombatRules.crate_damage(damage_level))
+		return true
 	else:
 		combat.fire_basic()
+	return false
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
