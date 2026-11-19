@@ -77,7 +77,20 @@ func advance(delta: float) -> void:
 		if bot.active and bot.attack_time <= 0.0 and invisible <= 0.0 and bot.position.distance_to(player.position) < 260.0:
 			if clear_line(bot.position, player.position, [bot.get_rid(), player.get_rid()]):
 				bot.attack_time = settings.bot_attack_interval
-				take_player_hit(settings.bot_damage, true)
+				launch_bot_projectile(bot)
+
+func launch_bot_projectile(bot: CombatBot) -> CombatProjectile:
+	var aim: Vector2 = (player.position - bot.position).normalized()
+	var shot: CombatProjectile = Projectile.new()
+	shot.position = bot.position + aim * 24.0
+	shot.direction = aim
+	shot.speed = settings.bot_projectile_speed
+	shot.range_left = 260.0
+	shot.damage = settings.bot_damage
+	shot.from_player = false
+	shot.combat = self
+	arena.add_child(shot)
+	return shot
 
 func clear_line(start: Vector2, finish: Vector2, excludes: Array[RID] = []) -> bool:
 	var query := PhysicsRayQueryParameters2D.create(start, finish, 2, excludes)
@@ -151,7 +164,10 @@ func take_player_hit(raw_damage: int, ranged: bool, push := false) -> int:
 		barrier_time = 0.0
 	if push and endure <= 0.0:
 		player.position += Vector2(20, 0)
-	return inventory.apply_damage(amount - absorbed)
+	var actual := inventory.apply_damage(amount - absorbed)
+	if amount > 0 and player.has_method("show_damage"):
+		player.show_damage()
+	return actual
 
 func use_skill(index: int) -> bool:
 	if index < 0 or index >= 3 or cooldowns[index] > 0.0 or inventory.hp <= 0:

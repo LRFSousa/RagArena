@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.2 — dano dos bots visível
+
+- Bots agora disparam projéteis vermelhos. HP só diminui quando um projétil atinge o personagem; movimento e paredes podem evitar o dano.
+- O personagem pisca em vermelho ao ser atingido; velocidade do projétil configurável em `resources/classes.tres`.
+- Teste de regressão cobre HP parado, disparo, impacto, desvio e cobertura.
+
 ## 0.5.1 — digitação no navegador móvel
 
 - Ativado o teclado virtual experimental da exportação Web do Godot.

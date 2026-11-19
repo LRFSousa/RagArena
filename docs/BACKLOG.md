@@ -89,6 +89,8 @@
 
 **Evidência 0.5:** `tests/release05_smoke.gd` passou para validação do nome, ID interno, dois presets da mesma classe, edição, seleção, exclusão, persistência, histórico local e reinício sem vantagem. As suítes 0.1–0.4 seguem passando; unicidade global e login real dependem do backend.
 
+**Correção 0.5.2:** `tests/health_damage_regression.gd` passou para HP estável sem ataque, dano só no impacto de projétil visível, desvio e cobertura.
+
 ## Release 0.6 — Multiplayer online
 **Objetivo:** partidas reais de 2–5 jogadores.
 - [ ] Definir arquitetura de servidor dedicado autoritativo, preferencialmente Godot headless/GDScript na primeira versão.

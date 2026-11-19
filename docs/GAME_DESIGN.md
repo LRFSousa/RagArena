@@ -32,6 +32,7 @@
 - Mago: gelo com congelamento curto, barreira absorvente e bola de fogo. Assassino: invisibilidade até atacar, lâmina arremessada e velocidade; invisibilidade e velocidade podem coexistir. Arqueiro: rajada, impacto com empurrão e armadilha que imobiliza.
 - Dano efetivo contra bots concede XP sem contar dano acima do HP restante; eliminação concede bônus. HP e dano crescem por nível; habilidades recebem bônus provisórios nos níveis 10, 20 e 30.
 - Dois bots locais estacionários atacam ao alcance e servem para testar combate offline. Troca de classe por `Tab` ou botão **Classe** reinicia HP e recargas para facilitar comparação no protótipo. Isso não define fluxo de seleção de classe da release 0.5.
+- A partir da correção 0.5.2, ataques dos bots são projéteis vermelhos visíveis; o dano ocorre apenas no impacto. Paredes e movimento podem bloquear ou desviar o disparo.
 
 ## Release 0.4
 

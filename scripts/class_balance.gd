@@ -26,6 +26,7 @@ class_name ClassBalance
 @export var bot_hp := 90
 @export var bot_damage := 7
 @export var bot_attack_interval := 1.5
+@export var bot_projectile_speed := 420.0
 
 func stats(class_id: String, level: int = 1) -> Dictionary:
 	var base: Dictionary = classes.get(class_id, classes["paladin"])

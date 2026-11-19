@@ -2,7 +2,7 @@
 
 ## Instalar o APK de depuração
 
-1. Copie `RagnArena-0.5.1-debug.apk` para o celular Android (por USB, nuvem ou outro meio de transferência de arquivos).
+1. Copie `RagnArena-0.5.2-debug.apk` para o celular Android (por USB, nuvem ou outro meio de transferência de arquivos).
 2. No celular, abra o APK pelo gerenciador de arquivos. Se o Android pedir, permita a instalação de apps desta origem para o aplicativo usado para abrir o arquivo.
 3. Instale e abra **RagnArena** com o aparelho em paisagem.
 
@@ -15,6 +15,7 @@ Este APK é apenas para teste da release 0.5. Ele usa uma assinatura de depuraç
 - Crie duas configurações da mesma classe, edite uma delas e selecione a desejada antes da Arena.
 - Após uma partida, abra Perfil e confira o histórico local; nova partida deve começar no nível 1 com inventário vazio.
 
+- Aproximando-se dos bots, observe os projéteis vermelhos: o HP deve cair somente se um deles acertar o personagem. Desvie ou use uma parede como cobertura.
 - Arraste o joystick virtual à esquerda e confirme movimento em qualquer direção.
 - Encoste em pedras, caixas e bordas; o personagem deve parar sem atravessar.
 - Aponte para uma caixa movendo-se, pare e segure o botão de ataque à direita. No nível de teste 1, a caixa deve desaparecer após 3 golpes.
@@ -33,7 +34,7 @@ Instale Godot 4.7.2 e configure Java SDK e Android SDK conforme a [documentaçã
 
 ```text
 godot --headless --path . --editor --quit
-godot --headless --path . --export-debug Android RagnArena-0.5.1-debug.apk
+godot --headless --path . --export-debug Android RagnArena-0.5.2-debug.apk
 ```
 
-Para instalar por USB com depuração ativada, execute `adb install -r RagnArena-0.5.1-debug.apk`. Se já houver um app com o mesmo pacote assinado por outra chave, desinstale-o antes de instalar este APK.
+Para instalar por USB com depuração ativada, execute `adb install -r RagnArena-0.5.2-debug.apk`. Se já houver um app com o mesmo pacote assinado por outra chave, desinstale-o antes de instalar este APK.

@@ -25,6 +25,7 @@ godot --headless --path . --script res://tests/release02_smoke.gd
 godot --headless --path . --script res://tests/release03_smoke.gd
 godot --headless --path . --script res://tests/release04_smoke.gd
 godot --headless --path . --script res://tests/release05_smoke.gd
+godot --headless --path . --script res://tests/health_damage_regression.gd
 godot --headless --path . --quit-after 60
 ```
 
@@ -40,6 +41,7 @@ As cinco suítes passaram sem erros. A 0.5 cobre nome válido/inválido, perman�
 
 ## Limitações
 
+- Após relato de HP diminuindo sem dano aparente, a correção 0.5.2 substituiu o dano instantâneo dos bots por projéteis vermelhos com colisão. `tests/health_damage_regression.gd` verifica HP estável sem ataque, dano só no impacto, sinal visual, desvio e bloqueio por parede.
 - Após relato de que não era possível digitar o nome no navegador, a versão 0.5.1 ativou o teclado virtual experimental Web e adicionou um teclado na tela aos campos de nome e configuração. A suíte 0.5 verifica digitação, apagar e criação do personagem pelo novo controle. No site publicado, o botão abriu o teclado e três toques preencheram `ANA` no campo. A confirmação em aparelho real ainda depende de teste manual.
 - Unicidade global de nome, autenticação e sincronização entre dispositivos dependem do backend futuro.
 - Histórico local não é confiável para ranking. Dados do app/navegador podem ser apagados pelo usuário; ainda não há migração entre formatos.

@@ -2,6 +2,8 @@
 
 Protótipo offline top-down em Godot 4. A release 0.5 acrescenta perfil e configurações locais ao ciclo de partida offline.
 
+Bots próximos disparam projéteis vermelhos. O HP diminui apenas quando um disparo atinge o personagem; paredes e movimento podem evitar o impacto.
+
 Para digitar no navegador do celular, toque no campo. Se o teclado não abrir, use o botão **Teclado na tela** abaixo dele, digite e toque em **Concluir**. Esse botão também funciona ao nomear configurações.
 
 ## Executar
@@ -42,6 +44,7 @@ godot --headless --path . --script res://tests/release02_smoke.gd
 godot --headless --path . --script res://tests/release03_smoke.gd
 godot --headless --path . --script res://tests/release04_smoke.gd
 godot --headless --path . --script res://tests/release05_smoke.gd
+godot --headless --path . --script res://tests/health_damage_regression.gd
 godot --headless --path . --quit-after 60
 ```
 

@@ -21,6 +21,8 @@ O repositório `LRFSousa/RagArena` foi tornado público por autorização do res
 
 ## Limites de validação
 
+Na versão 0.5.2, bots disparam projéteis vermelhos; o HP só deve diminuir após impacto.
+
 O perfil local usa os dados do navegador. Abrir em outro navegador ou limpar os dados cria um perfil separado.
 
 Se o teclado do celular não abrir ao tocar no campo de nome, use **Teclado na tela**, digite e toque em **Concluir**. O mesmo controle está disponível ao nomear configurações.

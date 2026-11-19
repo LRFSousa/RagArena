@@ -33,6 +33,8 @@ func _physics_process(delta: float) -> void:
 				hit_targets.append(target)
 				position += direction * 3.0
 				return
+		elif not from_player and target == combat.player:
+			combat.take_player_hit(damage, true)
 		# Caixas e paredes bloqueiam projéteis. Só o ataque comum causa dano em caixas.
 		queue_free()
 		return
@@ -41,4 +43,4 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, 7, Color("f3d881"))
+	draw_circle(Vector2.ZERO, 8 if from_player else 10, Color("f3d881") if from_player else Color("ff5b52"))
