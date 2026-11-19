@@ -26,6 +26,8 @@ Após a correção do alcance e minimapa, passaram também `tests/release07_atta
 
 Na etapa dos sprites do Espadachim, o Godot importou os quatro PNGs sem erro. `tests/release07_swordsman.gd` passou para tamanho, transparência, quadro, escala, quatro direções, parada e preservação das outras classes. `tests/release07_smoke.gd` também passou após a integração.
 
+Os nove conjuntos de testes passaram após a integração. O código foi publicado em `release/0.7` no commit `b261916`. A prévia específica dos sprites está em `https://lrfsousa.github.io/RagArena/preview-07-swordsman/` (`gh-pages` commit `096c221`). O Pages concluiu com sucesso, a página respondeu HTTP 200 e o pacote remoto teve o mesmo SHA-256 do exportado. No navegador integrado, foi possível criar perfil e personagem Paladino, entrar na Arena e acionar o movimento sem erros de console. A janela do navegador era pequena; a avaliação visual detalhada e o toque ainda precisam ser conferidos no celular.
+
 A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.
 
 Para evitar cache da prévia anterior, a mesma revisão também foi publicada em `https://lrfsousa.github.io/RagArena/preview-07-range2/` (`gh-pages` commit `3b99b78`). O fluxo do Pages concluiu com sucesso e a página e o pacote responderam HTTP 200.
