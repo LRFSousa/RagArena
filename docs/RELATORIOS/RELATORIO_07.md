@@ -48,6 +48,8 @@ Prévia dessa disposição: `https://lrfsousa.github.io/RagArena/preview-07-mobi
 
 A câmera foi aproximada para zoom 1,05 a pedido do responsável, sem mover o HUD. `release07_smoke.gd` passou com a nova escala. A prévia isolada está em `https://lrfsousa.github.io/RagArena/preview-07-zoom105/` (`gh-pages` commit `7504815`). O teste em celular deve comparar legibilidade e campo de visão com o zoom 0,85 anterior.
 
+O Espadachim foi ampliado de 25% para 50% de escala visual, sem alterar o zoom 1,05, a colisão ou os controles. O sprite foi deslocado verticalmente para preservar a posição dos pés. `release07_swordsman.gd` e `release07_smoke.gd` passaram. Prévia: `https://lrfsousa.github.io/RagArena/preview-07-swordsman-x2/` (`gh-pages` commit `f939647`).
+
 A correção foi exportada para Web e publicada em `https://lrfsousa.github.io/RagArena/preview-07-swordsman-aligned/` (`gh-pages` commit `6ab8cc7`). Ainda é necessária a conferência da sensação de caminhada em celular real.
 
 A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.

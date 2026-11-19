@@ -27,7 +27,7 @@ func run_tests() -> void:
 			check(absf(center_x - 128.0) < 5.0, "%s quadro %d: personagem centralizado" % [direction, frame])
 	root.add_child(player)
 	await process_frame
-	check(player.visual_class == "paladin" and player.visual_sprite.hframes == 6 and player.visual_sprite.vframes == 1 and player.visual_sprite.scale == Vector2(0.25, 0.25), "Espadachim substitui visual provisório do Paladino")
+	check(player.visual_class == "paladin" and player.visual_sprite.hframes == 6 and player.visual_sprite.vframes == 1 and player.visual_sprite.scale == Vector2(0.5, 0.5) and player.visual_sprite.position == Vector2(0, -32), "Espadachim com tamanho dobrado e pés alinhados")
 	check(player.z_index > 0 and player.visual_sprite.z_index == 0, "personagem e efeitos aparecem sobre as caixas")
 	for direction in DIRECTIONS:
 		var vector := Vector2.RIGHT if direction == "right" else Vector2.LEFT if direction == "left" else Vector2.UP if direction == "up" else Vector2.DOWN
@@ -39,7 +39,7 @@ func run_tests() -> void:
 	player._physics_process(0.016)
 	check(player.visual_sprite.frame == 0, "parado usa primeiro quadro")
 	player.set_visual_class("mage")
-	check(player.visual_sprite.hframes == 4 and player.visual_sprite.vframes == 5 and player.visual_sprite.scale == Vector2.ONE, "outras classes mantêm sprites existentes")
+	check(player.visual_sprite.hframes == 4 and player.visual_sprite.vframes == 5 and player.visual_sprite.scale == Vector2.ONE and player.visual_sprite.position == Vector2.ZERO, "outras classes mantêm sprites existentes")
 	player.queue_free()
 	await process_frame
 	if failures == 0:

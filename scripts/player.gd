@@ -41,7 +41,8 @@ func apply_visual_class() -> void:
 		visual_sprite.texture = SWORDSMAN_WALK[visual_direction]
 		visual_sprite.hframes = 6
 		visual_sprite.vframes = 1
-		visual_sprite.scale = Vector2(0.25, 0.25)
+		visual_sprite.scale = Vector2(0.5, 0.5)
+		visual_sprite.position = Vector2(0, -32)
 		visual_sprite.offset = Vector2(SWORDSMAN_FRAME_OFFSET[visual_direction][0], 0)
 	else:
 		visual_sprite.z_index = 0
@@ -49,6 +50,7 @@ func apply_visual_class() -> void:
 		visual_sprite.hframes = 4
 		visual_sprite.vframes = 5
 		visual_sprite.scale = Vector2.ONE
+		visual_sprite.position = Vector2.ZERO
 		visual_sprite.offset = Vector2.ZERO
 	visual_sprite.frame = 0
 
