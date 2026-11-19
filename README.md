@@ -38,4 +38,4 @@ O APK de depuração e as instruções de instalação estão descritos em `docs
 
 ## Teste no navegador
 
-O preset Web está configurado; veja `docs/WEB_TESTE.md` para exportação e hospedagem.
+Jogue no navegador em https://lrfsousa.github.io/RagArena/ (preferencialmente em paisagem). Veja `docs/WEB_TESTE.md` para exportação e hospedagem.

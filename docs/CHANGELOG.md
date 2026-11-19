@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4 — publicação Web
+
+- Repositório `LRFSousa/RagArena` tornado público e Pages ativado na branch `gh-pages`.
+- Jogo acessível em https://lrfsousa.github.io/RagArena/; arena renderizada no navegador sem erros de console.
+
 ## 0.1.3 — preparação da versão Web
 
 - Preset Web sem threads e guia para hospedagem estática/GitHub Pages.

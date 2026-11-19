@@ -58,3 +58,7 @@ Preparar a release 0.2 a partir de `docs/releases/02_MVP_0_2_PROGRESSAO_ITENS.md
 
 APK de depuração exportado com Godot 4.7.2. Assinatura v2/v3 verificada com `apksigner`, manifesto inspecionado com `aapt` (pacote `com.lrfsousa.ragnarena`, orientação paisagem, API mínima 24). Não havia dispositivo conectado a `adb devices`; teste físico permanece pendente. Ver `docs/ANDROID_TESTE.md`.
 
+
+## Complemento de 19/11/2026 — publicação Web
+
+O repositório foi tornado público com autorização do responsável. `main` e `gh-pages` foram enviados ao GitHub; Pages foi ativado a partir de `gh-pages/`. A URL https://lrfsousa.github.io/RagArena/ respondeu com HTTP 200 e exibiu a arena no navegador integrado, sem erros no console. Teste de toque em celular real ainda pendente.

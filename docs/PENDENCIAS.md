@@ -2,7 +2,7 @@
 
 ## Release 0.1
 
-- Validar a build Web em navegador real e confirmar controles de toque.
+- Validar controles de toque e desempenho da build Web em celular real em paisagem.
 - Confirmar disponibilidade de GitHub Pages para o repositório privado e autorização para publicar o site.
 
 - Validar visualmente joystick, botão de ataque, escala e legibilidade em aparelho Android real em paisagem. Os eventos de toque foram simulados em teste headless.

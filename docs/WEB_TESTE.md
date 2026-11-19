@@ -17,8 +17,8 @@ Sirva a pasta `web_build` por HTTP/HTTPS; abrir `index.html` diretamente como `f
 
 Os arquivos exportados podem ser colocados na raiz de um branch `gh-pages`, junto com `.nojekyll`. Depois, em **Settings → Pages**, escolha esse branch como origem. O endereço esperado é `https://lrfsousa.github.io/RagArena/`, mas só estará válido após publicação bem-sucedida.
 
-O repositório de origem está privado. A [documentação do GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) informa que Pages em repositórios privados depende do plano da conta e que o site costuma ser público. A publicação precisa ser confirmada antes de expor esta build na internet.
+O repositório `LRFSousa/RagArena` foi tornado público por autorização do responsável em 19/11/2026. O Pages usa a branch `gh-pages` e está disponível em https://lrfsousa.github.io/RagArena/.
 
 ## Limites de validação
 
-A exportação e a integridade do WebAssembly foram verificadas localmente. Ainda falta abrir a página em um navegador real e conferir controles por toque e desempenho em celular.
+A exportação, a integridade do WebAssembly, o carregamento público dos arquivos e a renderização da arena no navegador integrado foram verificados. O console não mostrou erros. Ainda falta validar controles por toque e desempenho em celular real em paisagem.
