@@ -23,6 +23,8 @@ Após adicionar câmera e ampliar o mapa, as sete suítes passaram novamente com
 
 Após a correção do alcance e minimapa, passaram também `tests/release07_attack_range.gd` e as sete suítes anteriores, todas sem erros nos logs. O teste novo cobre duas caixas, dois oponentes, terceiro quadro fora de alcance e parede entre os alvos.
 
+A prévia Web em `https://lrfsousa.github.io/RagArena/preview-07/` foi atualizada no commit `6282384` de `gh-pages`. O fluxo de publicação terminou com sucesso; a página respondeu HTTP 200 e o SHA-256 do `index.pck` servido pelo Pages correspondeu exatamente ao pacote local exportado. O teste visual e de toque em celular real continua pendente.
+
 A prévia foi publicada em `https://lrfsousa.github.io/RagArena/preview-07/` sem substituir a raiz estável. O fluxo `pages build and deployment` do commit `fd55d65` concluiu com sucesso. Página, `.pck` e `.wasm` responderam HTTP 200. O navegador integrado exibiu a tela de entrada local e não registrou erros de console; a navegação completa e o jogo em celular real ainda dependem de teste manual.
 
 ## Limites e problemas
