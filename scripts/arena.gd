@@ -15,6 +15,7 @@ const MatchScript = preload("res://scripts/match_controller.gd")
 const GameAudioScript = preload("res://scripts/game_audio.gd")
 const ArenaHudScript = preload("res://scripts/arena_hud.gd")
 const WORLD_SIZE := Vector2(2560, 1440)
+const CAMERA_ZOOM := Vector2(1.05, 1.05)
 const ARENA := Rect2(52, 52, 2456, 1336)
 const SPAWNS := [Vector2(150, 150), Vector2(2350, 150), Vector2(150, 1290), Vector2(2350, 1290)]
 
@@ -70,7 +71,7 @@ func _ready() -> void:
 	add_child(player)
 	camera = Camera2D.new()
 	camera.name = "FollowingCamera"
-	camera.zoom = Vector2(0.85, 0.85)
+	camera.zoom = CAMERA_ZOOM
 	camera.limit_left = 0
 	camera.limit_top = 0
 	camera.limit_right = int(WORLD_SIZE.x)

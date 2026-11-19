@@ -61,7 +61,7 @@ func run_tests() -> void:
 	check(arena.player.skill_kind == 0 and arena.player.skill_flash > 0.0, "proteção inicia efeito visual")
 	check("HP" in arena.hud.text and "Partida" in arena.status_hud.text, "HUD mostra vida e cronômetro")
 	check(arena.hud_layer is CanvasLayer and arena.hud.get_parent() == arena.hud_layer and arena.hud_view.get_parent() == arena.hud_layer, "HUD independente das coordenadas do mundo")
-	check(arena.camera is Camera2D and arena.camera.get_parent() == arena.player and arena.camera.zoom == Vector2(0.85, 0.85), "câmera afastada acompanha personagem")
+	check(arena.camera is Camera2D and arena.camera.get_parent() == arena.player and arena.camera.zoom == Vector2(1.05, 1.05), "câmera aproximada acompanha personagem")
 	check(arena.ARENA.size == Vector2(2456, 1336) and not Rect2(0, 0, 1280, 720).has_point(arena.match_controller.SPAWNS[1]), "mapa e spawn ultrapassam uma tela")
 	var touch := InputEventScreenTouch.new()
 	touch.index = 4

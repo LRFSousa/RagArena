@@ -31,6 +31,8 @@ Prévia com os ícones das quatro ações enviados pelo responsável: https://lr
 
 Prévia dos controles mobile circulares: https://lrfsousa.github.io/RagArena/preview-07-mobile-controls/. Poções acima, Q/E/F em diagonal e ataque maior à direita. Abra em paisagem e selecione Paladino.
 
+Prévia com câmera mais próxima (zoom 1,05): https://lrfsousa.github.io/RagArena/preview-07-zoom105/. Compare com a prévia anterior (zoom 0,85) no mesmo celular.
+
 Os arquivos exportados podem ser colocados na raiz de um branch `gh-pages`, junto com `.nojekyll`. Depois, em **Settings → Pages**, escolha esse branch como origem. O endereço público é `https://lrfsousa.github.io/RagArena/`.
 
 O repositório `LRFSousa/RagArena` foi tornado público por autorização do responsável em 19/11/2026. O Pages usa a branch `gh-pages` e está disponível em https://lrfsousa.github.io/RagArena/.

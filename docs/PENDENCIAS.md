@@ -8,7 +8,7 @@
 - Conferir em celular real a ergonomia dos itens e habilidades no canto inferior direito, especialmente em telas com proporções diferentes de 16:9.
 - Confirmar em aparelho real se o Espadachim em 25% de escala está legível no zoom atual. A associação com Paladino é provisória; faltam arte própria de parado, ataque, dano e morte e decisão sobre o nome/classe final.
 - Validar em celular o tamanho e a posição do minimapa no canto superior direito e a leitura do alcance de dois quadros. Ajustar os 152 px provisórios se a escala de arte mudar.
-- Validar em celular real se o zoom 0,85 mantém personagem, projéteis, itens e minimapa legíveis; comparar com zoom 1,0 e ajustar se necessário.
+- Validar em celular real se o zoom 1,05 melhora a leitura do personagem e dos efeitos sem reduzir demais a visão dos oponentes; comparar com a prévia anterior em 0,85.
 - Reavaliar distribuição das 24 caixas, distância entre spawns, quinto spawn e fechamento máximo de 480 unidades após playtest no mapa ampliado.
 - Câmera espectadora ainda acompanha o local da eliminação; seguir outro sobrevivente fica para uma etapa posterior.
 - Prototipar mundo maior e câmera mais afastada conforme referência do responsável; comparar zoom, legibilidade e navegação antes de fixar tamanho do mapa e spawns.
