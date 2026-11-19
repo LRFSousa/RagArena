@@ -2,6 +2,8 @@
 
 Protótipo offline top-down em Godot 4. A release 0.5 acrescenta perfil e configurações locais ao ciclo de partida offline.
 
+Para digitar no navegador do celular, toque no campo. Se o teclado não abrir, use o botão **Teclado na tela** abaixo dele, digite e toque em **Concluir**. Esse botão também funciona ao nomear configurações.
+
 ## Executar
 
 Abra esta pasta no Godot 4 e execute o projeto (`F5`). Na primeira abertura, crie um nome local e uma configuração de classe; depois escolha a configuração em Arena. No desktop, use WASD ou setas para mover, espaço ou clique esquerdo para atacar, teclas `1`–`4` para usar itens, `Q`, `E` e `F` para habilidades, `Tab` para observar sobreviventes após eliminação, `T` para avançar 60 s no protótipo, `M` para voltar ao menu e `R` para iniciar nova partida. Em tela de toque, arraste o joystick à esquerda, segure o botão circular à direita para repetir ataques e toque nos quatro slots para usar itens, nos botões Q/E/F para habilidades, em **+60s teste** para avançar o relógio e em **Menu** para voltar.

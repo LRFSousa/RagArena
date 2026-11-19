@@ -12,6 +12,7 @@ var column: VBoxContainer
 var arena: Node2D
 var current_preset_id := ""
 var edit_id := ""
+var keyboard_panel: PanelContainer
 
 func _ready() -> void:
 	store = ProfileStore.new()
@@ -23,6 +24,7 @@ func _ready() -> void:
 func make_screen(title: String) -> void:
 	for child in screen.get_children():
 		child.queue_free()
+	keyboard_panel = null
 	var background := ColorRect.new()
 	background.color = Color("192d2d")
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -59,6 +61,45 @@ func text_field(placeholder: String, parent: Node = null) -> LineEdit:
 	(parent if parent != null else column).add_child(item)
 	return item
 
+func show_virtual_keyboard(input: LineEdit) -> void:
+	if is_instance_valid(keyboard_panel):
+		keyboard_panel.queue_free()
+	keyboard_panel = PanelContainer.new()
+	keyboard_panel.position = Vector2(180, 375)
+	keyboard_panel.size = Vector2(920, 300)
+	screen.add_child(keyboard_panel)
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 8)
+	keyboard_panel.add_child(content)
+	label("Digite pelo teclado da tela; use Concluir para voltar.", 18, content)
+	var keys := GridContainer.new()
+	keys.columns = 10
+	keys.add_theme_constant_override("h_separation", 4)
+	keys.add_theme_constant_override("v_separation", 4)
+	content.add_child(keys)
+	for token in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "_", "Z", "X", "C", "V", "B", "N", "M"]:
+		var key := Button.new()
+		key.text = token
+		key.custom_minimum_size = Vector2(82, 48)
+		key.pressed.connect(func(): apply_virtual_key(input, token))
+		keys.add_child(key)
+	for special in ["Espaço", "Apagar", "Concluir"]:
+		var key := Button.new()
+		key.text = special
+		key.custom_minimum_size = Vector2(82, 48)
+		key.pressed.connect(func(): apply_virtual_key(input, special))
+		keys.add_child(key)
+
+func apply_virtual_key(input: LineEdit, token: String) -> void:
+	match token:
+		"Espaço": input.text += " "
+		"Apagar": input.text = input.text.substr(0, maxi(0, input.text.length() - 1))
+		"Concluir":
+			if is_instance_valid(keyboard_panel):
+				keyboard_panel.queue_free()
+			keyboard_panel = null
+		_: input.text += token
+
 func show_login() -> void:
 	screen.show()
 	make_screen("RagnArena — entrada local")
@@ -68,6 +109,7 @@ func show_login() -> void:
 		button("Entrar localmente", show_menu)
 	else:
 		var name_input := text_field("Nome do personagem (3–16 letras, números ou _)")
+		button("Teclado na tela", func(): show_virtual_keyboard(name_input))
 		var feedback := label("", 16)
 		button("Criar personagem local", func():
 			if store.create_identity(name_input.text):
@@ -101,6 +143,7 @@ func show_presets(for_arena: bool) -> void:
 	make_screen("Escolha a configuração" if for_arena else "Configurações salvas")
 	label("Cada configuração guarda somente nome e classe.", 18)
 	var name_input := text_field("Nome da configuração")
+	button("Teclado na tela", func(): show_virtual_keyboard(name_input))
 	var class_picker := OptionButton.new()
 	class_picker.custom_minimum_size = Vector2(0, 48)
 	for name in CLASS_NAMES:
@@ -119,7 +162,7 @@ func show_presets(for_arena: bool) -> void:
 		else:
 			feedback.text = store.last_error)
 	var scroller := ScrollContainer.new()
-	scroller.custom_minimum_size = Vector2(840, 280)
+	scroller.custom_minimum_size = Vector2(840, 180)
 	column.add_child(scroller)
 	var list := VBoxContainer.new()
 	list.custom_minimum_size = Vector2(820, 0)

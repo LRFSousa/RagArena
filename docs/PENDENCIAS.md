@@ -2,6 +2,7 @@
 
 ## Testes em dispositivo
 
+- Confirmar em Android e iOS reais se o teclado nativo abre no navegador. O botão **Teclado na tela** oferece alternativa independente do teclado do sistema.
 - Testar entrada de nome pelo teclado virtual, persistência do perfil após fechar/reabrir o app e navegação do menu em Android real.
 - Validar aviso e paredes de fechamento, painel de resultado, botão de nova partida e observação após eliminação em Android real.
 - Validar a HUD de classes e os três botões de habilidade em Android real; testar latência visual, precisão do toque e desempenho com projéteis.

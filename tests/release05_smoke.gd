@@ -27,12 +27,23 @@ func run_tests() -> void:
 	entry.show_login()
 	var name_input: LineEdit
 	var create_button: Button
+	var keyboard_button: Button
 	for child in entry.column.get_children():
 		if child is LineEdit:
 			name_input = child
-		elif child is Button:
+		elif child is Button and child.text == "Criar personagem local":
 			create_button = child
-	name_input.text = "Novo_Usuario"
+		elif child is Button and child.text == "Teclado na tela":
+			keyboard_button = child
+	keyboard_button.pressed.emit()
+	check(is_instance_valid(entry.keyboard_panel), "teclado alternativo abre no formulário")
+	var grid: GridContainer = entry.keyboard_panel.get_child(0).get_child(1)
+	for wanted in ["N", "O", "M", "E", "_", "1", "Apagar", "2"]:
+		for key in grid.get_children():
+			if key.text == wanted:
+				key.pressed.emit()
+				break
+	check(name_input.text == "NOME_2", "teclado alternativo digita e apaga caracteres")
 	create_button.pressed.emit()
 	check(entry.store.has_identity() and entry.column.get_child(0).text.contains("menu"), "formulário cria personagem e abre menu")
 	entry.queue_free()

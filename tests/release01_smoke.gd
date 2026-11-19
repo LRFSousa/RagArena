@@ -53,11 +53,8 @@ func test_crate(level: int, hits_needed: int) -> void:
 	check(arena.wooden_blocks == 12, "12 caixas no mapa")
 	arena.player.position = Vector2(194, 210)
 	arena.player.facing = Vector2.DOWN
-	arena.attack_interval = 0.001
-	arena.attack_touch = 1
-	arena.attack_held = true
 	for i in range(hits_needed):
-		await physics_frame
+		arena.perform_attack()
 		await process_frame
 		if i < hits_needed - 1:
 			check(is_instance_valid(crate) and crate.hp > 0, "nível %d: caixa resiste ao golpe %d" % [level, i + 1])

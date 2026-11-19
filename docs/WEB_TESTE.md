@@ -23,4 +23,6 @@ O repositório `LRFSousa/RagArena` foi tornado público por autorização do res
 
 O perfil local usa os dados do navegador. Abrir em outro navegador ou limpar os dados cria um perfil separado.
 
+Se o teclado do celular não abrir ao tocar no campo de nome, use **Teclado na tela**, digite e toque em **Concluir**. O mesmo controle está disponível ao nomear configurações.
+
 A exportação, a integridade do WebAssembly e o carregamento público dos arquivos foram verificados. A tela de criação do personagem da 0.5 renderizou no navegador integrado; o fluxo completo passou em testes headless. Ainda falta validar toda a navegação no navegador e os controles por toque e desempenho em celular real em paisagem.

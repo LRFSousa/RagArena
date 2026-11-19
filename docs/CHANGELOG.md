@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1 — digitação no navegador móvel
+
+- Ativado o teclado virtual experimental da exportação Web do Godot.
+- Adicionado botão **Teclado na tela** aos campos de personagem e configuração, com letras, números, `_`, espaço, apagar e concluir. O nome continua sujeito à validação existente.
+- Teste automatizado passou para digitar e apagar pelo teclado alternativo e criar o personagem.
+
 ## 0.5.0 — identidade e configurações locais
 
 - Perfil local com ID interno, nome público imutável, validação provisória e histórico de partidas no dispositivo.

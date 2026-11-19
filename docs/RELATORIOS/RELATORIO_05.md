@@ -40,6 +40,7 @@ As cinco suítes passaram sem erros. A 0.5 cobre nome válido/inválido, perman�
 
 ## Limitações
 
+- Após relato de que não era possível digitar o nome no navegador, a versão 0.5.1 ativou o teclado virtual experimental Web e adicionou um teclado na tela aos campos de nome e configuração. A suíte 0.5 verifica digitação, apagar e criação do personagem pelo novo controle; a confirmação em aparelho real ainda depende de teste manual.
 - Unicidade global de nome, autenticação e sincronização entre dispositivos dependem do backend futuro.
 - Histórico local não é confiável para ranking. Dados do app/navegador podem ser apagados pelo usuário; ainda não há migração entre formatos.
 - Navegação, teclado virtual e legibilidade no celular real precisam de playtest.
