@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Status:** releases 0.1 a 0.5 implementadas e validadas em modo headless; validação manual da 0.5 em celular pendente.
+**Status:** releases 0.1 a 0.5 implementadas; 0.6 adiada por decisão do responsável; 0.7 em desenvolvimento.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  
 **Princípio:** validar gameplay com formas geométricas antes de sprites e interface final.
 
@@ -93,6 +93,7 @@
 
 ## Release 0.6 — Multiplayer online
 **Objetivo:** partidas reais de 2–5 jogadores.
+**Ordem atual:** adiada para depois da 0.7. A base inicial está preservada na branch `release/0.6`.
 - [ ] Definir arquitetura de servidor dedicado autoritativo, preferencialmente Godot headless/GDScript na primeira versão.
 - [ ] Implementar autenticação real e persistência de conta, nome e presets.
 - [ ] Implementar criação/entrada em sala ou fila de 2–5 jogadores.
@@ -104,6 +105,12 @@
 
 ## Release 0.7 — Arte, animação e interface mobile
 **Objetivo:** substituir os placeholders sem comprometer a legibilidade.
+- [x] Criar guia de estilo provisório e atlas pixelados originais das quatro classes com cinco estados de animação.
+- [x] Criar tiles pixelados de caixa e parede e ícones dos seis itens, gerados de forma reproduzível.
+- [x] Integrar sprites do personagem, obstáculos e itens; compactar HUD e separar alvos de toque de ataque e habilidades.
+- [x] Adicionar sinais de áudio provisórios para impacto, coleta, habilidade e eliminação.
+- [ ] Produzir efeitos visuais específicos das habilidades e arte final com mais quadros e direções.
+- [ ] Medir legibilidade, toque e desempenho em aparelhos Android reais e múltiplas proporções.
 - [ ] Definir identidade visual original inspirada em fantasia pixel art top-down 3/4, sem copiar assets de jogos existentes.
 - [ ] Criar visual consistente para Paladino, Mago, Assassino e Arqueiro.
 - [ ] Produzir sprites/sprite sheets de idle, caminhada, ataque, dano, morte e efeitos das habilidades.

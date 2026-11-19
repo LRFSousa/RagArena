@@ -21,6 +21,9 @@ const SYMBOLS := {
 var item_id := "health_potion"
 var remaining := 20.0
 
+func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
 func configure(id: String, lifetime: float) -> void:
 	item_id = id
 	remaining = lifetime
@@ -37,5 +40,8 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	var color: Color = COLORS.get(item_id, Color.WHITE)
 	draw_circle(Vector2.ZERO, 17.0, Color("1c2730"))
-	draw_circle(Vector2.ZERO, 14.0, color)
-	draw_string(ThemeDB.fallback_font, Vector2(-6, 6), SYMBOLS.get(item_id, "?"), HORIZONTAL_ALIGNMENT_LEFT, -1, 19, Color("182425"))
+	var texture: Texture2D = load("res://assets/pixel/%s.png" % item_id)
+	if texture != null:
+		draw_texture_rect(texture, Rect2(-16, -16, 32, 32), false)
+	else:
+		draw_circle(Vector2.ZERO, 14.0, color)

@@ -12,6 +12,7 @@ const ProgressionScript = preload("res://scripts/progression.gd")
 const InventoryScript = preload("res://scripts/player_inventory.gd")
 const CombatScript = preload("res://scripts/combat_system.gd")
 const MatchScript = preload("res://scripts/match_controller.gd")
+const GameAudioScript = preload("res://scripts/game_audio.gd")
 const ARENA := Rect2(52, 52, 1176, 616)
 const SPAWNS := [Vector2(150, 150), Vector2(1130, 150), Vector2(150, 570), Vector2(1130, 570)]
 
@@ -42,6 +43,13 @@ var attack_touch := -1
 var joystick_origin := Vector2.ZERO
 var joystick_value := Vector2.ZERO
 var hud: Label
+var status_hud: Label
+var effects_hud: Label
+var game_audio
+var previous_hp := -1
+var previous_match_state := ""
+const ATTACK_CENTER := Vector2(1140, 570)
+const ATTACK_TOUCH_RADIUS := 72.0
 
 func _ready() -> void:
 	rng.randomize()
@@ -61,11 +69,25 @@ func _ready() -> void:
 	match_controller = MatchScript.new()
 	add_child(match_controller)
 	match_controller.configure(self, combat, inventory, progression, match_settings)
+	game_audio = GameAudioScript.new()
+	add_child(game_audio)
+	previous_hp = inventory.hp
+	previous_match_state = match_controller.state
 	hud = Label.new()
-	hud.position = Vector2(22, 12)
+	hud.position = Vector2(24, 9)
 	hud.add_theme_font_size_override("font_size", 18)
 	hud.add_theme_color_override("font_color", Color("f3f0df"))
 	add_child(hud)
+	status_hud = Label.new()
+	status_hud.position = Vector2(480, 8)
+	status_hud.add_theme_font_size_override("font_size", 19)
+	status_hud.add_theme_color_override("font_color", Color("fff1b3"))
+	add_child(status_hud)
+	effects_hud = Label.new()
+	effects_hud.position = Vector2(24, 130)
+	effects_hud.add_theme_font_size_override("font_size", 15)
+	effects_hud.add_theme_color_override("font_color", Color("bde3d6"))
+	add_child(effects_hud)
 	update_hud()
 	queue_redraw()
 
@@ -133,6 +155,7 @@ func collect_ground_items() -> void:
 		if child is GroundItem and not child.is_queued_for_deletion():
 			if player.position.distance_to(child.position) <= balance.pickup_radius:
 				if inventory.pickup_item(child.item_id):
+					game_audio.play_cue("pickup")
 					child.queue_free()
 
 # Chamada reservada para o fechamento da arena na release 0.4.
@@ -158,15 +181,18 @@ func _physics_process(delta: float) -> void:
 		return
 	if match_controller.state == "results" or inventory.hp <= 0:
 		player.move_input = Vector2.ZERO
+		player.visual_dead = inventory.hp <= 0
 		attack_held = false
 		if match_controller.state == "active":
 			match_controller.advance(delta)
+		update_feedback()
 		update_hud()
 		queue_redraw()
 		return
 	var keys := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var direction: Vector2 = joystick_value if joystick_touch >= 0 else keys
 	player.move_input = direction
+	player.set_visual_class(combat.class_id)
 	player.speed = float(combat.stats()["speed"]) * inventory.movement_speed_multiplier() * combat.speed_multiplier()
 	if direction.length_squared() > 0.01:
 		player.facing = direction.normalized()
@@ -181,8 +207,17 @@ func _physics_process(delta: float) -> void:
 	combat.advance(delta)
 	match_controller.advance(delta)
 	collect_ground_items()
+	update_feedback()
 	update_hud()
 	queue_redraw()
+
+func update_feedback() -> void:
+	if inventory.hp < previous_hp:
+		game_audio.play_cue("hit")
+	if match_controller.state == "results" and previous_match_state != "results":
+		game_audio.play_cue("elimination")
+	previous_hp = inventory.hp
+	previous_match_state = match_controller.state
 
 func perform_attack() -> bool:
 	var start: Vector2 = player.position + player.facing * 24.0
@@ -191,9 +226,11 @@ func perform_attack() -> bool:
 	var hit := get_world_2d().direct_space_state.intersect_ray(query)
 	attack_end = hit.get("position", end)
 	attack_flash = 0.12
+	player.show_attack()
 	if not hit.is_empty() and hit["collider"] is StaticBody2D and hit["collider"].has_method("take_crate_damage") and hit["collider"].destructible:
 		var damage_level: int = test_level if test_level > 0 else progression.level
 		hit["collider"].take_crate_damage(CombatRules.crate_damage(damage_level))
+		game_audio.play_cue("hit")
 		return true
 	else:
 		combat.fire_basic()
@@ -217,7 +254,8 @@ func _input(event: InputEvent) -> void:
 			var classes := ["paladin", "mage", "assassin", "archer"]
 			combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
 		elif event.physical_keycode in [KEY_Q, KEY_E, KEY_F] and match_controller.state == "active" and inventory.hp > 0:
-			combat.use_skill([KEY_Q, KEY_E, KEY_F].find(event.physical_keycode))
+			if combat.use_skill([KEY_Q, KEY_E, KEY_F].find(event.physical_keycode)):
+				game_audio.play_cue("skill")
 	elif event is InputEventScreenTouch:
 		if event.pressed:
 			if match_controller.state == "results" and Rect2(480, 430, 320, 70).has_point(event.position):
@@ -239,12 +277,13 @@ func _input(event: InputEvent) -> void:
 				var classes := ["paladin", "mage", "assassin", "archer"]
 				combat.select_class(classes[(classes.find(combat.class_id) + 1) % classes.size()])
 			elif event.position.y >= 600 and event.position.y <= 668 and event.position.x >= 730 and event.position.x < 1054 and match_controller.state == "active" and inventory.hp > 0:
-				combat.use_skill(int((event.position.x - 730.0) / 108.0))
+				if combat.use_skill(int((event.position.x - 730.0) / 108.0)):
+					game_audio.play_cue("skill")
 			elif event.position.x < 400 and joystick_touch < 0:
 				joystick_touch = event.index
 				joystick_origin = event.position
 				joystick_value = Vector2.ZERO
-			elif event.position.distance_to(Vector2(1130, 570)) < 110 and attack_touch < 0:
+			elif event.position.distance_to(ATTACK_CENTER) < ATTACK_TOUCH_RADIUS and attack_touch < 0:
 				attack_touch = event.index
 				attack_held = true
 		else:
@@ -270,8 +309,9 @@ func update_hud() -> void:
 			buffs.append(label_text)
 	var buff_text := ", ".join(buffs) if not buffs.is_empty() else "nenhum"
 	var test_text := " (teste %d)" % test_level if test_level > 0 else ""
-	var combat_text := "Classe: %s | Habilidades Q/E/F: %.0f/%.0f/%.0f s | Bots: %d" % [combat.class_id, combat.cooldowns[0], combat.cooldowns[1], combat.cooldowns[2], combat.bots.filter(func(bot): return bot.active).size()]
-	hud.text = "HP %d/%d | Nível %d%s | XP %d/%s | Caixas destruídas: %d | Restantes: %d\nEfeitos: %s | Uso: %.1fs | 1–4: itens  Espaço: ataque  R: reiniciar\n%s\n%s" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks, buff_text, inventory.use_cooldown, combat_text, match_controller.status_text()]
+	hud.text = "HP %d/%d   Nível %d%s   XP %d/%s\nCaixas destruídas: %d   Restantes: %d" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks]
+	status_hud.text = match_controller.status_text()
+	effects_hud.text = "%s  |  Efeitos: %s  |  Uso: %.1fs" % [combat.class_id.capitalize(), buff_text, inventory.use_cooldown]
 
 func restart_game() -> void:
 	if restart_requested.has_connections():
@@ -282,6 +322,9 @@ func restart_game() -> void:
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, Vector2(1280, 720)), Color("192d2d"))
 	draw_rect(ARENA, Color("304b42"))
+	draw_rect(Rect2(0, 0, 1280, 52), Color("13242be8"))
+	draw_rect(Rect2(12, 58, 438, 69), Color("13242bdc"))
+	draw_rect(Rect2(12, 125, 440, 32), Color("13242bdc"))
 	if match_controller != null and match_controller.elapsed >= match_settings.shrink_start:
 		var safe: Rect2 = match_controller.current_safe_rect
 		var shade := Color(0.65, 0.1, 0.1, 0.56)
@@ -321,12 +364,15 @@ func _draw() -> void:
 		draw_rect(box, Color("284758"))
 		draw_rect(box, Color("a5c6c7"), false, 2)
 		draw_string(ThemeDB.fallback_font, box.position + Vector2(12, 28), ["Q", "E", "F"][i], HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("f3f0df"))
+		if combat != null:
+			draw_string(ThemeDB.fallback_font, box.position + Vector2(36, 55), "%.0fs" % combat.cooldowns[i] if combat.cooldowns[i] > 0.0 else "PRONTO", HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("f0d69c"))
 	var base := joystick_origin if joystick_touch >= 0 else Vector2(130, 570)
 	draw_circle(base, 73, Color(0.1, 0.17, 0.19, 0.45))
 	draw_arc(base, 73, 0, TAU, 48, Color("72b9ab"), 3)
 	draw_circle(base + joystick_value * 55, 28, Color(0.34, 0.75, 0.67, 0.7))
-	draw_circle(Vector2(1130, 570), 66, Color(0.45, 0.17, 0.13, 0.65))
-	draw_arc(Vector2(1130, 570), 66, 0, TAU, 48, Color("e6a66d"), 4)
+	draw_circle(ATTACK_CENTER, 66, Color(0.45, 0.17, 0.13, 0.8))
+	draw_arc(ATTACK_CENTER, 66, 0, TAU, 48, Color("e6a66d"), 4)
+	draw_string(ThemeDB.fallback_font, ATTACK_CENTER + Vector2(-38, 7), "ATAQUE", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("fff1b3"))
 	if attack_flash > 0.0 and player != null:
 		draw_line(player.position + player.facing * 24, attack_end, Color("ffe0a0"), 12, true)
 	if match_controller != null and match_controller.state == "results":

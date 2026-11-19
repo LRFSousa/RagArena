@@ -1,0 +1,49 @@
+extends SceneTree
+
+const ArenaScene = preload("res://scenes/arena.tscn")
+var failures := 0
+
+func _initialize() -> void:
+	call_deferred("run_tests")
+
+func check(value: bool, label: String) -> void:
+	if value:
+		print("PASS: ", label)
+	else:
+		failures += 1
+		push_error("FAIL: " + label)
+
+func run_tests() -> void:
+	for id in ["paladin", "mage", "assassin", "archer"]:
+		var texture: Texture2D = load("res://assets/pixel/%s.png" % id)
+		check(texture != null and texture.get_size() == Vector2(256, 320), "%s: atlas 4 × 5 em quadros 64" % id)
+	for id in ["crate", "wall"]:
+		var texture: Texture2D = load("res://assets/pixel/%s.png" % id)
+		check(texture != null and texture.get_size() == Vector2(32, 32), "%s: tile 32" % id)
+	for id in ["health_potion", "strength", "speed", "shield", "elixir", "xp_amulet"]:
+		var texture: Texture2D = load("res://assets/pixel/%s.png" % id)
+		check(texture != null and texture.get_size() == Vector2(16, 16), "%s: ícone de item" % id)
+	var arena = ArenaScene.instantiate()
+	root.add_child(arena)
+	await process_frame
+	check(arena.player.visual_sprite != null and arena.player.visual_sprite.texture != null, "personagem renderiza atlas")
+	for id in ["mage", "assassin", "archer", "paladin"]:
+		arena.player.set_visual_class(id)
+		check(arena.player.visual_class == id and arena.player.visual_sprite.texture.resource_path.ends_with("/%s.png" % id), "troca visual para %s" % id)
+	arena.player.show_attack()
+	arena.player._physics_process(0.016)
+	check(arena.player.visual_sprite.frame_coords.y == 2, "ataque mostra animação")
+	arena.player.show_damage()
+	arena.player._physics_process(0.016)
+	check(arena.player.visual_sprite.frame_coords.y == 3, "dano tem prioridade visual")
+	arena.player.visual_dead = true
+	arena.player._physics_process(0.016)
+	check(arena.player.visual_sprite.frame_coords.y == 4, "eliminação mostra animação")
+	check(not Rect2(730, 600, 98, 68).has_point(arena.ATTACK_CENTER) and arena.ATTACK_CENTER.distance_to(Vector2(1034, 634)) > arena.ATTACK_TOUCH_RADIUS, "ataque separado das habilidades")
+	check(arena.ATTACK_CENTER.distance_to(Vector2(130, 570)) > arena.ATTACK_TOUCH_RADIUS + 73.0, "ataque separado do joystick")
+	check("HP" in arena.hud.text and "Partida" in arena.status_hud.text, "HUD mostra vida e cronômetro")
+	check(arena.game_audio.streams.size() == 4 and arena.game_audio.streams["pickup"].data.size() > 0, "efeitos de áudio disponíveis")
+	arena.queue_free()
+	if failures == 0:
+		print("RELEASE 0.7: todos os testes passaram")
+	quit(0 if failures == 0 else 1)

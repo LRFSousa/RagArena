@@ -1,5 +1,12 @@
 # Pendências
 
+## Release 0.7
+
+- Validar arte, contraste, áreas de toque e desempenho em celulares Android reais. Os testes atuais são headless e não medem quadros por segundo nem ergonomia.
+- Adicionar efeitos visuais específicos para cada habilidade, animações direcionais mais completas e revisão artística após playtest.
+- Revisar o layout em proporções diferentes de 16:9; o Godot mantém a proporção lógica e pode deixar faixas laterais.
+- A release 0.6 foi adiada pelo responsável. A base inicial está preservada na branch `release/0.6`; integração deve ocorrer depois da 0.7.
+
 ## Testes em dispositivo
 
 - Confirmar se projéteis vermelhos e o sinal de dano do personagem são legíveis na tela do celular.
