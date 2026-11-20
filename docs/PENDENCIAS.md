@@ -3,7 +3,7 @@
 ## Redesenho antes do próximo desenvolvimento
 
 - Fechar, nesta ordem, Classes, Habilidades, Atributos, Itens e Inventário, Navegação e Mapa conforme `docs/BACKLOG_NOVA_FASE.md`. Cinco classes iniciais e Job Level separado estão aprovados. Ao trocar de classe, Base Level/XP permanecem e Job Level/XP recomeçam. Restam papéis, regras de habilidades e detalhes das ramificações futuras.
-- Habilidades: fechar primeiro o kit do Espadachim com duas passivas (Aumentar Recuperação de HP, Perícia com Espada), Golpe Fulminante e Vigor. Ataque básico de dois blocos atinge só um alvo; ranks aprendidos persistem após troca de classe. Faltam regra contra duplicação de pontos no reset de Job, alcance de Golpe Fulminante, condição da recuperação, custos e valores por rank. Usar o contrato resultante para as demais classes depois.
+- Habilidades: fechar primeiro o kit do Espadachim com duas passivas (Aumentar Recuperação de HP, Perícia com Espada), Golpe Fulminante e Vigor. Ataque básico e Golpe Fulminante têm o mesmo alcance de dois blocos e atingem um alvo, inclusive caixas; ranks aprendidos persistem após troca de classe. Faltam regra contra duplicação de pontos no reset de Job, condição da recuperação, custos e valores por rank. Usar o contrato resultante para as demais classes depois.
 
 ## Release 1.0
 

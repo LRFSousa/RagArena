@@ -98,7 +98,7 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 | Ataque básico — Golpe físico | Ataque comum com corte e arco luminoso | **Um alvo** inimigo ou objeto destrutível até **2 blocos**, incluindo o bloco adjacente; toque fora do alcance aproxima antes de atacar | Disponível desde o início; dano acompanha atributos e arma |
 | Aumentar Recuperação de HP | Passiva de recuperação periódica enquanto imóvel; melhora cura recebida de habilidades e itens | O próprio Espadachim | Até 10 ranks como referência; intervalo, valores e condição de imobilidade serão adaptados ao ritmo da arena |
 | Perícia com Espada | Passiva de ATQ com espada de uma mão ou adaga equipada | O próprio Espadachim | Até 10 ranks como referência; bônus por rank será balanceado com equipamentos |
-| Golpe Fulminante | Ativa ofensiva: golpe físico forte em um oponente | Um alvo corpo a corpo; alcance exato da habilidade será decidido separadamente do ataque básico | Até 10 ranks como referência; dano, precisão, custo e recarga a definir |
+| Golpe Fulminante | Ativa ofensiva: golpe físico forte em um oponente | **Um alvo até 2 blocos**, mesmo alcance do ataque básico, incluindo caixas destrutíveis | Até 10 ranks como referência; dano, precisão, custo e recarga a definir |
 | Vigor | Ativa defensiva: impede reação/empurrão ao receber ataque e pode conceder defesa | O próprio Espadachim | Até 10 ranks como referência; duração, defesa, custo, recarga e pré-requisitos a definir |
 
 As quatro habilidades seguem as referências fornecidas pelo responsável: [Aumentar Recuperação de HP](https://browiki.org/wiki/Aumentar_Recupera%C3%A7%C3%A3o_de_HP), [Perícia com Espada](https://browiki.org/wiki/Per%C3%ADcia_com_Espada), [Golpe Fulminante](https://browiki.org/wiki/Golpe_Fulminante) e [Vigor](https://browiki.org/wiki/Vigor). Os números, a duração de Vigor, o custo de SP e o pré-requisito de Provocar **não estão aprovados automaticamente**. Efeitos, texto e ícones do jogo serão próprios.
@@ -110,6 +110,7 @@ Proteção Divina, Cura e Determinação continuam apenas no protótipo `paladin
 ### Contrato e critérios de aceite para implementação posterior
 
 - [ ] Fixar o tamanho lógico de um bloco e medir o alcance do ataque pelo mesmo sistema usado em mira, aproximação automática e colisão; alvos no primeiro e no segundo bloco devem receber dano, inclusive caixas encostadas no personagem.
+- [ ] Aplicar o mesmo alcance de dois blocos ao ataque básico e ao Golpe Fulminante; a distinção entre ambos virá do dano e demais propriedades da habilidade, não do alcance. Ambos acertam um único alvo por acionamento.
 - [ ] O ataque básico deve acertar **um único alvo por acionamento**, mesmo com vários alinhados; obstáculos sólidos bloqueiam o golpe. Definir seleção de alvo quando dois alvos ocupam o mesmo bloco.
 - [ ] Definir Job Level mínimo de cada habilidade, pontos por rank, custo de recurso, recarga, duração e valores por rank no tópico Atributos/Habilidades, após validar tempo de partida e HP por faixa.
 - [ ] Impedir que a recuperação passiva conceda XP por ficar parado; limitar cura ao HP máximo e definir se dano interrompe a condição de imobilidade.
@@ -120,5 +121,4 @@ Proteção Divina, Cura e Determinação continuam apenas no protótipo `paladin
 ### Decisões abertas deste kit
 
 1. Com Job Level reiniciado e ranks de habilidades preservados, como ganhar novos pontos sem acumular pontos infinitos ao alternar classes? Proposta: cada classe recebe uma única vez os pontos de cada marco de Job Level já alcançado historicamente.
-2. Golpe Fulminante terá 1 bloco de alcance como a referência ou acompanhará os 2 blocos do ataque básico do Espadachim?
-3. Recuperação passiva ficará ativa apenas fora de combate ou também durante combate quando o jogador permanecer imóvel?
+2. Recuperação passiva ficará ativa apenas fora de combate ou também durante combate quando o jogador permanecer imóvel?
