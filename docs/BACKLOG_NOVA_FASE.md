@@ -29,9 +29,9 @@ Essas linhas são um **inventário de decisões e lacunas**, não tarefas marcad
 
 - [Aprovado] O personagem terá **nível Base permanente de 1 a 99**. O nível determinará a faixa de arena; as faixas exatas e suas bordas serão fechadas no tópico Atributos/Mapa.
 - [Aprovado] O primeiro beta terá **cinco classes selecionáveis: Espadachim, Mago, Arqueiro, Noviço e Gatuno**. Evoluções de segunda e terceira classe ficam para depois dos testes e correções do beta.
-- [Aprovado] **Job Level separado do Base Level** já fará parte do beta. O limite de Job Level e a curva de Job XP serão definidos no tópico Atributos.
+- [Aprovado] **Job Level separado do Base Level** já fará parte do beta. A primeira classe da linha Espadachim evoluirá ao chegar ao **Job Level 40**; a curva de Job XP será definida no tópico Atributos. Limites das etapas posteriores continuam abertos.
 - [Aprovado] Ao trocar de classe, o **Base Level e sua XP permanecem**; o **Job Level e a Job XP recomeçam** para a classe escolhida, inclusive se ela já foi usada antes. O valor inicial exibido do Job Level será definido no tópico Atributos. Troca de classe ocorrerá fora da rodada.
-- [Aprovado] Cada linha de classe será preparada para **duas ou mais ramificações futuras**. Nenhuma evolução será jogável no primeiro beta.
+- [Aprovado] A linha do Espadachim terá **três etapas de classe** (Espadachim → segunda classe → terceira classe), com duas ou mais opções de ramo preparadas para o futuro. A primeira evolução ocorrerá no Job Level 40, reiniciará o Job Level em **0** na nova etapa e liberará novas habilidades. Nenhuma evolução será jogável no primeiro beta.
 - [Referência] Ragnarok Mobile usa níveis Base e Job separados e progressão por etapas de profissão. Requisitos e ramificações servem como referência de estrutura, sem copiar arte, texto, habilidades ou números. Fontes oficiais: [progressão de profissão](https://ragnarokm.gungho.jp/member/help/vbnfjd00000009qz.html), [Base/Job](https://ragnarokm.gungho.jp/member/help/vbnfjd00000009f3.html), [ramo Cavaleiro/Paladino](https://ragnarokm.gungho.jp/member/event/3rd_classes_upd/).
 - [Referência] As cinco linhas iniciais correspondem às profissões básicas de espada, magia, arco, acólito e gatuno na referência. As ramificações abaixo são **propostas de direção**, não nomes ou poderes finais a copiar. Fontes oficiais: [linhas básicas](https://ragnarokm.gungho.jp/member/update/tearsglastheim_upd_info.html), [exemplo de Mago e Arqueiro](https://ragnarokm.gungho.jp/member/event/2020_1st_upd/), [árvore e Job Level](https://ragnarokm.gungho.jp/member/help/vbnfjd00000009qz.html).
 
@@ -59,7 +59,7 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 - [ ] Criar IDs internos estáveis para as cinco classes, separados de nome exibido e arte. Migrar o ID `paladin` e os perfis locais existentes sem perder a identidade ou presets.
 - [ ] Definir os papéis e fraquezas das cinco classes no tópico Habilidades. Não estabelecer vantagem permanente sem limites por faixa de arena.
 - [ ] Definir quais regras do Paladino protótipo ficam no Espadachim e quais serão reservadas ao ramo defensivo; adaptar os protótipos de Mago e Arqueiro; decidir o reaproveitamento do Assassino no Gatuno; criar Noviço.
-- [ ] Desenhar modelo de dados permanente: nível/XP Base do personagem, classe atual, nível/XP Job da classe atual, classes desbloqueadas, habilidades aprendidas e presets. O Job anterior não será restaurado após a troca. Separar esses dados dos estados temporários de uma rodada (HP atual, recargas e efeitos).
+- [ ] Desenhar modelo de dados permanente: nível/XP Base do personagem, classe e etapa atuais, nível/XP Job da etapa atual, classes desbloqueadas, ranks de habilidades aprendidas por classe/etapa, pontos concedidos por marco de Job e presets. O Job anterior não será restaurado após a troca. Separar esses dados dos estados temporários de uma rodada (HP atual, recargas e efeitos).
 - [ ] Exibir e evoluir Job Level separadamente de Base Level no beta. Definir limite, recompensas e curva no tópico Atributos.
 - [ ] Definir regras de entrada e troca de classe fora da arena. Uma rodada iniciada mantém a classe escolhida até o resultado.
 - [ ] Limitar a seleção do beta às cinco classes iniciais. Manter protótipos antigos como recursos de desenvolvimento até migrar seus dados e testes.
@@ -68,8 +68,8 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 ### Evoluções futuras, fora do primeiro beta
 
 - [ ] Definir os nomes e papéis finais de **duas ou mais ramificações por classe inicial**; reservar IDs e relações de pré-requisito na estrutura de dados sem implementar classes futuras no beta.
-- [ ] Definir requisitos de Base/Job Level e eventuais provas de avanço depois de conhecer a curva de XP e o tempo esperado para cada faixa.
-- [ ] Definir o que acontece com pontos, habilidades, equipamento compatível e presets ao evoluir ou trocar de classe.
+- [ ] Implementar a primeira evolução da linha Espadachim no Job Level 40 depois do beta; definir requisitos e limites da terceira etapa quando a curva de XP e o tempo esperado estiverem fechados.
+- [ ] Preservar integralmente os ranks aprendidos nas etapas anteriores ao evoluir ou trocar de classe; definir acesso às habilidades anteriores, compatibilidade de equipamento e presets na evolução.
 - [ ] Criar arte, efeitos, balanceamento, testes e migração de dados para cada classe efetivamente adicionada.
 
 ### Critérios de aceite deste tópico de planejamento
@@ -103,7 +103,9 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 
 As quatro habilidades seguem as referências fornecidas pelo responsável: [Aumentar Recuperação de HP](https://browiki.org/wiki/Aumentar_Recupera%C3%A7%C3%A3o_de_HP), [Perícia com Espada](https://browiki.org/wiki/Per%C3%ADcia_com_Espada), [Golpe Fulminante](https://browiki.org/wiki/Golpe_Fulminante) e [Vigor](https://browiki.org/wiki/Vigor). Os números, a duração de Vigor, o custo de SP e o pré-requisito de Provocar **não estão aprovados automaticamente**. Efeitos, texto e ícones do jogo serão próprios.
 
-[Aprovado] Ao trocar de classe, Job Level e Job XP reiniciam, mas os **ranks das habilidades já aprendidas permanecem guardados por classe**, inclusive quando o jogador volta ao Espadachim. Pontos já investidos não são devolvidos pela troca; a regra de novos pontos após o reset de Job e os limites de gasto será definida com a curva de Job Level. Base Level/XP permanecem compartilhados. Recargas, HP e efeitos ativos recomeçam em cada rodada.
+[Aprovado] Ao trocar de classe ou evoluir de etapa, Job Level e Job XP reiniciam, mas os **ranks das habilidades já aprendidas nunca são perdidos**. A nova etapa libera uma árvore de habilidades adicional. Base Level/XP permanecem compartilhados. Recargas, HP e efeitos ativos recomeçam em cada rodada.
+
+**Regra de pontos da linha Espadachim:** cada marco de Job Level concede pontos **uma vez por etapa de classe**. A conta guarda quais marcos já concederam pontos naquela etapa e os ranks comprados. Voltar a uma etapa com Job Level reiniciado não recria pontos já recebidos; chegar a um marco ainda não recompensado pode concedê-los. Ao evoluir, a nova etapa começa no Job Level 0 com seus próprios marcos e pontos. Assim, três etapas podem acumular pontos e habilidades sem apagar os ranks antigos. A quantidade de pontos por marco e a possibilidade de gastar pontos de uma etapa em outra ainda serão definidas.
 
 Proteção Divina, Cura e Determinação continuam apenas no protótipo `paladin`; não compõem este kit inicial do Espadachim. Podem ser avaliadas para evoluções futuras.
 
@@ -114,11 +116,11 @@ Proteção Divina, Cura e Determinação continuam apenas no protótipo `paladin
 - [ ] O ataque básico deve acertar **um único alvo por acionamento**, mesmo com vários alinhados; obstáculos sólidos bloqueiam o golpe. Definir seleção de alvo quando dois alvos ocupam o mesmo bloco.
 - [ ] Definir Job Level mínimo de cada habilidade, pontos por rank, custo de recurso, recarga, duração e valores por rank no tópico Atributos/Habilidades, após validar tempo de partida e HP por faixa.
 - [ ] Impedir que a recuperação passiva conceda XP por ficar parado; limitar cura ao HP máximo e definir se dano interrompe a condição de imobilidade.
-- [ ] Garantir que o reset de Job não duplique pontos nem apague ranks persistidos; definir como equipamento incompatível afeta Perícia com Espada.
+- [ ] Garantir que o reset de Job, a troca de classe e a evolução não dupliquem pontos nem apaguem ranks persistidos; definir como equipamento incompatível afeta Perícia com Espada.
 - [ ] Testar toque direto em alvo, botão ATK, aproximação fora do alcance, bloqueio por obstáculo, primeiro/segundo bloco, um único alvo atingido, passivas, recargas e troca de classe com ranks preservados.
 - [ ] Fechar este kit e usá-lo como **formato de especificação** para Mago, Arqueiro, Noviço e Gatuno, sem presumir que terão a mesma quantidade de habilidades ou os mesmos números.
 
 ### Decisões abertas deste kit
 
-1. Com Job Level reiniciado e ranks de habilidades preservados, como ganhar novos pontos sem acumular pontos infinitos ao alternar classes? Proposta: cada classe recebe uma única vez os pontos de cada marco de Job Level já alcançado historicamente.
+1. Os pontos de uma etapa poderão ser gastos apenas nas habilidades daquela etapa ou também nas etapas anteriores?
 2. Recuperação passiva ficará ativa apenas fora de combate ou também durante combate quando o jogador permanecer imóvel?

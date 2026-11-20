@@ -7,6 +7,7 @@
 - Iniciado o tópico Habilidades exclusivamente pelo Espadachim: inventariadas as três habilidades do protótipo, proposto contrato de alcance de dois blocos, progressão por Job Level e critérios de aceite; demais classes aguardam essa referência. Nenhuma jogabilidade foi alterada.
 - Definido em conceito o kit inicial do Espadachim: Aumentar Recuperação de HP, Perícia com Espada, Golpe Fulminante e Vigor. Ataque básico de dois blocos atinge um alvo; ranks aprendidos sobrevivem ao reset de Job na troca de classe. Registradas pendências de balanceamento e de pontos para impedir duplicação. Nenhuma jogabilidade foi alterada.
 - Alinhado o alcance de Golpe Fulminante ao ataque básico: ambos chegam a dois blocos e acertam um alvo por acionamento, inclusive caixas. Nenhuma jogabilidade foi alterada.
+- Definida a progressão futura da linha Espadachim em três etapas: primeira evolução no Job Level 40, nova etapa com Job Level 0, novas habilidades e ranks anteriores preservados. Marcos de Job concedem pontos uma única vez por etapa para impedir duplicação após reset. Nenhuma jogabilidade foi alterada.
 
 ## 1.0 — preparação inicial da beta
 
