@@ -1,5 +1,9 @@
 # Changelog
 
+## Análise da arena 3D experimental
+
+- Avaliada a viabilidade de uma cena isolada de montanha com patamares, rampas, barreiras, sprites 2D em 3D e câmera inclinada. Analisado o `ragx` para inspeção de GLB sem incorporar assets originais. Registrados arquivos, testes e impacto em `docs/ARENA_3D_EXPERIMENTAL_ANALISE.md`; nenhuma cena ou sistema jogável foi modificado.
+
 ## Progressão Base/Job de Arena
 
 - Implementados personagens de classe fixa com até nove vagas, Base/Job EXP e Level persistentes e independentes, tabelas configuráveis 1–40 e migração segura do perfil v1.

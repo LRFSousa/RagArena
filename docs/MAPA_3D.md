@@ -1,5 +1,7 @@
 # Preparação do mapa para 3D
 
+Análise da cena isolada de montanha, seus arquivos, testes e impacto: `docs/ARENA_3D_EXPERIMENTAL_ANALISE.md`. Nenhuma cena 3D foi incorporada ainda.
+
 O layout lógico da Arena está em `scripts/arena_map_layout.gd`: tamanho do mundo, área jogável, cinco pontos de spawn, 17 paredes e 24 caixas. `arena.gd` instancia a representação 2D desses dados; `match_controller.gd` usa os mesmos limites e spawns. Assim, a geometria não precisa ser redigitada ao criar uma cena `Node3D`.
 
 ## Convenção de coordenadas
