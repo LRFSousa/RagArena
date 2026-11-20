@@ -5,7 +5,7 @@ Este documento organiza o redesenho do jogo **antes de alterar a jogabilidade**.
 ## Ordem de definição
 
 1. **Classes** — cinco classes do beta, Base Level compartilhado e reset de Job ao trocar; papéis e ramificações futuras são propostas.
-2. **Habilidades** — definir cada ação, alcance, recarga, evolução e persistência.
+2. **Habilidades** — fechar primeiro o Espadachim como referência; depois aplicar o mesmo contrato às outras quatro classes.
 3. **Atributos** — definir Base/Job XP, curva 1–99, pontos, dano, defesa e limites por faixa.
 4. **Itens e Inventário** — definir arma, armadura, acessório, estoque, atalhos, saque, upgrade e monetização.
 5. **Navegação e Mapa** — definir arenas por faixa, salas de 5/10/20, coberturas, eventos e fechamento.
@@ -16,7 +16,7 @@ Este documento organiza o redesenho do jogo **antes de alterar a jogabilidade**.
 
 | Tópico | Já existe no protótipo | Direção aprovada ou discutida | Falta definir antes de desenvolver |
 |---|---|---|---|
-| 2. Habilidades | Ataque básico e três habilidades para cada um dos quatro protótipos; botão de ataque, Q/E/F e efeitos provisórios | Cinco classes no beta; habilidades aprendidas persistentes e recargas temporárias por rodada foram propostos | Kit das cinco classes, alcance, custo, recarga, nível de desbloqueio, melhoria e compatibilidade com equipamento |
+| 2. Habilidades | Ataque básico e três habilidades para cada um dos quatro protótipos; botão de ataque, Q/E/F e efeitos provisórios | Definir primeiro o Espadachim como modelo para as outras classes | Confirmar kit, alcance, custo, recarga, desbloqueio, melhoria e persistência do Espadachim; replicar a estrutura às demais classes depois |
 | 3. Atributos | HP, dano, defesa, velocidade, alcance e XP temporários de nível 1–30 | Base Level permanente 1–99 e Job Level separado; morte desconta 25% da XP obtida na rodada; XP por ações além de eliminações | Curvas Base/Job, pontos, limites por faixa, fórmulas e proteção contra ganho passivo/abuso |
 | 4. Itens e Inventário | Quatro slots de consumíveis temporários, drops e buffs provisórios | Propriedade de equipamentos e itens persiste após vitória ou morte; começar com arma, armadura e acessório; quatro botões rápidos são atalhos do inventário | Capacidade, obtenção, raridade, equipar, uso, upgrade, moedas, preços, regras de compra e armazenamento no servidor |
 | 5. Navegação e Mapa | Arena 2D maior que a tela, câmera, minimapa, pedras e caixas; layout lógico preparado para 3D futuro | Salas de 5, 10 ou 20 pessoas; barris, pedras, saque e eventos na arena; sem mundo aberto | Mapa por capacidade/faixa, spawns, espera da sala, fechamento, objetivos, distribuição de recursos e desempenho mobile |
@@ -82,3 +82,37 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 
 1. **Papéis iniciais:** os cinco papéis da tabela representam o estilo de combate desejado? Alcances e habilidades concretas serão discutidos no tópico 2.
 2. **Noviço no PvP:** deve priorizar suporte e cura mesmo em arena individual, ou ter potencial ofensivo comparável às demais classes? A resposta afeta seu kit no tópico 2.
+
+## 2. Habilidades — Espadachim primeiro
+
+### Estado do protótipo
+
+- [x] O visual e os efeitos provisórios de ataque, Proteção Divina, Cura e Determinação estão vinculados ao ID técnico `paladin`.
+- [x] O protótipo tem ataque básico de linha e três habilidades ativas: escudo de 35 pontos por 5 s (recarga 8 s), cura de 25% do HP máximo (12 s) e resistência a empurrão por 5 s (10 s). Os valores são do protótipo, **não balanceamento aprovado para o beta**.
+- [ ] Corrigir a divergência entre o alcance visual/seleção de alvo da arena (`attack_range` de 152 px) e o alcance de dano do combate (`range` de 86 px). O contrato novo deverá usar a mesma regra de alcance para clique, aproximação automática e acerto.
+
+### Kit proposto para discussão
+
+| Ação | Função e efeito visual | Alvo e alcance propostos | Progressão proposta |
+|---|---|---|---|
+| Ataque básico — Golpe físico | Corte de espada com arco luminoso | Inimigo ou objeto destrutível à frente, até **2 blocos**, incluindo o bloco adjacente; ao tocar em alvo fora do alcance, aproximar e atacar | Disponível desde o início; dano acompanha atributo e arma, sem gastar ponto de habilidade |
+| Skill 1 — Proteção Divina | Escudo dourado e barreira protetora | O próprio Espadachim; sem alvo externo | Desbloquear com Job Level; subir a capacidade da barreira por pontos de habilidade, com teto a definir |
+| Skill 2 — Cura | Aura verde e partículas de recuperação | O próprio Espadachim; sem alvo externo | Desbloquear com Job Level; subir a cura por pontos, com custo e teto a definir |
+| Skill 3 — Determinação | Energia dourada ao redor do personagem | O próprio Espadachim; sem alvo externo | Desbloquear com Job Level; resistência a empurrão e duração crescentes, com teto a definir |
+
+**Proposta de regra comum:** o jogador desbloqueia e melhora habilidades usando Job Level/pontos de habilidade; recargas, HP, barreira e duração de efeitos são estados de cada rodada. Trocar de classe reinicia Job Level/XP conforme aprovado. Falta decidir se os pontos investidos e habilidades desbloqueadas também reiniciam; não implementar persistência de habilidades antes dessa decisão.
+
+### Contrato e critérios de aceite para implementação posterior
+
+- [ ] Fixar o tamanho lógico de um bloco e medir o alcance do ataque pelo mesmo sistema usado em mira, aproximação automática e colisão; alvos no primeiro e no segundo bloco devem receber dano, inclusive caixas encostadas no personagem.
+- [ ] Definir se o corte atinge só o primeiro alvo na linha ou atravessa múltiplos alvos; obstáculos sólidos devem bloquear o golpe.
+- [ ] Definir Job Level mínimo de cada habilidade, pontos por nível, custo, recarga, duração e valores por rank no tópico Atributos/Habilidades, após validar tempo de partida e HP por faixa.
+- [ ] Garantir que Cura nunca ultrapasse o HP máximo, que Proteção não acumule barreiras sem limite e que Determinação não remova todo o controle adversário.
+- [ ] Testar toque direto em alvo, botão ATK, aproximação fora do alcance, bloqueio por obstáculo, primeiro/segundo bloco, recargas, efeitos e reinício de rodada.
+- [ ] Fechar este kit e usá-lo como **formato de especificação** para Mago, Arqueiro, Noviço e Gatuno, sem presumir que terão as mesmas três habilidades ou os mesmos números.
+
+### Decisões abertas deste kit
+
+1. Ao trocar de classe e reiniciar o Job Level, as habilidades e os pontos investidos também reiniciam?
+2. O golpe de 2 blocos atinge somente o primeiro alvo ou todos os alvos alinhados dentro do alcance?
+3. Proteção Divina, Cura e Determinação permanecem como as três habilidades iniciais do Espadachim, ou alguma deve ficar reservada para sua evolução defensiva?

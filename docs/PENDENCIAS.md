@@ -3,6 +3,7 @@
 ## Redesenho antes do próximo desenvolvimento
 
 - Fechar, nesta ordem, Classes, Habilidades, Atributos, Itens e Inventário, Navegação e Mapa conforme `docs/BACKLOG_NOVA_FASE.md`. Cinco classes iniciais e Job Level separado estão aprovados. Ao trocar de classe, Base Level/XP permanecem e Job Level/XP recomeçam. Restam papéis, regras de habilidades e detalhes das ramificações futuras.
+- Habilidades: fechar primeiro o kit do Espadachim (persistência após troca de classe, golpe em um ou vários alvos, manutenção das três habilidades atuais), além de alcance, recargas e progressão. Usar o contrato resultante para as demais classes depois.
 
 ## Release 1.0
 
