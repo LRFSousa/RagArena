@@ -4,7 +4,7 @@ Este documento organiza o redesenho do jogo **antes de alterar a jogabilidade**.
 
 ## Ordem de definição
 
-1. **Classes** — cinco classes do beta e estrutura de evoluções definidas; papéis e troca de classe ainda precisam de aprovação.
+1. **Classes** — cinco classes do beta, Base Level compartilhado e reset de Job ao trocar; papéis e ramificações futuras são propostas.
 2. **Habilidades** — definir cada ação, alcance, recarga, evolução e persistência.
 3. **Atributos** — definir Base/Job XP, curva 1–99, pontos, dano, defesa e limites por faixa.
 4. **Itens e Inventário** — definir arma, armadura, acessório, estoque, atalhos, saque, upgrade e monetização.
@@ -30,6 +30,7 @@ Essas linhas são um **inventário de decisões e lacunas**, não tarefas marcad
 - [Aprovado] O personagem terá **nível Base permanente de 1 a 99**. O nível determinará a faixa de arena; as faixas exatas e suas bordas serão fechadas no tópico Atributos/Mapa.
 - [Aprovado] O primeiro beta terá **cinco classes selecionáveis: Espadachim, Mago, Arqueiro, Noviço e Gatuno**. Evoluções de segunda e terceira classe ficam para depois dos testes e correções do beta.
 - [Aprovado] **Job Level separado do Base Level** já fará parte do beta. O limite de Job Level e a curva de Job XP serão definidos no tópico Atributos.
+- [Aprovado] Ao trocar de classe, o **Base Level e sua XP permanecem**; o **Job Level e a Job XP recomeçam** para a classe escolhida, inclusive se ela já foi usada antes. O valor inicial exibido do Job Level será definido no tópico Atributos. Troca de classe ocorrerá fora da rodada.
 - [Aprovado] Cada linha de classe será preparada para **duas ou mais ramificações futuras**. Nenhuma evolução será jogável no primeiro beta.
 - [Referência] Ragnarok Mobile usa níveis Base e Job separados e progressão por etapas de profissão. Requisitos e ramificações servem como referência de estrutura, sem copiar arte, texto, habilidades ou números. Fontes oficiais: [progressão de profissão](https://ragnarokm.gungho.jp/member/help/vbnfjd00000009qz.html), [Base/Job](https://ragnarokm.gungho.jp/member/help/vbnfjd00000009f3.html), [ramo Cavaleiro/Paladino](https://ragnarokm.gungho.jp/member/event/3rd_classes_upd/).
 - [Referência] As cinco linhas iniciais correspondem às profissões básicas de espada, magia, arco, acólito e gatuno na referência. As ramificações abaixo são **propostas de direção**, não nomes ou poderes finais a copiar. Fontes oficiais: [linhas básicas](https://ragnarokm.gungho.jp/member/update/tearsglastheim_upd_info.html), [exemplo de Mago e Arqueiro](https://ragnarokm.gungho.jp/member/event/2020_1st_upd/), [árvore e Job Level](https://ragnarokm.gungho.jp/member/help/vbnfjd00000009qz.html).
@@ -58,11 +59,11 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 - [ ] Criar IDs internos estáveis para as cinco classes, separados de nome exibido e arte. Migrar o ID `paladin` e os perfis locais existentes sem perder a identidade ou presets.
 - [ ] Definir os papéis e fraquezas das cinco classes no tópico Habilidades. Não estabelecer vantagem permanente sem limites por faixa de arena.
 - [ ] Definir quais regras do Paladino protótipo ficam no Espadachim e quais serão reservadas ao ramo defensivo; adaptar os protótipos de Mago e Arqueiro; decidir o reaproveitamento do Assassino no Gatuno; criar Noviço.
-- [ ] Desenhar modelo de dados permanente: nível/XP Base do personagem, classe atual, nível/XP Job separado do Base, classes desbloqueadas, habilidades aprendidas e presets. Decidir se o Job é armazenado por classe. Separar esses dados dos estados temporários de uma rodada (HP atual, recargas e efeitos).
+- [ ] Desenhar modelo de dados permanente: nível/XP Base do personagem, classe atual, nível/XP Job da classe atual, classes desbloqueadas, habilidades aprendidas e presets. O Job anterior não será restaurado após a troca. Separar esses dados dos estados temporários de uma rodada (HP atual, recargas e efeitos).
 - [ ] Exibir e evoluir Job Level separadamente de Base Level no beta. Definir limite, recompensas e curva no tópico Atributos.
 - [ ] Definir regras de entrada e troca de classe fora da arena. Uma rodada iniciada mantém a classe escolhida até o resultado.
 - [ ] Limitar a seleção do beta às cinco classes iniciais. Manter protótipos antigos como recursos de desenvolvimento até migrar seus dados e testes.
-- [ ] Adicionar testes de persistência, migração de perfil, seleção de classe e reinício de rodada sem perda de progresso Base/Job.
+- [ ] Adicionar testes de persistência, migração de perfil, seleção de classe e reinício de rodada sem perda de progresso Base/Job; testar troca de classe com Base preservado e Job reiniciado.
 
 ### Evoluções futuras, fora do primeiro beta
 
@@ -79,6 +80,5 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 
 ### Decisões abertas para o responsável
 
-1. **Job por classe:** ao trocar de classe fora da arena, cada uma retoma seu próprio Job Level/XP, enquanto o Base Level é compartilhado? Esta é a proposta para evitar perder progresso.
-2. **Papéis iniciais:** os cinco papéis da tabela representam o estilo de combate desejado? Alcances e habilidades concretas serão discutidos no tópico 2.
-3. **Noviço no PvP:** deve priorizar suporte e cura mesmo em arena individual, ou ter potencial ofensivo comparável às demais classes? A resposta afeta seu kit no tópico 2.
+1. **Papéis iniciais:** os cinco papéis da tabela representam o estilo de combate desejado? Alcances e habilidades concretas serão discutidos no tópico 2.
+2. **Noviço no PvP:** deve priorizar suporte e cura mesmo em arena individual, ou ter potencial ofensivo comparável às demais classes? A resposta afeta seu kit no tópico 2.
