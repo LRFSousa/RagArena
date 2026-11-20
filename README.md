@@ -8,6 +8,8 @@ Para digitar no navegador do celular, toque no campo. Se o teclado não abrir, u
 
 ## Executar
 
+Para gerar o APK Android de depuração, consulte `docs/ANDROID_BUILD.md`. A release 1.0 está em preparação; o APK atual ainda não foi validado em aparelho real.
+
 Abra esta pasta no Godot 4 e execute o projeto (`F5`). Na primeira abertura, crie um nome local e uma configuração de classe; depois escolha a configuração em Arena. No desktop, use WASD ou setas para mover, espaço ou clique esquerdo para atacar, teclas `1`–`4` para usar itens, `Q`, `E` e `F` para habilidades, `Tab` para observar sobreviventes após eliminação, `T` para avançar 60 s no protótipo, `M` para voltar ao menu e `R` para iniciar nova partida. Em tela de toque, arraste o joystick à esquerda, segure o botão circular à direita para repetir ataques e toque nos quatro slots para usar itens, nos botões Q/E/F para habilidades, em **+60s teste** para avançar o relógio e em **Menu** para voltar. Toque ou clique em uma caixa ou oponente para selecioná-lo; o Paladino se aproxima e ataca automaticamente quando estiver no alcance. O botão de ataque usa o alvo selecionado.
 
 Caixas de madeira têm 45 HP e exigem 3, 2 ou 1 golpes nos níveis 1–3, 4–7 e 8–30. Destruí-las concede XP e pode gerar um item. O nível evolui automaticamente até 30. Pedras e limites da arena são permanentes. A propriedade `test_level` da cena `scenes/arena.tscn` permite forçar apenas o dano às caixas para depuração; o valor normal é `0`.

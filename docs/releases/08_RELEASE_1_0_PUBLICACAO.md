@@ -1,6 +1,6 @@
 # RagnArena — Release 1.0 — Beta e publicação
 
-**Status:** Planejada
+**Status:** Preparação iniciada; critérios de aceite pendentes
 
 ## Objetivo
 Entregar versão Android estável, com testes e distribuição controlada antes do lançamento público.

@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Status:** releases 0.1 a 0.5 implementadas; 0.6 adiada por decisão do responsável; etapa técnica da 0.7 encerrada, com aceite mobile e arte final pendentes.
+**Status:** releases 0.1 a 0.5 implementadas; 0.6 adiada por decisão do responsável; etapa técnica da 0.7 encerrada, com aceite mobile e arte final pendentes; preparação da 1.0 iniciada.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  
 **Princípio:** validar gameplay com formas geométricas antes de sprites e interface final.
 
@@ -131,6 +131,8 @@
 **Aceite:** interface clara no celular, sprites animados e desempenho adequado.
 
 ## Release 1.0 — Beta, balanceamento e lançamento
+- [x] Atualizar versão do preset Android e gerar APK de depuração local reproduzível. Isso não satisfaz a assinatura e distribuição final.
+- [ ] Instalar e validar o APK em aparelhos Android reais.
 - [ ] Testar partidas completas de 2–5 jogadores.
 - [ ] Balancear atributos, cooldowns, XP, drops e fechamento da arena a partir de testes reais.
 - [ ] Testar classes em confrontos variados; preservar contra-jogo por mapa, habilidades e recargas.

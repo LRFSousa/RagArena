@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0 — preparação inicial da beta
+
+- Preset Android atualizado para versão 0.7.0/código 8. Adicionado script de exportação de APK de depuração e documentação de teste em aparelho; lançamento e multiplayer seguem pendentes.
+
 ## 0.7.0 — etapa técnica encerrada; aceite mobile pendente
 
 - Mapa lógico extraído para `arena_map_layout.gd`, compartilhado pela arena e pelas regras de partida. Convenção X/Z e conversores preparados para uma futura cena 3D, preservando o jogo 2D atual.

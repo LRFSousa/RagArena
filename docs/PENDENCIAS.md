@@ -1,5 +1,12 @@
 # Pendências
 
+## Release 1.0
+
+- Instalar o APK de depuração em aparelhos reais e verificar controles, persistência, desempenho e partida completa.
+- Definir e executar assinatura de release, AAB, CI e distribuição controlada após os testes.
+- Integrar a 0.6 adiada para validar login e partidas online antes do aceite da 1.0.
+- Balancear com dados de partidas, revisar nome/marca e preparar privacidade e informações de loja antes de publicação.
+
 ## Release 0.7
 
 - Etapa técnica encerrada; faltam aceite em aparelho real e arte final antes de considerar os critérios completos. O mapa 3D é uma evolução futura, descrita em `docs/MAPA_3D.md`; ainda faltam cena, física, câmera, navegação e testes mobile 3D.
