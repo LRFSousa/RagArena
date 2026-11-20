@@ -5,6 +5,7 @@
 - Criado backlog de definição em cinco tópicos, iniciando por Classes. Confirmadas cinco classes no beta (Espadachim, Mago, Arqueiro, Noviço e Gatuno), Base Level permanente 1–99 e Job Level separado, com propostas de duas ou mais ramificações futuras por classe. Documentada a diferença entre o protótipo atual e as novas regras; nenhuma jogabilidade foi alterada.
 - Definida a troca de classe: Base Level e Base XP persistem; Job Level e Job XP recomeçam na classe escolhida, mesmo quando já utilizada anteriormente. Atualizados os critérios de dados e testes do backlog; nenhuma jogabilidade foi alterada.
 - Iniciado o tópico Habilidades exclusivamente pelo Espadachim: inventariadas as três habilidades do protótipo, proposto contrato de alcance de dois blocos, progressão por Job Level e critérios de aceite; demais classes aguardam essa referência. Nenhuma jogabilidade foi alterada.
+- Definido em conceito o kit inicial do Espadachim: Aumentar Recuperação de HP, Perícia com Espada, Golpe Fulminante e Vigor. Ataque básico de dois blocos atinge um alvo; ranks aprendidos sobrevivem ao reset de Job na troca de classe. Registradas pendências de balanceamento e de pontos para impedir duplicação. Nenhuma jogabilidade foi alterada.
 
 ## 1.0 — preparação inicial da beta
 

@@ -91,28 +91,34 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 - [x] O protótipo tem ataque básico de linha e três habilidades ativas: escudo de 35 pontos por 5 s (recarga 8 s), cura de 25% do HP máximo (12 s) e resistência a empurrão por 5 s (10 s). Os valores são do protótipo, **não balanceamento aprovado para o beta**.
 - [ ] Corrigir a divergência entre o alcance visual/seleção de alvo da arena (`attack_range` de 152 px) e o alcance de dano do combate (`range` de 86 px). O contrato novo deverá usar a mesma regra de alcance para clique, aproximação automática e acerto.
 
-### Kit proposto para discussão
+### Kit do Espadachim aprovado em conceito
 
-| Ação | Função e efeito visual | Alvo e alcance propostos | Progressão proposta |
+| Ação | Tipo e função | Alvo e alcance | Progressão a definir |
 |---|---|---|---|
-| Ataque básico — Golpe físico | Corte de espada com arco luminoso | Inimigo ou objeto destrutível à frente, até **2 blocos**, incluindo o bloco adjacente; ao tocar em alvo fora do alcance, aproximar e atacar | Disponível desde o início; dano acompanha atributo e arma, sem gastar ponto de habilidade |
-| Skill 1 — Proteção Divina | Escudo dourado e barreira protetora | O próprio Espadachim; sem alvo externo | Desbloquear com Job Level; subir a capacidade da barreira por pontos de habilidade, com teto a definir |
-| Skill 2 — Cura | Aura verde e partículas de recuperação | O próprio Espadachim; sem alvo externo | Desbloquear com Job Level; subir a cura por pontos, com custo e teto a definir |
-| Skill 3 — Determinação | Energia dourada ao redor do personagem | O próprio Espadachim; sem alvo externo | Desbloquear com Job Level; resistência a empurrão e duração crescentes, com teto a definir |
+| Ataque básico — Golpe físico | Ataque comum com corte e arco luminoso | **Um alvo** inimigo ou objeto destrutível até **2 blocos**, incluindo o bloco adjacente; toque fora do alcance aproxima antes de atacar | Disponível desde o início; dano acompanha atributos e arma |
+| Aumentar Recuperação de HP | Passiva de recuperação periódica enquanto imóvel; melhora cura recebida de habilidades e itens | O próprio Espadachim | Até 10 ranks como referência; intervalo, valores e condição de imobilidade serão adaptados ao ritmo da arena |
+| Perícia com Espada | Passiva de ATQ com espada de uma mão ou adaga equipada | O próprio Espadachim | Até 10 ranks como referência; bônus por rank será balanceado com equipamentos |
+| Golpe Fulminante | Ativa ofensiva: golpe físico forte em um oponente | Um alvo corpo a corpo; alcance exato da habilidade será decidido separadamente do ataque básico | Até 10 ranks como referência; dano, precisão, custo e recarga a definir |
+| Vigor | Ativa defensiva: impede reação/empurrão ao receber ataque e pode conceder defesa | O próprio Espadachim | Até 10 ranks como referência; duração, defesa, custo, recarga e pré-requisitos a definir |
 
-**Proposta de regra comum:** o jogador desbloqueia e melhora habilidades usando Job Level/pontos de habilidade; recargas, HP, barreira e duração de efeitos são estados de cada rodada. Trocar de classe reinicia Job Level/XP conforme aprovado. Falta decidir se os pontos investidos e habilidades desbloqueadas também reiniciam; não implementar persistência de habilidades antes dessa decisão.
+As quatro habilidades seguem as referências fornecidas pelo responsável: [Aumentar Recuperação de HP](https://browiki.org/wiki/Aumentar_Recupera%C3%A7%C3%A3o_de_HP), [Perícia com Espada](https://browiki.org/wiki/Per%C3%ADcia_com_Espada), [Golpe Fulminante](https://browiki.org/wiki/Golpe_Fulminante) e [Vigor](https://browiki.org/wiki/Vigor). Os números, a duração de Vigor, o custo de SP e o pré-requisito de Provocar **não estão aprovados automaticamente**. Efeitos, texto e ícones do jogo serão próprios.
+
+[Aprovado] Ao trocar de classe, Job Level e Job XP reiniciam, mas os **ranks das habilidades já aprendidas permanecem guardados por classe**, inclusive quando o jogador volta ao Espadachim. Pontos já investidos não são devolvidos pela troca; a regra de novos pontos após o reset de Job e os limites de gasto será definida com a curva de Job Level. Base Level/XP permanecem compartilhados. Recargas, HP e efeitos ativos recomeçam em cada rodada.
+
+Proteção Divina, Cura e Determinação continuam apenas no protótipo `paladin`; não compõem este kit inicial do Espadachim. Podem ser avaliadas para evoluções futuras.
 
 ### Contrato e critérios de aceite para implementação posterior
 
 - [ ] Fixar o tamanho lógico de um bloco e medir o alcance do ataque pelo mesmo sistema usado em mira, aproximação automática e colisão; alvos no primeiro e no segundo bloco devem receber dano, inclusive caixas encostadas no personagem.
-- [ ] Definir se o corte atinge só o primeiro alvo na linha ou atravessa múltiplos alvos; obstáculos sólidos devem bloquear o golpe.
-- [ ] Definir Job Level mínimo de cada habilidade, pontos por nível, custo, recarga, duração e valores por rank no tópico Atributos/Habilidades, após validar tempo de partida e HP por faixa.
-- [ ] Garantir que Cura nunca ultrapasse o HP máximo, que Proteção não acumule barreiras sem limite e que Determinação não remova todo o controle adversário.
-- [ ] Testar toque direto em alvo, botão ATK, aproximação fora do alcance, bloqueio por obstáculo, primeiro/segundo bloco, recargas, efeitos e reinício de rodada.
-- [ ] Fechar este kit e usá-lo como **formato de especificação** para Mago, Arqueiro, Noviço e Gatuno, sem presumir que terão as mesmas três habilidades ou os mesmos números.
+- [ ] O ataque básico deve acertar **um único alvo por acionamento**, mesmo com vários alinhados; obstáculos sólidos bloqueiam o golpe. Definir seleção de alvo quando dois alvos ocupam o mesmo bloco.
+- [ ] Definir Job Level mínimo de cada habilidade, pontos por rank, custo de recurso, recarga, duração e valores por rank no tópico Atributos/Habilidades, após validar tempo de partida e HP por faixa.
+- [ ] Impedir que a recuperação passiva conceda XP por ficar parado; limitar cura ao HP máximo e definir se dano interrompe a condição de imobilidade.
+- [ ] Garantir que o reset de Job não duplique pontos nem apague ranks persistidos; definir como equipamento incompatível afeta Perícia com Espada.
+- [ ] Testar toque direto em alvo, botão ATK, aproximação fora do alcance, bloqueio por obstáculo, primeiro/segundo bloco, um único alvo atingido, passivas, recargas e troca de classe com ranks preservados.
+- [ ] Fechar este kit e usá-lo como **formato de especificação** para Mago, Arqueiro, Noviço e Gatuno, sem presumir que terão a mesma quantidade de habilidades ou os mesmos números.
 
 ### Decisões abertas deste kit
 
-1. Ao trocar de classe e reiniciar o Job Level, as habilidades e os pontos investidos também reiniciam?
-2. O golpe de 2 blocos atinge somente o primeiro alvo ou todos os alvos alinhados dentro do alcance?
-3. Proteção Divina, Cura e Determinação permanecem como as três habilidades iniciais do Espadachim, ou alguma deve ficar reservada para sua evolução defensiva?
+1. Com Job Level reiniciado e ranks de habilidades preservados, como ganhar novos pontos sem acumular pontos infinitos ao alternar classes? Proposta: cada classe recebe uma única vez os pontos de cada marco de Job Level já alcançado historicamente.
+2. Golpe Fulminante terá 1 bloco de alcance como a referência ou acompanhará os 2 blocos do ataque básico do Espadachim?
+3. Recuperação passiva ficará ativa apenas fora de combate ou também durante combate quando o jogador permanecer imóvel?
