@@ -222,6 +222,8 @@ func _physics_process(delta: float) -> void:
 		else:
 			direction = auto_approach_direction()
 	player.move_input = direction
+	if direction.length_squared() > 0.01 and combat.swift > 0.0:
+		match_controller.register_effective_skill(combat.swift_use_id)
 	player.set_visual_class(combat.class_id)
 	player.speed = float(combat.stats()["speed"]) * inventory.movement_speed_multiplier() * combat.speed_multiplier()
 	if direction.length_squared() > 0.01:
@@ -468,7 +470,7 @@ func update_hud() -> void:
 			buffs.append(label_text)
 	var buff_text := ", ".join(buffs) if not buffs.is_empty() else "nenhum"
 	var test_text := " (teste %d)" % test_level if test_level > 0 else ""
-	hud.text = "HP %d/%d   Nível %d%s   XP %d/%s\nCaixas destruídas: %d   Restantes: %d" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks]
+	hud.text = "HP %d/%d   Nível da partida %d%s   XP temporária %d/%s\nCaixas destruídas: %d   Restantes: %d" % [inventory.hp, inventory.maximum_hp(), progression.level, test_text, progression.xp, next_xp, destroyed_blocks, wooden_blocks]
 	status_hud.text = match_controller.status_text()
 	effects_hud.text = "%s  |  Efeitos: %s  |  Uso: %.1fs" % [combat.class_id.capitalize(), buff_text, inventory.use_cooldown]
 	hud_view.queue_redraw()

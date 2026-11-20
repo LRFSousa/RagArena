@@ -1,70 +1,54 @@
-# Primeira implementação — personagens e progressão de Arena
+# Primeira implementação — Base EXP e Job EXP na Arena
 
-Este documento prepara a primeira entrega de progressão permanente. **Ainda não autoriza alterar o combate, habilidades ou balanceamento.** As decisões pendentes ao final precisam ser fechadas antes da implementação.
+Especificação da primeira entrega de progressão permanente. Substitui o rascunho anterior após o backlog detalhado enviado pelo responsável. O sistema foi separado da progressão temporária de combate e não depende dos visuais, permitindo migração futura do mapa para 3D.
 
-## Decisões recebidas
+## Personagens
 
-- Cada personagem tem ID, nome, classe inicial fixa, Base Level/EXP e Job Level/EXP próprios. Uma conta pode criar vários personagens, sem compartilhar EXP entre eles.
-- A classe é escolhida na criação do personagem e não pode ser trocada nesta entrega. A evolução em três etapas e seus ramos permanecem no backlog futuro; o Espadachim chegará ao requisito de evolução no Job Level 40, mas não evoluirá nesta entrega.
-- Duas tabelas configuráveis definem a EXP exigida para o próximo Base Level e Job Level. A curva clássica Pre-Renewal do rAthena é referência para o formato e a progressão, sujeita a adaptação ao tempo de partida da Arena.
-- Ao finalizar uma partida válida, o personagem recebe Base EXP e Job EXP por participação, vitória, eliminações, assistências, objetivos e uso efetivo de habilidade. Jogadores derrotados também podem receber participação.
-- Os níveis são atualizados e salvos por personagem; estruturas de desbloqueios futuros podem existir sem conceder benefícios nesta entrega.
-- Não implementar maestria por classe, troca de classe, evolução, alteração de atributos, nova regra de habilidade ou mudança no balanceamento do combate.
+- Uma conta local comporta até **9 personagens**. Cada um tem ID, nome, classe inicial fixa, Base Level/EXP e Job Level/EXP individuais; só um entra em uma arena por vez.
+- Todos começam em Base 1 e Job 1. O teto inicial é **40** em cada trilha; a EXP acumulada para ao atingir 30.000 Base ou 16.500 Job. A EXP é total acumulada, não saldo reiniciado a cada level-up.
+- Não há troca ou evolução de classe, maestria, pontos de habilidade ou novos atributos nesta entrega. O Job 40 prepara a futura evolução do Espadachim, mas não a executa.
+- Cinco IDs permanentes são oferecidos na criação: `swordsman`, `mage`, `archer`, `acolyte`, `thief`. Os protótipos de combate ainda têm IDs antigos; `swordsman` usa `paladin` e `thief` usa `assassin` até a migração. **Noviço usa temporariamente o combate do Paladino**, pois seu kit ainda não existe. Isso é informado na seleção.
+- A conta antiga v1 cria um personagem a partir do nome e da classe do preset selecionado (ou do primeiro preset; Espadachim na ausência de preset). Presets, histórico e identidade são mantidos; uma cópia `.v1.bak` é criada antes da migração. Presets legados não alteram a classe fixa do personagem.
 
-## Recompensas iniciais propostas
+## Curvas configuráveis
 
-| Evento | Base EXP | Job EXP | Contagem |
-|---|---:|---:|---|
-| Concluir partida válida | 30 | 20 | Uma vez por personagem/partida, mesmo derrotado |
-| Vencer partida | 50 | 30 | Bônus único além da conclusão |
-| Eliminar adversário | 15 | 10 | Por eliminação creditada |
-| Assistência | 10 | 10 | Por eliminação em que contribuiu, sem crédito de eliminação simultâneo |
-| Cumprir objetivo | 20 | 15 | Por objetivo concluído e identificado |
-| Uso efetivo de habilidade | 0 | 5 | Por efeito válido, com limite por partida a definir |
+`resources/arena_progression.json` contém as 40 entradas de EXP **total** para Base e Job, os limites e as recompensas. As tabelas foram interpoladas suavemente entre os marcos fornecidos, sem copiar os números do rAthena. Base: L1=0, L10=900, L20=5.200, L30=13.000, L40=30.000. Job: L1=0, L10=500, L20=3.300, L30=8.500, L40=16.500. A classe `ArenaProgression` valida comprimento, crescimento e marcos antes de calcular níveis.
 
-**Exemplo:** participação válida + vitória + uma eliminação = **95 Base EXP e 60 Job EXP**. Participação válida sem vitória nem outros eventos = **30 Base EXP e 20 Job EXP**. Todos os valores da tabela são **propostas para teste**, não a economia definitiva.
+As metas de aproximadamente 200 partidas para Base 40 e 150 para Job 40 são **referências de balanceamento**. A EXP por partida varia com sobrevivência, eliminação e tempo; os marcos não são liberados por número de partidas.
 
-Recompensas devem ser calculadas a partir de um resumo de eventos da partida, por `match_id` e `character_id`, e aplicadas uma única vez no resultado. O mesmo evento não pode ser contabilizado duas vezes por reconexão, abertura repetida da tela de resultado ou reinício. O resultado deve informar os eventos creditados, EXP bruta, eventuais ajustes, EXP líquida e níveis ganhos. Conceder zero por ação inválida ou partida anulada.
+## Recompensas
 
-## Referência de curvas e escala
+| Evento | Base EXP | Job EXP | Limite por participação |
+|---|---:|---:|---:|
+| Minuto completo ativo | 10 | 5 | Até a duração configurada da arena |
+| Eliminação | 25 | 20 | 5 |
+| Assistência | 15 | 15 | 5 |
+| Uso efetivo de habilidade | 0 | 5 | 5 |
+| Conclusão com vencedor | 30 | 20 | 1 |
+| Vitória | 50 | 30 | 1 |
 
-O arquivo recebido, `Texto colado.txt`, contém uma base `JOB_STATS` do rAthena, com tabelas `BaseExp` e `JobExp` por grupo de profissões e outros parâmetros de combate que **ficam fora do escopo**. Ele lista `MaxBaseLevel: 99` no grupo inicial e `MaxJobLevel: 50` para Espadachim/Mago/Arqueiro/Noviço/Gatuno equivalentes. Para a linha de primeira classe, os requisitos de Job EXP dos níveis 1–39 somam **755.215** para alcançar o nível 40. Mesmo 50 Job EXP por vitória sem outros eventos exigiriam mais de **15 mil vitórias**. Portanto, copiar os números literalmente com as recompensas propostas tornaria a evolução impraticável.
+Não há EXP por objetivos nesta entrega. Apenas o último sobrevivente vence; com zero ou mais de um vivo ao fim do tempo, ninguém recebe bônus de conclusão ou vitória. O derrotado recebe 75% da Base e Job EXP geradas até a morte, arredondadas para baixo, sem perder EXP permanente anterior. Abandono preserva 100% da EXP válida até a saída, sem bônus finais. O cálculo conta apenas minutos completos e limita cada categoria; eventos além do limite permanecem aptos a estatísticas futuras, sem EXP extra.
 
-- Manter tabelas **configuráveis e versionadas**, com requisito positivo por nível, crescimento verificável e nível máximo explícito. Base Level permanece planejado de 1 a 99. Para a primeira classe do Espadachim, o marco de evolução futuro é Job Level 40; o limite jogável no beta e o comportamento da EXP excedente ainda precisam ser definidos.
-- Testar uma curva adaptada ou um multiplicador de EXP, fixando antes a meta de partidas/horas para alcançar marcos como Base 10, Base 20 e Job 40. Não alterar tabelas após o lançamento sem política de migração de EXP persistida.
-- O rAthena é GPLv3 ou posterior conforme cabeçalho do arquivo recebido. Antes de copiar tabelas ou código literalmente para o repositório, decidir atribuição, licença e distribuição; usar a curva como referência estrutural evita incorporar esse arquivo integralmente.
+Uma utilização de habilidade ganha no máximo um crédito, identificado por `use_id`. Dano efetivo, cura de HP perdido, absorção de dano, bloqueio de empurrão e benefícios usados em combate podem creditar; simplesmente ativar uma habilidade sem efeito não credita. Assistências têm suporte no calculador e contador, mas **a arena local atual não possui combate entre bots nem outros jogadores** para produzir assistências reais. A regra de contribuição nos 10 segundos anteriores à eliminação depende da implementação multiplayer.
 
-## Contrato mínimo de dados
+## Fluxo e persistência
 
-`account_id` identifica a conta local; `character_id` identifica cada personagem. Cada registro de personagem guarda `class_id` imutável nesta entrega, `base_level`, `base_exp`, `job_level`, `job_exp` e versão do formato de salvamento. A conta guarda `selected_character_id` e a lista de personagens. Um registro de partidas processadas por ID impede duplicação de EXP; a retenção desse registro precisa ser compatível com o modo local e com o servidor futuro.
+`MatchController` gera `match_id`, conta eventos e tempo ativo e encerra a participação na morte. `ArenaProgression` calcula uma recompensa sem modificar HP, atributos, habilidades ou a EXP temporária da rodada. `LocalProfileStore` soma EXP ao personagem selecionado, calcula Base/Job Level, salva histórico e grava a chave `character_id:match_id`. Uma segunda tentativa com a mesma chave não paga novamente. O arquivo local é versionado como perfil v2, conserva uma cópia `.bak` anterior e tenta recuperá-la se o arquivo principal estiver corrompido.
 
-Migrar `profile_v1.json` sem apagar identidade, presets ou histórico. Hoje o perfil comporta uma identidade e presets cuja classe pode ser editada; a migração precisa definir qual personagem existente será criado e como os presets serão vinculados. Salvar de forma atômica ou recuperável para evitar perda de EXP se o aplicativo for fechado durante o resultado. A fonte de verdade local será substituível por backend quando o multiplayer for implementado.
+Na morte, o fluxo retorna à seleção de personagens para reentrada imediata. Sobreviventes veem a recompensa no resultado. A progressão temporária 1–30 ainda aparece na arena como **nível da partida** e continua controlando o combate anterior; a progressão Base/Job permanente aparece na seleção e não afeta balanceamento nesta etapa.
 
-## Diferenças em relação ao protótipo
+**Limite de arquitetura:** a release 0.6 de servidor/multiplayer foi adiada. Portanto, a autoridade sobre tempo, eventos e pagamento é **local** nesta entrega. O calculador e o contrato de participação foram isolados para mover a validação ao servidor futuramente. Não há garantia contra alteração manual do arquivo local ou manipulação do cliente; não usar estes dados como economia online sem migração e validação no servidor.
 
-- `scripts/progression.gd` mantém nível 1–30 e EXP temporários, reiniciados em cada partida. Também concede EXP imediatamente por dano PvP, eliminação e caixas. A nova progressão **persistente** será separada desse estado para preservar as regras atuais do combate nesta etapa; a política de EXP legada precisa ser definida antes da ligação ao resultado.
-- `scripts/local_profile_store.gd` salva um personagem nominal, presets editáveis e histórico, sem progressão permanente. A classe do preset não pode continuar sendo interpretada como classe fixa do personagem.
-- `scripts/arena.gd` permite trocar o protótipo de classe durante uma partida por Tab quando a opção de teste está ativa. Isso precisa ser desabilitado no fluxo normal sem afetar ferramentas de teste.
-- `scripts/match_controller.gd` emite o resultado uma vez em memória, mas não possui `match_id`, assistências, objetivos ou contagem de uso efetivo. A implementação precisará de telemetria desses eventos e critério de participação válida.
-- Atualmente só há protótipos de Paladino, Mago, Assassino e Arqueiro. Noviço e o ID definitivo Espadachim ainda não existem. A progressão deve usar IDs estáveis sem depender do visual ou do balanceamento provisório.
+## Critérios e testes
 
-## Backlog da primeira entrega
+- Criar até 9 personagens, manter classe imutável e EXP isolada; Base e Job sobem separadamente e podem subir vários níveis após uma recompensa.
+- Validar os 40 marcos, teto, minutos completos, limites por evento, morte 25%, abandono sem penalidade, empate sem vencedor, vitória, duplicidade e persistência após reload.
+- Migrar perfil v1 com identidade, presets e histórico preservados; verificar cópia e recuperação de backup.
+- Executar `tests/arena_progression_smoke.gd`, `tests/arena_participation_smoke.gd`, `tests/release05_smoke.gd` e regressões de combate. Registrar resultados no relatório da entrega.
 
-1. Definir os pontos pendentes abaixo e criar exemplos de progressão por partida para validar tempo até cada marco.
-2. Versionar as duas tabelas de EXP adaptadas e validar cobertura, monotonicidade e limite de nível.
-3. Criar modelo de conta/personagens e migração segura do perfil v1; permitir criar, listar e selecionar vários personagens de classe fixa.
-4. Criar cálculo separado de Base/Job EXP ao fim de partida válida, com eventos comprovados, `match_id`, limites contra repetição e crédito para derrotados.
-5. Aplicar EXP, subir múltiplos níveis quando necessário, persistir e exibir nível/EXP de cada personagem após a partida.
-6. Preparar campos/eventos de desbloqueio futuros sem conceder pontos, habilidades, atributos ou benefícios agora.
-7. Testar migração, isolamento entre personagens, vitória/derrota/empate, saída antecipada, duplicação de resultado, save/load, múltiplos level-ups e limite de nível. Testar no Godot e em celular quando houver build.
+## Fora do escopo e pendências
 
-## Decisões pendentes antes de codificar
-
-1. **Escala da curva:** quantas partidas ou horas devem levar até Base 10, Base 20 e Job 40? Os números brutos do rAthena e as recompensas propostas não são compatíveis sem adaptação.
-2. **Participação válida:** tempo mínimo e/ou ação útil? Como tratar abandono, desconexão e quem morre cedo sem conseguir eliminar ninguém?
-3. **Eventos:** o que conta como assistência, objetivo e uso efetivo? Caixas/barris serão objetivos? Qual limite por partida impede farm de habilidade e conluio?
-4. **Derrota e XP:** a regra discutida de perda de 25% da EXP ganha na rodada continua valendo para esta entrega? Se sim, sobre Base, Job ou ambas, e antes ou depois dos bônus?
-5. **Personagens e migração:** número máximo de personagens por conta local, classes disponíveis na criação inicial e tratamento dos presets/histórico antigos.
-6. **Limites:** Job Level inicial visível (0 ou 1), teto jogável da primeira classe nesta entrega e destino de EXP quando o personagem chega ao teto sem evolução implementada.
-
-Após essas respostas, a primeira implementação pode ser detalhada em critérios de aceite finais. O kit e os ranks do Espadachim ficam documentados para a etapa posterior de habilidades, sem mudanças nesta entrega.
+- Autoridade real do servidor, reconexão, assistências de múltiplos jogadores e prevenção de conluio aguardam multiplayer.
+- Noviço precisa de combate próprio; Espadachim/Gatuno precisam migrar os IDs de protótipo sem alterar o balanceamento nesta entrega.
+- A regra futura de ataque básico do Espadachim com **um alvo** difere do protótipo atual, cujo teste ainda comprova múltiplos alvos alinhados. Essa correção fica para a etapa de habilidades, pois esta entrega proíbe mudanças no combate.
+- A curva e recompensas precisam de playtest em celular para verificar se as metas de 150/200 partidas são adequadas. Após publicação para jogadores, qualquer alteração da tabela exigirá política de migração da EXP persistida.

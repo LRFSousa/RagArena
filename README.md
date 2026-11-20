@@ -47,6 +47,8 @@ godot --headless --path . --script res://tests/release02_smoke.gd
 godot --headless --path . --script res://tests/release03_smoke.gd
 godot --headless --path . --script res://tests/release04_smoke.gd
 godot --headless --path . --script res://tests/release05_smoke.gd
+godot --headless --path . --script res://tests/arena_progression_smoke.gd
+godot --headless --path . --script res://tests/arena_participation_smoke.gd
 godot --headless --path . --script res://tests/health_damage_regression.gd
 godot --headless --path . --quit-after 60
 ```

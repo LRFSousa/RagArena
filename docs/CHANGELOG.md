@@ -1,5 +1,11 @@
 # Changelog
 
+## Progressão Base/Job de Arena
+
+- Implementados personagens de classe fixa com até nove vagas, Base/Job EXP e Level persistentes e independentes, tabelas configuráveis 1–40 e migração segura do perfil v1.
+- Integradas recompensas por tempo e ações, vitória/empate, penalidade de 25% na morte, abandono sem penalidade e proteção contra pagamento duplicado por partida.
+- Adicionados testes de progressão e integração; combate, atributos e habilidades existentes mantidos. Autoridade de servidor e assistências multiplayer seguem pendentes.
+
 ## Planejamento da nova fase
 
 - Preparada a primeira implementação de progressão persistente por personagem, com classe fixa, tabelas Base/Job configuráveis e recompensas de Arena propostas. A regra antiga de troca de classe foi substituída neste escopo por vários personagens independentes. Registradas incompatibilidades entre a curva clássica rAthena e os valores de EXP por partida, migração do perfil v1 e decisões pendentes. Nenhuma jogabilidade foi alterada.

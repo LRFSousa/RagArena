@@ -2,6 +2,7 @@ extends Node
 class_name MatchController
 
 signal match_ended(result: Dictionary)
+signal participation_ended(report: Dictionary)
 
 const MapLayout = preload("res://scripts/arena_map_layout.gd")
 const FULL_ARENA := MapLayout.PLAYABLE_RECT
@@ -20,6 +21,12 @@ var current_safe_rect := FULL_ARENA
 var closure_walls: Array[StaticBody2D] = []
 var last_wall_update := -1.0
 var player_eliminated := false
+var match_id := ""
+var player_kills := 0
+var player_assists := 0
+var effective_skill_uses: Dictionary = {}
+var credited_victims: Dictionary = {}
+var credited_assists: Dictionary = {}
 
 func configure(owner_arena: Node2D, fight: CombatSystem, bag: PlayerInventory, levels: MatchProgression, rules: MatchSettings) -> void:
 	arena = owner_arena
@@ -32,6 +39,12 @@ func configure(owner_arena: Node2D, fight: CombatSystem, bag: PlayerInventory, l
 	result.clear()
 	current_safe_rect = FULL_ARENA
 	player_eliminated = false
+	match_id = Crypto.new().generate_random_bytes(16).hex_encode()
+	player_kills = 0
+	player_assists = 0
+	effective_skill_uses.clear()
+	credited_victims.clear()
+	credited_assists.clear()
 	for wall in closure_walls:
 		wall.queue_free()
 	closure_walls.clear()
@@ -68,6 +81,10 @@ func advance(delta: float) -> void:
 	elapsed += maxf(0.0, delta)
 	if inventory.hp <= 0:
 		player_eliminated = true
+		state = "results"
+		result = participation_report("defeat", "")
+		participation_ended.emit(result)
+		return
 	var names := alive_names()
 	if names.size() <= 1:
 		finish("last_survivor", names[0] if names.size() == 1 else "Empate")
@@ -84,17 +101,39 @@ func finish(reason: String, winner: String) -> void:
 	if state != "active":
 		return
 	state = "results"
-	result = {
+	result = participation_report(reason, winner)
+	result.merge({
 		"reason": reason,
 		"winner": winner,
-		"elapsed": elapsed,
 		"survivors": alive_names(),
 		"level": progression.level,
 		"xp": progression.total_xp,
 		"crates": arena.destroyed_blocks,
 		"participants": settings.participants,
-	}
+	}, true)
 	match_ended.emit(result)
+
+func participation_report(reason: String, winner: String) -> Dictionary:
+	var has_winner := winner != "" and winner != "Empate" and winner != "Empate por tempo"
+	return {"match_id": match_id, "active_seconds": elapsed, "arena_limit_seconds": settings.time_limit, "kills": player_kills, "assists": player_assists, "effective_skills": effective_skill_uses.size(), "dead": inventory.hp <= 0, "abandoned": reason == "abandon", "completed_with_winner": has_winner, "won": winner == "Jogador", "elapsed": elapsed, "winner": winner, "reason": reason, "level": progression.level, "xp": progression.total_xp, "crates": arena.destroyed_blocks}
+
+func register_elimination(victim_id: int) -> void:
+	if state != "active" or credited_victims.has(victim_id):
+		return
+	credited_victims[victim_id] = true
+	if credited_assists.erase(victim_id):
+		player_assists = maxi(0, player_assists - 1)
+	player_kills += 1
+
+func register_assist(victim_id: int) -> void:
+	if state != "active" or credited_assists.has(victim_id) or credited_victims.has(victim_id):
+		return
+	credited_assists[victim_id] = true
+	player_assists += 1
+
+func register_effective_skill(use_id: int) -> void:
+	if state == "active" and use_id > 0:
+		effective_skill_uses[use_id] = true
 
 func spectator_name() -> String:
 	var names := alive_names()
@@ -108,6 +147,9 @@ func next_spectator() -> String:
 
 func status_text() -> String:
 	if state == "results":
+		if result.has("permanent_reward"):
+			var paid: Dictionary = result["permanent_reward"]
+			return "FIM — %s | Base EXP +%d | Job EXP +%d | R: outra partida" % [result["winner"], paid.get("base_awarded", 0), paid.get("job_awarded", 0)]
 		return "FIM — %s | Nível %d | XP %d | Caixas %d | R: outra partida" % [result["winner"], result["level"], result["xp"], result["crates"]]
 	var remaining := maxi(0, ceili(settings.time_limit - elapsed))
 	var stage := ""

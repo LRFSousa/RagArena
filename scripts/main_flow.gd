@@ -5,12 +5,17 @@ const ArenaScene = preload("res://scenes/arena.tscn")
 const ProfileStore = preload("res://scripts/local_profile_store.gd")
 const CLASS_IDS := ["paladin", "mage", "assassin", "archer"]
 const CLASS_NAMES := ["Paladino", "Mago", "Assassino", "Arqueiro"]
+const CHARACTER_CLASS_IDS := ["swordsman", "mage", "archer", "acolyte", "thief"]
+const CHARACTER_CLASS_NAMES := ["Espadachim", "Mago", "Arqueiro", "Noviço", "Gatuno"]
+const COMBAT_CLASS_IDS := {"swordsman": "paladin", "mage": "mage", "archer": "archer", "acolyte": "paladin", "thief": "assassin"}
 
 var store: LocalProfileStore
 var screen: Control
 var column: VBoxContainer
 var arena: Node2D
 var current_preset_id := ""
+var current_character_id := ""
+var participation_settled := false
 var edit_id := ""
 var keyboard_panel: PanelContainer
 
@@ -105,7 +110,7 @@ func show_login() -> void:
 	make_screen("RagnArena — entrada local")
 	label("Protótipo offline. Este perfil fica salvo apenas neste dispositivo.")
 	if store.has_identity():
-		label("Personagem: %s" % store.data["character_name"])
+		label("Conta: %s" % store.data["character_name"])
 		button("Entrar localmente", show_menu)
 	else:
 		var name_input := text_field("Nome do personagem (3–16 letras, números ou _)")
@@ -122,15 +127,57 @@ func show_login() -> void:
 func show_menu() -> void:
 	screen.show()
 	make_screen("RagnArena — menu")
-	label("%s  |  Perfil local" % store.data["character_name"])
-	button("Arena", func(): show_presets(true))
+	label("%s  |  Conta local" % store.data["character_name"])
+	var selected := store.find_character(str(store.data["selected_character_id"]))
+	if not selected.is_empty():
+		label("%s  |  Base %d  Job %d" % [selected["name"], selected["base_level"], selected["job_level"]], 18)
+	button("Arena", func(): show_characters(true))
+	button("Personagens", func(): show_characters(false))
 	button("Perfil", show_profile)
 	button("Configurações", func(): show_presets(false))
 
+func show_characters(for_arena: bool) -> void:
+	make_screen("Escolha o personagem" if for_arena else "Personagens")
+	label("Até 9 personagens; cada classe e progressão são independentes.", 18)
+	if store.data["characters"].size() < LocalProfileStore.MAX_CHARACTERS:
+		var name_input := text_field("Nome do personagem (3–16 caracteres)")
+		button("Teclado na tela", func(): show_virtual_keyboard(name_input))
+		var picker := OptionButton.new()
+		for name in CHARACTER_CLASS_NAMES:
+			picker.add_item(name)
+		column.add_child(picker)
+		label("Noviço usa combate provisório até sua classe ser implementada.", 15)
+		var feedback := label("", 16)
+		button("Criar personagem", func():
+			var id := store.create_character(name_input.text, CHARACTER_CLASS_IDS[picker.selected])
+			if id != "":
+				show_characters(for_arena)
+			else:
+				feedback.text = store.last_error)
+	var scroller := ScrollContainer.new()
+	scroller.custom_minimum_size = Vector2(840, 300)
+	column.add_child(scroller)
+	var list := VBoxContainer.new()
+	scroller.add_child(list)
+	for character in store.data["characters"]:
+		var id: String = character["id"]
+		var class_index := CHARACTER_CLASS_IDS.find(str(character["class_id"]))
+		var row := HBoxContainer.new()
+		list.add_child(row)
+		label("%s — %s | Base %d (%d EXP) | Job %d (%d EXP)" % [character["name"], CHARACTER_CLASS_NAMES[maxi(0, class_index)], character["base_level"], character["base_exp"], character["job_level"], character["job_exp"]], 16, row).custom_minimum_size = Vector2(650, 0)
+		button("Jogar" if for_arena else "Selecionar", func():
+			if store.select_character(id):
+				if for_arena:
+					start_match(id)
+				else:
+					show_menu(), row)
+	button("Voltar ao menu", show_menu)
+
 func show_profile() -> void:
 	make_screen("Perfil")
-	label("Personagem: %s" % store.data["character_name"])
+	label("Conta: %s" % store.data["character_name"])
 	label("ID local: %s" % str(store.data["account_id"]).substr(0, 12), 16)
+	label("Personagens: %d/9" % store.data["characters"].size())
 	label("Partidas registradas neste dispositivo: %d" % store.data["history"].size())
 	var history: Array = store.data["history"]
 	for i in range(history.size() - 1, maxi(-1, history.size() - 6), -1):
@@ -139,9 +186,12 @@ func show_profile() -> void:
 	button("Voltar", show_menu)
 
 func show_presets(for_arena: bool) -> void:
+	if for_arena:
+		show_characters(true)
+		return
 	edit_id = ""
 	make_screen("Escolha a configuração" if for_arena else "Configurações salvas")
-	label("Cada configuração guarda somente nome e classe.", 18)
+	label("Presets antigos são preservados; a classe do personagem é fixa.", 18)
 	var name_input := text_field("Nome da configuração")
 	button("Teclado na tela", func(): show_virtual_keyboard(name_input))
 	var class_picker := OptionButton.new()
@@ -191,31 +241,57 @@ func show_presets(for_arena: bool) -> void:
 			show_presets(for_arena), row)
 	button("Voltar ao menu", show_menu)
 
-func start_match(preset_id: String) -> void:
-	var preset := store.find_preset(preset_id)
-	if preset.is_empty() or not store.select_preset(preset_id):
+func start_match(character_id: String) -> void:
+	var character := store.find_character(character_id)
+	if character.is_empty() or not store.select_character(character_id):
 		return
-	current_preset_id = preset_id
+	current_character_id = character_id
+	participation_settled = false
 	if is_instance_valid(arena):
 		arena.queue_free()
 	arena = ArenaScene.instantiate()
 	arena.allow_class_change = false
 	arena.enable_debug_controls = false
 	add_child(arena)
-	arena.combat.select_class(str(preset["class_id"]))
+	arena.combat.select_class(str(COMBAT_CLASS_IDS.get(str(character["class_id"]), "paladin")))
 	arena.restart_requested.connect(_restart_match)
 	arena.menu_requested.connect(return_to_menu)
 	arena.match_controller.match_ended.connect(_on_match_ended)
+	arena.match_controller.participation_ended.connect(_on_participation_ended)
 	screen.hide()
 
 func _on_match_ended(result: Dictionary) -> void:
-	store.record_result(result, current_preset_id)
+	settle_participation(result)
+
+func _on_participation_ended(result: Dictionary) -> void:
+	settle_participation(result)
+	call_deferred("return_to_arena_selection")
+
+func settle_participation(report: Dictionary) -> void:
+	if participation_settled or current_character_id == "":
+		return
+	var paid := store.settle_match(current_character_id, report)
+	participation_settled = not paid.is_empty()
+	if participation_settled and is_instance_valid(arena):
+		arena.match_controller.result["permanent_reward"] = paid
 
 func _restart_match() -> void:
-	call_deferred("start_match", current_preset_id)
+	if is_instance_valid(arena) and arena.match_controller.state == "active" and not participation_settled:
+		var report: Dictionary = arena.match_controller.participation_report("abandon", "")
+		report["abandoned"] = true
+		settle_participation(report)
+	call_deferred("start_match", current_character_id)
 
 func return_to_menu() -> void:
+	if is_instance_valid(arena) and arena.match_controller.state == "active" and not participation_settled:
+		var report: Dictionary = arena.match_controller.participation_report("abandon", "")
+		report["abandoned"] = true
+		settle_participation(report)
 	if is_instance_valid(arena):
 		arena.queue_free()
 		arena = null
 	show_menu()
+
+func return_to_arena_selection() -> void:
+	return_to_menu()
+	show_characters(true)

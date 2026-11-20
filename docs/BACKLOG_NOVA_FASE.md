@@ -10,14 +10,14 @@ Este documento organiza o redesenho do jogo **antes de alterar a jogabilidade**.
 4. **Itens e Inventário** — definir arma, armadura, acessório, estoque, atalhos, saque, upgrade e monetização.
 5. **Navegação e Mapa** — definir arenas por faixa, salas de 5/10/20, coberturas, eventos e fechamento.
 
-**Regra de execução:** a primeira implementação pode introduzir apenas personagens e progressão persistente após fechar as pendências em `docs/PRIMEIRA_IMPLEMENTACAO_PROGRESSAO.md`, sem mexer em combate, atributos ou habilidades. Os demais tópicos serão tratados antes das respectivas mudanças. Números ainda não aprovados permanecem provisórios. O mapa 3D segue como evolução futura.
+**Regra de execução:** a primeira implementação de personagens e progressão persistente está descrita em `docs/PRIMEIRA_IMPLEMENTACAO_PROGRESSAO.md` e no relatório correspondente; os demais tópicos serão tratados antes das respectivas mudanças. O mapa 3D segue como evolução futura.
 
 ## Panorama dos tópicos seguintes
 
 | Tópico | Já existe no protótipo | Direção aprovada ou discutida | Falta definir antes de desenvolver |
 |---|---|---|---|
 | 2. Habilidades | Ataque básico e três habilidades para cada um dos quatro protótipos; botão de ataque, Q/E/F e efeitos provisórios | Definir primeiro o Espadachim como modelo para as outras classes | Confirmar kit, alcance, custo, recarga, desbloqueio, melhoria e persistência do Espadachim; replicar a estrutura às demais classes depois |
-| 3. Atributos | HP, dano, defesa, velocidade, alcance e XP temporários de nível 1–30 | Base/Job Level e EXP persistentes por personagem; recompensas de Arena propostas em `docs/PRIMEIRA_IMPLEMENTACAO_PROGRESSAO.md` | Curvas adaptadas, critério de participação, eventos válidos, regra de derrota e proteção contra abuso |
+| 3. Atributos | HP, dano, defesa, velocidade, alcance e XP temporários de nível 1–30 | Base/Job Level e EXP persistentes por personagem já implementados com teto inicial 40 | Validar ritmo em playtest; definir atributos, fórmulas, faixas de arena e curva além do nível 40 |
 | 4. Itens e Inventário | Quatro slots de consumíveis temporários, drops e buffs provisórios | Propriedade de equipamentos e itens persiste após vitória ou morte; começar com arma, armadura e acessório; quatro botões rápidos são atalhos do inventário | Capacidade, obtenção, raridade, equipar, uso, upgrade, moedas, preços, regras de compra e armazenamento no servidor |
 | 5. Navegação e Mapa | Arena 2D maior que a tela, câmera, minimapa, pedras e caixas; layout lógico preparado para 3D futuro | Salas de 5, 10 ou 20 pessoas; barris, pedras, saque e eventos na arena; sem mundo aberto | Mapa por capacidade/faixa, spawns, espera da sala, fechamento, objetivos, distribuição de recursos e desempenho mobile |
 

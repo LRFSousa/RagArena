@@ -19,6 +19,12 @@ var endure := 0.0
 var barrier := 0
 var barrier_time := 0.0
 var bots: Array[CombatBot] = []
+var skill_use_serial := 0
+var active_skill_use_id := 0
+var barrier_use_id := 0
+var endure_use_id := 0
+var swift_use_id := 0
+var invisible_use_id := 0
 
 func configure(owner_arena: Node2D, actor: CharacterBody2D, bag: PlayerInventory, levels: MatchProgression, data: ClassBalance) -> void:
 	arena = owner_arena
@@ -45,6 +51,10 @@ func select_class(next_id: String) -> void:
 	endure = 0.0
 	barrier = 0
 	barrier_time = 0.0
+	barrier_use_id = 0
+	endure_use_id = 0
+	swift_use_id = 0
+	invisible_use_id = 0
 	inventory.hp = max_hp()
 
 func max_hp() -> int:
@@ -74,6 +84,8 @@ func advance(delta: float) -> void:
 	if barrier_time <= 0.0:
 		barrier = 0
 	for bot in bots:
+		if bot.active and bot.attack_time <= 0.0 and invisible > 0.0 and bot.position.distance_to(player.position) < 260.0 and clear_line(bot.position, player.position, [bot.get_rid(), player.get_rid()]):
+			arena.match_controller.register_effective_skill(invisible_use_id)
 		if bot.active and bot.attack_time <= 0.0 and invisible <= 0.0 and bot.position.distance_to(player.position) < 260.0:
 			if clear_line(bot.position, player.position, [bot.get_rid(), player.get_rid()]):
 				bot.attack_time = settings.bot_attack_interval
@@ -129,19 +141,24 @@ func launch(aim: Vector2, damage: int, reach: float, effect: String, piercing :=
 	shot.damage = damage
 	shot.effect = effect
 	shot.piercing = piercing
+	shot.skill_use_id = active_skill_use_id
 	shot.combat = self
 	arena.add_child(shot)
 	return shot
 
-func hit_bot(bot: CombatBot, raw_damage: int, effect: String = "", skill := false) -> int:
+func hit_bot(bot: CombatBot, raw_damage: int, effect: String = "", skill := false, use_id := 0) -> int:
 	if not bot.active:
 		return 0
 	var amount := maxi(0, roundi(raw_damage * inventory.pvp_damage_multiplier()))
 	var actual := bot.take_hit(amount)
 	if actual > 0:
 		progression.grant_effective_pvp_damage_xp(actual, inventory.xp_multiplier())
+		if skill and arena.match_controller != null:
+			arena.match_controller.register_effective_skill(use_id)
 		if not bot.active:
 			progression.grant_elimination_xp(inventory.xp_multiplier())
+			if arena.match_controller != null:
+				arena.match_controller.register_elimination(bot.get_instance_id())
 	if effect == "freeze":
 		bot.frozen = settings.mage_freeze_duration
 	elif effect == "root":
@@ -160,10 +177,14 @@ func take_player_hit(raw_damage: int, ranged: bool, push := false) -> int:
 		amount = roundi(amount * (1.0 - settings.paladin_ranged_reduction))
 	var absorbed := mini(barrier, amount)
 	barrier -= absorbed
+	if absorbed > 0 and arena.match_controller != null:
+		arena.match_controller.register_effective_skill(barrier_use_id)
 	if barrier == 0:
 		barrier_time = 0.0
 	if push and endure <= 0.0:
 		player.position += Vector2(20, 0)
+	elif push and endure > 0.0 and arena.match_controller != null:
+		arena.match_controller.register_effective_skill(endure_use_id)
 	var actual := inventory.apply_damage(amount - absorbed)
 	if amount > 0 and player.has_method("show_damage"):
 		player.show_damage()
@@ -174,26 +195,40 @@ func use_skill(index: int) -> bool:
 		return false
 	var aim: Vector2 = player.facing.normalized()
 	var multiplier := settings.skill_multiplier(progression.level)
+	skill_use_serial += 1
+	active_skill_use_id = skill_use_serial
+	var effect_applied := false
 	match class_id:
 		"paladin":
 			match index:
 				0:
 					barrier = roundi(settings.paladin_protection_capacity * multiplier)
 					barrier_time = settings.paladin_protection_duration * multiplier
-				1: inventory.hp = mini(max_hp(), inventory.hp + roundi(max_hp() * settings.paladin_heal_fraction * multiplier))
-				2: endure = settings.paladin_endure_duration * multiplier
+					barrier_use_id = active_skill_use_id
+				1:
+					var prior_hp := inventory.hp
+					inventory.hp = mini(max_hp(), inventory.hp + roundi(max_hp() * settings.paladin_heal_fraction * multiplier))
+					effect_applied = inventory.hp > prior_hp
+				2:
+					endure = settings.paladin_endure_duration * multiplier
+					endure_use_id = active_skill_use_id
 		"mage":
 			match index:
 				0: launch(aim, roundi(8 * multiplier), 330.0, "freeze")
 				1:
 					barrier = roundi(settings.mage_barrier_capacity * multiplier)
 					barrier_time = settings.mage_barrier_duration
+					barrier_use_id = active_skill_use_id
 				2: launch(aim, roundi(28 * multiplier), 330.0, "fire")
 		"assassin":
 			match index:
-				0: invisible = settings.assassin_invisible_duration
+				0:
+					invisible = settings.assassin_invisible_duration
+					invisible_use_id = active_skill_use_id
 				1: launch(aim, roundi(19 * multiplier), 310.0, "blade")
-				2: swift = settings.assassin_speed_duration * multiplier
+				2:
+					swift = settings.assassin_speed_duration * multiplier
+					swift_use_id = active_skill_use_id
 		"archer":
 			match index:
 				0:
@@ -203,8 +238,12 @@ func use_skill(index: int) -> bool:
 				2:
 					var trap: CombatTrap = Trap.new()
 					trap.combat = self
+					trap.skill_use_id = active_skill_use_id
 					trap.position = player.position + aim * 65.0
 					arena.add_child(trap)
+	if effect_applied and arena.match_controller != null:
+		arena.match_controller.register_effective_skill(active_skill_use_id)
+	active_skill_use_id = 0
 	cooldowns[index] = float(stats()["cooldowns"][index])
 	if class_id == "paladin" and player.has_method("show_skill"):
 		player.show_skill(index)

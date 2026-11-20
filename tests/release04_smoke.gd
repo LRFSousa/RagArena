@@ -88,14 +88,11 @@ func run_tests() -> void:
 	match_controller = arena.match_controller
 	arena.inventory.apply_damage(999)
 	match_controller.advance(0.0)
-	check(match_controller.player_eliminated and match_controller.state == "active" and match_controller.alive_count() == 2, "jogador eliminado não renasce e partida segue")
-	var first_spectator := match_controller.spectator_name()
-	var second_spectator := match_controller.next_spectator()
-	check(first_spectator != second_spectator and first_spectator.begins_with("Bot"), "espectador alterna sobreviventes")
+	check(match_controller.player_eliminated and match_controller.state == "results" and match_controller.result["dead"] and match_controller.alive_count() == 2, "morte encerra imediatamente a participação do jogador")
 	for bot in arena.combat.bots:
 		bot.take_hit(999)
 	match_controller.advance(0.0)
-	check(match_controller.state == "results" and match_controller.result["winner"] == "Empate", "eliminação simultânea não inventa vencedor")
+	check(match_controller.state == "results" and match_controller.result["winner"] == "", "participação encerrada não inventa vencedor após morte dos bots")
 	remove_arena(arena)
 	await process_frame
 	if failures == 0:

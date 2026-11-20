@@ -10,6 +10,7 @@ var combat: Node
 var from_player := true
 var hit_targets: Array[Node] = []
 var piercing := false
+var skill_use_id := 0
 
 func _physics_process(delta: float) -> void:
 	var travel := minf(range_left, speed * delta)
@@ -28,7 +29,7 @@ func _physics_process(delta: float) -> void:
 		position = hit["position"]
 		var target: Object = hit["collider"]
 		if from_player and target is CombatBot:
-			combat.hit_bot(target, damage, effect, true)
+			combat.hit_bot(target, damage, effect, skill_use_id > 0, skill_use_id)
 			if piercing:
 				hit_targets.append(target)
 				position += direction * 3.0

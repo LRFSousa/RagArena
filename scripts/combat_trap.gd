@@ -4,6 +4,7 @@ class_name CombatTrap
 var combat: CombatSystem
 var lifetime := 8.0
 var radius := 26.0
+var skill_use_id := 0
 
 func _physics_process(delta: float) -> void:
 	lifetime -= delta
@@ -12,7 +13,7 @@ func _physics_process(delta: float) -> void:
 		return
 	for bot in combat.bots:
 		if bot.active and bot.position.distance_to(position) <= radius:
-			combat.hit_bot(bot, 5, "root", true)
+			combat.hit_bot(bot, 5, "root", true, skill_use_id)
 			queue_free()
 			return
 	queue_redraw()

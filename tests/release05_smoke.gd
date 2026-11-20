@@ -2,8 +2,8 @@ extends SceneTree
 
 const Store = preload("res://scripts/local_profile_store.gd")
 const MainScene = preload("res://scenes/main.tscn")
-const TEST_PATH := "user://release05_profile_test.json"
-const UI_PATH := "user://release05_ui_test.json"
+const TEST_PATH := "res://../release05_profile_test.json"
+const UI_PATH := "res://../release05_ui_test.json"
 var failures := 0
 
 func _initialize() -> void:
@@ -76,16 +76,17 @@ func run_tests() -> void:
 	check(main.screen.visible and main.column.get_child_count() > 2, "entrada local exibida")
 	main.show_menu()
 	check(main.column.get_child_count() >= 4, "menu Arena, Perfil e Configurações")
-	main.show_presets(true)
-	check(main.column.get_child_count() > 4, "seleção de configuração antes da arena")
-	var preset_list: VBoxContainer
+	var character_id: String = reloaded.create_character("Mago_02", "mage")
+	main.show_characters(true)
+	check(main.column.get_child_count() > 4, "seleção de personagem antes da arena")
+	var character_list: VBoxContainer
 	for child in main.column.get_children():
 		if child is ScrollContainer:
-			preset_list = child.get_child(0)
-	var play_button: Button = preset_list.get_child(0).get_child(1)
+			character_list = child.get_child(0)
+	var play_button: Button = character_list.get_child(0).get_child(1)
 	play_button.pressed.emit()
 	await physics_frame
-	check(not main.screen.visible and main.arena.combat.class_id == "mage", "partida usa classe da configuração escolhida")
+	check(not main.screen.visible and main.arena.combat.class_id == "mage", "partida usa classe fixa do personagem")
 	var tab := InputEventKey.new()
 	tab.pressed = true
 	tab.physical_keycode = KEY_TAB
@@ -96,16 +97,16 @@ func run_tests() -> void:
 	main.arena.progression.grant_xp(200)
 	main.arena.inventory.pickup_item("shield")
 	main.arena.match_controller.finish("time_limit", "Empate por tempo")
-	check(main.store.data["history"].size() == 1 and main.store.data["history"][0]["preset_id"] == second, "resultado grava histórico local de teste")
+	check(main.store.data["history"].size() == 1 and main.store.data["history"][0]["character_id"] == character_id, "resultado grava histórico e personagem")
 	main.arena.restart_game()
 	await process_frame
 	await process_frame
-	check(main.arena != old_arena and main.arena.progression.level == 1 and main.arena.inventory.slots[0]["id"] == "" and main.arena.combat.class_id == "mage", "nova partida limpa estado e mantém seleção")
+	check(main.arena != old_arena and main.arena.progression.level == 1 and main.arena.inventory.slots[0]["id"] == "" and main.arena.combat.class_id == "mage", "nova partida limpa estado e mantém personagem")
 	main.return_to_menu()
 	await process_frame
 	check(main.screen.visible and main.arena == null, "retorno ao menu")
 	var reopened = Store.new(TEST_PATH)
-	check(reopened.data["history"].size() == 1 and reopened.data["presets"].size() == 1, "histórico e configuração sobrevivem ao reinício")
+	check(reopened.data["history"].size() == 2 and reopened.data["history"][1]["reason"] == "abandon" and reopened.data["presets"].size() == 1, "histórico, abandono e configuração sobrevivem ao reinício")
 	main.queue_free()
 	await process_frame
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
