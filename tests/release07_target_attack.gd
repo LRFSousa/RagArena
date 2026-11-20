@@ -24,8 +24,14 @@ func run_tests() -> void:
 		if child is StaticBody2D and child.destructible and child.position == Vector2(410, 176):
 			opening_crate = child
 			break
-	arena.selected_target = opening_crate
-	arena.target_attack_pending = true
+	var opening_click := InputEventMouseButton.new()
+	opening_click.button_index = MOUSE_BUTTON_LEFT
+	opening_click.pressed = true
+	opening_click.position = arena.get_viewport().get_canvas_transform() * opening_crate.global_position
+	arena._input(opening_click)
+	opening_click.pressed = false
+	arena._input(opening_click)
+	check(arena.selected_target == opening_crate and arena.target_attack_pending, "clique na caixa inicial seleciona ataque")
 	for i in range(600):
 		await physics_frame
 		if opening_crate.hp < opening_crate.max_hp:
