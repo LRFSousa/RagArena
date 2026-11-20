@@ -2,7 +2,8 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
-- Fechar, nesta ordem, Classes, Habilidades, Atributos, Itens e Inventário, Navegação e Mapa conforme `docs/BACKLOG_NOVA_FASE.md`. Cinco classes iniciais e Job Level separado estão aprovados. Ao trocar de classe, Base Level/XP permanecem e Job Level/XP recomeçam. Restam papéis, regras de habilidades e detalhes das ramificações futuras.
+- Primeira implementação de progressão: fechar as decisões de escala da curva, participação válida, eventos, penalidade por derrota, migração de personagens e limites descritas em `docs/PRIMEIRA_IMPLEMENTACAO_PROGRESSAO.md`. Cada personagem terá classe fixa e Base/Job Level e EXP independentes; não haverá troca de classe nesta entrega.
+- Depois da progressão, seguir os tópicos Classes, Habilidades, Atributos, Itens e Inventário, Navegação e Mapa de `docs/BACKLOG_NOVA_FASE.md`. Evolução em três etapas, papéis e ramificações futuras continuam pendentes.
 - Habilidades: fechar primeiro o kit do Espadachim com duas passivas (Aumentar Recuperação de HP, Perícia com Espada), Golpe Fulminante e Vigor. Ataque básico e Golpe Fulminante têm o mesmo alcance de dois blocos e atingem um alvo, inclusive caixas. A linha terá três etapas; a primeira evolução será no Job Level 40, com Job reiniciado em 0 e ranks preservados. Cada marco de Job concede pontos uma vez por etapa. Faltam gasto de pontos entre etapas, condição da recuperação, custos e valores por rank. Usar o contrato resultante para as demais classes depois.
 
 ## Release 1.0

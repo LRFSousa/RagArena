@@ -2,6 +2,7 @@
 
 ## Planejamento da nova fase
 
+- Preparada a primeira implementação de progressão persistente por personagem, com classe fixa, tabelas Base/Job configuráveis e recompensas de Arena propostas. A regra antiga de troca de classe foi substituída neste escopo por vários personagens independentes. Registradas incompatibilidades entre a curva clássica rAthena e os valores de EXP por partida, migração do perfil v1 e decisões pendentes. Nenhuma jogabilidade foi alterada.
 - Criado backlog de definição em cinco tópicos, iniciando por Classes. Confirmadas cinco classes no beta (Espadachim, Mago, Arqueiro, Noviço e Gatuno), Base Level permanente 1–99 e Job Level separado, com propostas de duas ou mais ramificações futuras por classe. Documentada a diferença entre o protótipo atual e as novas regras; nenhuma jogabilidade foi alterada.
 - Definida a troca de classe: Base Level e Base XP persistem; Job Level e Job XP recomeçam na classe escolhida, mesmo quando já utilizada anteriormente. Atualizados os critérios de dados e testes do backlog; nenhuma jogabilidade foi alterada.
 - Iniciado o tópico Habilidades exclusivamente pelo Espadachim: inventariadas as três habilidades do protótipo, proposto contrato de alcance de dois blocos, progressão por Job Level e critérios de aceite; demais classes aguardam essa referência. Nenhuma jogabilidade foi alterada.

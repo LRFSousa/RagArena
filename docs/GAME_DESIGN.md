@@ -1,6 +1,6 @@
 # RagnArena — regras de jogo
 
-> Este arquivo descreve as regras implementadas no protótipo 0.1–0.7. A nova direção de produto (Base Level permanente 1–99, Job Level separado, cinco classes no beta, inventário persistente e salas de 5/10/20) está sendo definida em `docs/BACKLOG_NOVA_FASE.md` e ainda não substituiu o código abaixo.
+> Este arquivo descreve as regras implementadas no protótipo 0.1–0.7. A nova direção de produto (personagens de classe fixa com Base/Job Level e EXP próprios, cinco classes planejadas para o beta, inventário persistente e salas de 5/10/20) está sendo definida em `docs/BACKLOG_NOVA_FASE.md` e `docs/PRIMEIRA_IMPLEMENTACAO_PROGRESSAO.md` e ainda não substituiu o código abaixo.
 
 ## Release 0.1
 
