@@ -1,5 +1,9 @@
 # Changelog
 
+## Planejamento da nova fase
+
+- Criado backlog de definição em cinco tópicos, iniciando por Classes. Documentada a diferença entre o protótipo atual e as novas regras acordadas; nenhuma jogabilidade foi alterada.
+
 ## 1.0 — preparação inicial da beta
 
 - Preset Android atualizado para versão 0.7.0/código 8. Adicionado script de exportação de APK de depuração e documentação de teste em aparelho; lançamento e multiplayer seguem pendentes.

@@ -1,5 +1,9 @@
 # Pendências
 
+## Redesenho antes do próximo desenvolvimento
+
+- Fechar, nesta ordem, Classes, Habilidades, Atributos, Itens e Inventário, Navegação e Mapa conforme `docs/BACKLOG_NOVA_FASE.md`. A primeira classe do beta, a árvore futura e a presença de Job Level no beta aguardam decisão.
+
 ## Release 1.0
 
 - Instalar o APK de depuração em aparelhos reais e verificar controles, persistência, desempenho e partida completa.
