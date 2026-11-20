@@ -2,7 +2,7 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
-- Fechar, nesta ordem, Classes, Habilidades, Atributos, Itens e Inventário, Navegação e Mapa conforme `docs/BACKLOG_NOVA_FASE.md`. A primeira classe do beta, a árvore futura e a presença de Job Level no beta aguardam decisão.
+- Fechar, nesta ordem, Classes, Habilidades, Atributos, Itens e Inventário, Navegação e Mapa conforme `docs/BACKLOG_NOVA_FASE.md`. Cinco classes iniciais e Job Level separado do Base estão aprovados; restam papéis, regra de Job por classe, troca de classe e detalhes das ramificações futuras.
 
 ## Release 1.0
 

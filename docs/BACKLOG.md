@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Nova fase em definição:** consulte `docs/BACKLOG_NOVA_FASE.md`. O histórico abaixo descreve o protótipo existente; regras aprovadas depois dele (nível permanente 1–99, uma classe no beta, equipamentos persistentes e salas de 5/10/20) ainda não foram implementadas.
+**Nova fase em definição:** consulte `docs/BACKLOG_NOVA_FASE.md`. O histórico abaixo descreve o protótipo existente; regras aprovadas depois dele (Base Level permanente 1–99, Job Level separado, cinco classes no beta, equipamentos persistentes e salas de 5/10/20) ainda não foram implementadas.
 
 **Status:** releases 0.1 a 0.5 implementadas; 0.6 adiada por decisão do responsável; etapa técnica da 0.7 encerrada, com aceite mobile e arte final pendentes; preparação da 1.0 iniciada.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  

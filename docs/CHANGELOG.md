@@ -2,7 +2,7 @@
 
 ## Planejamento da nova fase
 
-- Criado backlog de definição em cinco tópicos, iniciando por Classes. Documentada a diferença entre o protótipo atual e as novas regras acordadas; nenhuma jogabilidade foi alterada.
+- Criado backlog de definição em cinco tópicos, iniciando por Classes. Confirmadas cinco classes no beta (Espadachim, Mago, Arqueiro, Noviço e Gatuno), Base Level permanente 1–99 e Job Level separado, com propostas de duas ou mais ramificações futuras por classe. Documentada a diferença entre o protótipo atual e as novas regras; nenhuma jogabilidade foi alterada.
 
 ## 1.0 — preparação inicial da beta
 
