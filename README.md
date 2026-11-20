@@ -20,6 +20,7 @@ A janela usa uma área lógica de 1280×720, escalada com preservação de propo
 
 - `scenes/`: cenas `main`, `arena`, `player`, `crate` e `wall`.
 - `scripts/arena.gd`: mapa, controles, HUD e ataque.
+- `scripts/arena_map_layout.gd`: geometria lógica compartilhada e conversão de coordenadas para futura representação 3D; veja `docs/MAPA_3D.md`.
 - `scripts/player.gd`: movimento com colisão.
 - `scripts/obstacle.gd`: caixas e paredes.
 - `scripts/combat_rules.gd`: dano exclusivo contra caixas.

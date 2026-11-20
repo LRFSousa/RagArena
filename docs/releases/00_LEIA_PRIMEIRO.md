@@ -13,4 +13,4 @@
 > Leia `docs/releases/00_LEIA_PRIMEIRO.md`, `docs/releases/09_DECISOES_E_PENDENCIAS.md` e `docs/releases/XX_...md`. Implemente apenas a release indicada. Não invente regras definitivas. Execute os testes disponíveis e atualize obrigatoriamente os arquivos Markdown de backlog, changelog, pendências e relatório da release. Ao concluir, informe arquivos alterados, testes executados, critérios de aceite atendidos e limitações. Não comece a próxima release sem aprovação.
 
 ## Status
-As releases 0.1 a 0.5 foram implementadas e validadas em modo headless; a validação manual da 0.5 em celular está pendente. As releases seguintes permanecem planejadas. Números de balanceamento são hipóteses iniciais, sujeitos a testes.
+As releases 0.1 a 0.5 foram implementadas e validadas em modo headless. A 0.6 foi adiada por decisão do responsável. A etapa técnica da 0.7 foi encerrada, mas seu aceite em aparelhos reais e a arte final seguem pendentes. A 1.0 permanece planejada. Números de balanceamento são hipóteses iniciais, sujeitos a testes.

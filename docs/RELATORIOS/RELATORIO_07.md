@@ -1,4 +1,12 @@
-# Relatório da release 0.7 — em desenvolvimento
+# Relatório da release 0.7 — etapa técnica encerrada, aceite mobile pendente
+
+## Fechamento da etapa
+
+O checkpoint anterior à preparação do mapa 3D foi enviado no commit `d67a8dd`. A geometria da Arena foi extraída para `scripts/arena_map_layout.gd`; a cena 2D e o controlador de partida passaram a usar o mesmo tamanho de mundo, limites, spawns, paredes e caixas. A conversão de posições do chão para X/Z em 3D está definida e documentada em `docs/MAPA_3D.md`. Nenhuma cena 3D foi criada nesta etapa.
+
+Após a extração, passaram com saída zero as suítes `release01_smoke`, `release02_smoke`, `release03_smoke`, `release04_smoke`, `release05_smoke`, `release07_smoke`, `release07_attack_range`, `release07_swordsman`, `release07_target_attack`, `map_layout_smoke` e `health_damage_regression` no Godot 4.7.2 headless. O teste do mapa verificou as 17 paredes, 24 caixas, cinco spawns, limites compartilhados e conversão de coordenadas. A suíte 0.5 usa perfil persistente e precisou de `APPDATA` redirecionado para uma pasta de teste gravável no workspace; sem isso, falha por não poder gravar em `user://`. As outras suítes passaram apesar do aviso de log do ambiente.
+
+Este fechamento registra apenas a implementação técnica atual. Os critérios de aceite da 0.7 exigem teste em aparelhos reais, ergonomia, desempenho e arte final; esses pontos seguem abertos em `docs/BACKLOG.md` e `docs/PENDENCIAS.md`.
 
 ## Implementado
 
@@ -68,6 +76,6 @@ A prévia foi publicada em `https://lrfsousa.github.io/RagArena/preview-07/` sem
 
 - Os sprites são provisórios e de baixa complexidade. Ainda faltam efeitos visuais específicos de habilidades, variantes direcionais mais ricas e revisão artística.
 - Testes headless não validam aparência final, desempenho, ergonomia nem áudio audível em Android. Uma tentativa de captura de viewport headless falhou porque esse modo usa renderizador sem textura de tela; isso não indica erro de execução do jogo.
-- A release não está marcada como concluída até teste em aparelhos reais e resolução dos itens pendentes.
+- A implementação técnica da etapa está encerrada; o aceite final continua pendente até teste em aparelhos reais e resolução dos itens desmarcados no backlog.
 - O zoom 0,85, os novos spawns, 24 caixas e o fechamento de 480 unidades são provisórios. A câmera de espectador ainda não acompanha sobreviventes após eliminação.
 - Ainda não existem sprites específicos do Espadachim para ataque, dano e morte; a caminhada usa coloração provisória nesses estados. O teste automatizado não substitui a conferência visual no celular.

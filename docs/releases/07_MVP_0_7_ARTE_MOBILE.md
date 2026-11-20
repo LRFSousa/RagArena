@@ -1,6 +1,6 @@
 # RagnArena — MVP 0.7 — Arte e usabilidade mobile
 
-**Status:** Planejada
+**Status:** Etapa técnica encerrada; critérios de aceite em aparelho real e arte final pendentes
 
 ## Objetivo
 Substituir placeholders por identidade visual original e ajustar ergonomia Android.

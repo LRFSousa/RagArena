@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.7.0 em desenvolvimento — arte pixelada e controles mobile
+## 0.7.0 — etapa técnica encerrada; aceite mobile pendente
+
+- Mapa lógico extraído para `arena_map_layout.gd`, compartilhado pela arena e pelas regras de partida. Convenção X/Z e conversores preparados para uma futura cena 3D, preservando o jogo 2D atual.
 
 - Golpe do Paladino agora parte do centro físico e acerta caixas encostadas. Toque ou clique em caixa/oponente seleciona alvo; fora do alcance, o Paladino se aproxima e golpeia ao chegar. O botão de ataque usa o alvo selecionado.
 - Espadachim ampliado visualmente de 25% para 50% do sprite, mantendo a câmera em zoom 1,05 e alinhando os pés ao ponto anterior.

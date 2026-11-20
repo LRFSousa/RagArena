@@ -1,6 +1,6 @@
 # RagnArena — Backlog de releases
 
-**Status:** releases 0.1 a 0.5 implementadas; 0.6 adiada por decisão do responsável; 0.7 em desenvolvimento.
+**Status:** releases 0.1 a 0.5 implementadas; 0.6 adiada por decisão do responsável; etapa técnica da 0.7 encerrada, com aceite mobile e arte final pendentes.
 **Stack:** Godot 4 + GDScript. **Alvo:** Android (paisagem), testes iniciais em desktop.  
 **Princípio:** validar gameplay com formas geométricas antes de sprites e interface final.
 
@@ -105,9 +105,11 @@
 
 ## Release 0.7 — Arte, animação e interface mobile
 **Objetivo:** substituir os placeholders sem comprometer a legibilidade.
+**Fechamento técnico:** código, documentação e testes automatizados da etapa atual concluídos; os itens desmarcados seguem como pendências de aceite ou trabalho futuro. A release não recebeu aceite final em aparelho real.
 - [x] Criar pasta `assets/characters/swordsman/` e integrar as quatro animações de caminhada fornecidas pelo responsável como teste visual da classe Paladino.
 - [ ] Receber ou criar folhas de ataque, dano, morte e parado para o Espadachim; decidir se ele substitui definitivamente o Paladino ou será uma classe distinta.
 - [x] Prototipar mapa maior que a tela, câmera seguindo o personagem e HUD fixo em `CanvasLayer`.
+- [x] Extrair dimensões, spawns e obstáculos para um layout lógico compartilhado e definir a conversão X/Y do chão para X/Z em uma futura cena 3D.
 - [ ] Comparar zoom e validar legibilidade da nova escala em celular.
 - [x] Separar o HUD em `CanvasLayer`, mantendo o mapa e os controles atuais como primeira etapa do protótipo.
 - [x] Adicionar minimapa provisório com limites, área segura e posição do jogador, sem revelar oponentes.

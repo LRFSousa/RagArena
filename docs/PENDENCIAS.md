@@ -2,6 +2,7 @@
 
 ## Release 0.7
 
+- Etapa técnica encerrada; faltam aceite em aparelho real e arte final antes de considerar os critérios completos. O mapa 3D é uma evolução futura, descrita em `docs/MAPA_3D.md`; ainda faltam cena, física, câmera, navegação e testes mobile 3D.
 - Validar em celular o toque para selecionar caixa/oponente e a aproximação automática em mapas com muitos obstáculos e alvos em movimento. O contorno por grade já cobre uma parede simples.
 - Validar no celular a ergonomia da nova disposição circular, especialmente com os quatro espaços de itens e os ícones das habilidades em telas pequenas.
 - Avaliar no celular a leitura dos novos ícones de habilidade em tamanho reduzido e o contraste das recargas.
