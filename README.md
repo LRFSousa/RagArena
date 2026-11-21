@@ -58,6 +58,8 @@ O alvo é Android em paisagem, mas ainda falta uma validação manual em aparelh
 
 A cena 3D experimental pode ser executada separadamente com `godot --path . --scene res://scenes/experimental/mountain_arena_3d.tscn`. Ela usa WASD, `C` para visão geral, `1`–`3` para selecionar alvo, Espaço para sondar o golpe e `F` para sondar um efeito visual. Veja `docs/RELATORIOS/RELATORIO_ARENA_3D_EXPERIMENTAL.md`.
 
+O teste local com o mapa completo `mjolnir_01` usa `godot --path . --scene res://scenes/experimental/ragnarok_map_reference.tscn`. Os arquivos convertidos do cliente não são distribuídos pelo repositório. Consulte `docs/ARENA_3D_MAPA_REFERENCIA.md` para prepará-los.
+
 ## Teste no Android
 
 O APK de depuração e as instruções de instalação estão descritos em `docs/ANDROID_TESTE.md`.

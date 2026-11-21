@@ -1,5 +1,9 @@
 # Changelog
 
+## Teste local com mapa completo de Ragnarok
+
+- Convertido `mjolnir_01` da instalação local do usuário para GLB com `ragx` e extraída a malha caminhável GAT da mesma versão. Criada cena experimental independente com câmera, Espadachim e colisão na malha GAT. Arquivos convertidos ficam fora do controle de versão; arena 2D e combate não foram alterados.
+
 ## Graybox da arena 3D experimental
 
 - Criada cena isolada com três patamares, rampas, passagem estreita, rochas, colisões 3D, personagem com sprite, câmera inclinada e visão geral. Adicionadas sondas de ataque/efeito entre alturas e teste automatizado de física. Arena 2D, movimentação e combate reais não foram alterados.
