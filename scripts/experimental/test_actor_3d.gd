@@ -14,6 +14,7 @@ var move_input := Vector2.ZERO
 var direction_name := "down"
 var sprite: Sprite3D
 var walk_time := 0.0
+var movement_camera: Camera3D
 
 func _ready() -> void:
 	collision_layer = 2
@@ -41,17 +42,28 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if accept_player_input:
 		move_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var direction := Vector3(move_input.x, 0.0, move_input.y).normalized()
+	var direction := movement_direction(move_input)
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
 	velocity.y -= 9.8 * delta
 	move_and_slide()
 	if direction.length_squared() > 0.01:
 		walk_time += delta
-		var next_direction := "right" if absf(direction.x) >= absf(direction.z) and direction.x > 0.0 else "left" if absf(direction.x) >= absf(direction.z) else "down" if direction.z > 0.0 else "up"
+		var next_direction := "right" if absf(move_input.x) >= absf(move_input.y) and move_input.x > 0.0 else "left" if absf(move_input.x) >= absf(move_input.y) else "down" if move_input.y > 0.0 else "up"
 		if next_direction != direction_name:
 			direction_name = next_direction
 			sprite.texture = WALK[direction_name]
 		sprite.frame = int(walk_time * 8.0) % 6
 	else:
 		sprite.frame = 0
+
+func movement_direction(input_vector: Vector2) -> Vector3:
+	if not is_instance_valid(movement_camera):
+		return Vector3(input_vector.x, 0.0, input_vector.y).normalized()
+	var camera_right := movement_camera.global_basis.x
+	camera_right.y = 0.0
+	camera_right = camera_right.normalized()
+	var camera_forward := -movement_camera.global_basis.z
+	camera_forward.y = 0.0
+	camera_forward = camera_forward.normalized()
+	return (camera_right * input_vector.x - camera_forward * input_vector.y).normalized()

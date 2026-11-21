@@ -41,6 +41,7 @@ func _ready() -> void:
 	camera.target = actor
 	camera.current = true
 	add_child(camera)
+	actor.movement_camera = camera
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-55, -30, 0)
 	sun.light_energy = 0.65

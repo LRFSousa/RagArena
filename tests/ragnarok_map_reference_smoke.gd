@@ -61,5 +61,29 @@ func _run() -> void:
 	for i in range(30):
 		await physics_frame
 	assert(scene.actor.is_on_floor())
-	print("PASS: mapa completo, malha GAT, ator no chão, órbita e zoom")
+	assert(scene.actor.movement_camera == scene.camera)
+	for angle in [0.0, 45.0, 90.0, 180.0, 270.0]:
+		scene.camera.yaw_degrees = angle
+		scene.camera._update_transform(0.0)
+		var forward: Vector3 = -scene.camera.global_basis.z
+		forward.y = 0.0
+		var right: Vector3 = scene.camera.global_basis.x
+		right.y = 0.0
+		assert(scene.actor.movement_direction(Vector2(0, -1)).dot(forward.normalized()) > 0.999)
+		assert(scene.actor.movement_direction(Vector2(1, 0)).dot(right.normalized()) > 0.999)
+		assert(scene.actor.movement_direction(Vector2(0, 1)).dot(-forward.normalized()) > 0.999)
+		assert(scene.actor.movement_direction(Vector2(-1, 0)).dot(-right.normalized()) > 0.999)
+	scene.camera.yaw_degrees = 45.0
+	scene.camera._update_transform(0.0)
+	var expected: Vector3 = scene.actor.movement_direction(Vector2(0, -1))
+	var before: Vector3 = scene.actor.global_position
+	scene.actor.accept_player_input = false
+	scene.actor.move_input = Vector2(0, -1)
+	for i in range(5):
+		await physics_frame
+	var displacement: Vector3 = scene.actor.global_position - before
+	displacement.y = 0.0
+	assert(displacement.length() > 0.05)
+	assert(displacement.normalized().dot(expected) > 0.9)
+	print("PASS: mapa, colisão, câmera orbital, zoom e movimento relativo a 0°/45°/90°/180°/270°")
 	quit()

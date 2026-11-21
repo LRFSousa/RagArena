@@ -1,5 +1,9 @@
 # Changelog
 
+## Movimento relativo à câmera no mapa provisório
+
+- WASD do Espadachim experimental agora acompanha a rotação da câmera, com vetores projetados no plano do chão; o sprite usa a direção do comando na tela. A arena 2D e a graybox 3D permanecem com os controles anteriores.
+
 ## Câmera do mapa provisório
 
 - Adicionada câmera em perspectiva com órbita horizontal de 360°, inclinação limitada, zoom por roda do mouse ou pinça e rotação por arraste com botão direito ou toque. Atualizados controles e teste da cena local; movimentação e combate das arenas atuais preservados.
