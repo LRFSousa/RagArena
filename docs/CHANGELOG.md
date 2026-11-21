@@ -1,5 +1,9 @@
 # Changelog
 
+## Tamanho e braço direito do Espadachim 3D
+
+- Ampliada a apresentação visual do Espadachim experimental em 1,5× (modelo e sprite alternativo). Corrigido o eixo de repouso do braço direito no rig importado, mantendo-o abaixado e vertical durante a caminhada; braços alternam a passada para frente e para trás. A física da arena 2D não foi modificada.
+
 ## Proporção de Prontera e caminhada do Espadachim
 
 - Reduzida a ampliação experimental de Prontera de 5× para 4×. Corrigida a caminhada do rig 3D: as duas pernas e os dois braços oscilam ao longo da frente do personagem, em fases opostas, em vez de abrir lateralmente. A orientação do modelo acompanha o deslocamento.

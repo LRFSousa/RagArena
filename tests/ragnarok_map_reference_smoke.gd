@@ -50,7 +50,8 @@ func _run() -> void:
 	if ResourceLoader.exists(MODEL_FILE) or ResourceLoader.exists(WALK_MODEL_FILE):
 		assert(scene.actor.model_3d != null)
 		assert(not scene.actor.sprite.visible)
-		assert(is_equal_approx(scene.actor.model_3d.scale.y, 1.84))
+		assert(is_equal_approx(scene.actor.model_3d.scale.y, 2.76))
+		assert(is_equal_approx(scene.actor.sprite.pixel_size, 0.0135))
 		if ResourceLoader.exists(WALK_MODEL_FILE):
 			assert(scene.actor.walk_skeleton != null)
 		if ResourceLoader.exists(ATTACK_MODEL_FILE):
@@ -141,6 +142,11 @@ func _run() -> void:
 		assert(forearm >= 0 and shin >= 0 and other_forearm >= 0 and other_shin >= 0)
 		scene.actor.walk_time = 0.0
 		scene.actor._update_model_animation(0.0, false)
+		for side in ["Left", "Right"]:
+			var upper: int = scene.actor.walk_skeleton.find_bone("mixamorig_%sArm" % side)
+			var lower: int = scene.actor.walk_skeleton.find_bone("mixamorig_%sForeArm" % side)
+			var arm_direction: Vector3 = (scene.actor.walk_skeleton.get_bone_global_pose(lower).origin - scene.actor.walk_skeleton.get_bone_global_pose(upper).origin).normalized()
+			assert(arm_direction.y < -0.7)
 		var arm_idle: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(forearm).origin
 		var leg_idle: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(shin).origin
 		var other_arm_idle: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(other_forearm).origin

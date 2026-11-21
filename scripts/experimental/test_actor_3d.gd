@@ -51,7 +51,7 @@ func _ready() -> void:
 	sprite = Sprite3D.new()
 	sprite.texture = WALK[direction_name]
 	sprite.hframes = 6
-	sprite.pixel_size = 0.009
+	sprite.pixel_size = 0.0135
 	sprite.position.y = 0.91
 	sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	sprite.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
@@ -60,7 +60,7 @@ func _ready() -> void:
 	if use_3d_model and (ResourceLoader.exists(WALK_MODEL_PATH) or ResourceLoader.exists(MODEL_3D_PATH)):
 		model_3d = Node3D.new()
 		model_3d.name = "Espadachim3D"
-		model_3d.scale = Vector3.ONE * 1.84
+		model_3d.scale = Vector3.ONE * 2.76
 		add_child(model_3d)
 		var walk_path := WALK_MODEL_PATH if ResourceLoader.exists(WALK_MODEL_PATH) else MODEL_3D_PATH
 		walk_model_3d = (load(walk_path) as PackedScene).instantiate()
@@ -185,14 +185,14 @@ func _update_model_animation(_delta: float, moving: bool) -> void:
 	_pose_bone(walk_skeleton, walk_base_rotations, "mixamorig_LeftUpLeg", Vector3.FORWARD, stride)
 	_pose_bone(walk_skeleton, walk_base_rotations, "mixamorig_RightUpLeg", Vector3.FORWARD, -stride)
 	_pose_walk_arm("mixamorig_LeftArm", -stride * 0.9)
-	_pose_walk_arm("mixamorig_RightArm", -stride * 0.45)
+	_pose_walk_arm("mixamorig_RightArm", stride * 0.45)
 
 func _pose_walk_arm(bone_name: String, swing: float) -> void:
 	if walk_skeleton == null or not walk_base_rotations.has(bone_name):
 		return
 	var index := walk_skeleton.find_bone(bone_name)
 	var lateral_axis: Vector3 = walk_skeleton.get_bone_global_rest(index).basis.inverse() * Vector3.FORWARD
-	var lower_arm := Quaternion(Vector3.RIGHT, -1.15)
+	var lower_arm := Quaternion(Vector3.FORWARD, 1.15) if bone_name == "mixamorig_RightArm" else Quaternion(Vector3.RIGHT, -1.15)
 	var forward_swing := Quaternion(lateral_axis.normalized(), swing)
 	walk_skeleton.set_bone_pose_rotation(index, forward_swing * lower_arm * (walk_base_rotations[bone_name] as Quaternion))
 
