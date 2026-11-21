@@ -18,13 +18,18 @@ var obstacle_grid: Dictionary = {}
 var obstacle_count := 0
 var passable_foliage_count := 0
 var map_name := ""
+var map_scale := 1.0
+var obstacle_cell_size := 2.0
 var portal_cooldown := 1.0
 
 func _ready() -> void:
 	_build_ui()
 	map_name = pending_map if pending_map != "" else starting_map
+	map_scale = 5.0 if map_name == "prontera" else 1.0
+	obstacle_cell_size = 2.0 * map_scale
 	var portal_spawn := pending_spawn
 	pending_map = ""
+	pending_spawn = Vector3.ZERO
 	var map_file := MAP_ROOT + map_name + ".glb"
 	var walk_file := MAP_ROOT + map_name + "_nav.gltf"
 	if not ResourceLoader.exists(map_file) or not ResourceLoader.exists(walk_file):
@@ -32,6 +37,7 @@ func _ready() -> void:
 		return
 	var visual := (load(map_file) as PackedScene).instantiate()
 	visual.name = "MapaVisualLocal"
+	visual.scale = Vector3.ONE * map_scale
 	add_child(visual)
 	if map_name.begins_with("mjolnir_"):
 		bridge_collision_count = _add_bridge_collision()
@@ -45,6 +51,7 @@ func _ready() -> void:
 	var body := StaticBody3D.new()
 	body.name = "ColisaoGAT"
 	body.collision_layer = 1
+	body.scale = Vector3.ONE * map_scale
 	var shape := CollisionShape3D.new()
 	shape.shape = walk_mesh.mesh.create_trimesh_shape()
 	body.add_child(shape)
@@ -58,8 +65,9 @@ func _ready() -> void:
 	actor.use_3d_model = true
 	actor.guard_walkable_edges = true
 	actor.lock_elevation_level = true
-	actor.locked_floor_height = roundf(spawn.y / 2.8) * 2.8
+	actor.locked_floor_height = spawn.y if map_name == "prontera" else roundf(spawn.y / 2.8) * 2.8
 	actor.obstacle_grid = obstacle_grid
+	actor.obstacle_cell_size = obstacle_cell_size
 	actor.collision_mask = 1 | 4
 	add_child(actor)
 	camera = CAMERA_SCRIPT.new()
@@ -141,8 +149,9 @@ func _collect_obstacles(node: Node) -> int:
 			radius = 0.65
 		elif model_name.contains("풍차") or model_name.contains("폐가"):
 			radius = 1.2
+		radius *= map_scale
 		var position_3d: Vector3 = (child as Node3D).global_position
-		var cell := Vector2i(floori(position_3d.x / 2.0), floori(position_3d.z / 2.0))
+		var cell := Vector2i(floori(position_3d.x / obstacle_cell_size), floori(position_3d.z / obstacle_cell_size))
 		if not obstacle_grid.has(cell):
 			obstacle_grid[cell] = []
 		obstacle_grid[cell].append(Vector4(position_3d.x, position_3d.y, position_3d.z, radius))
@@ -201,7 +210,8 @@ func _find_spawn(mesh: Mesh) -> Vector3:
 	var score := INF
 	for surface in mesh.get_surface_count():
 		var vertices: PackedVector3Array = mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX]
-		for vertex in vertices:
+		for local_vertex in vertices:
+			var vertex: Vector3 = local_vertex * map_scale
 			var current := Vector2(vertex.x, vertex.z).length_squared() + absf(vertex.y) * 0.05
 			if current < score and _is_clear_spawn(vertex):
 				score = current
@@ -215,7 +225,7 @@ func _is_clear_spawn(point: Vector3, clearance := 0.5) -> bool:
 		var hit := get_world_3d().direct_space_state.intersect_ray(query)
 		if hit.is_empty() or absf(hit.position.y - point.y) > 0.4:
 			return false
-	var cell := Vector2i(floori(point.x / 2.0), floori(point.z / 2.0))
+	var cell := Vector2i(floori(point.x / obstacle_cell_size), floori(point.z / obstacle_cell_size))
 	for dx in range(-1, 2):
 		for dz in range(-1, 2):
 			for entry in obstacle_grid.get(cell + Vector2i(dx, dz), []):

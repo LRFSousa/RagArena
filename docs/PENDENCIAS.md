@@ -2,6 +2,8 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
+- Validar visualmente em Prontera 5× a proporção entre personagem, ruas, portas e casas, além do tempo de carregamento. Ajustar colisores das paredes e portais após essa revisão.
+
 - Prontera experimental: definir contornos físicos das paredes externas das casas, aberturas de portas, colisão dos interiores e volumes de portal com destinos e pontos seguros. A cena atual serve para inspecionar o mapa inteiro; o bloqueio radial dos objetos é apenas provisório.
 - Mjolnir: conferir manualmente a transição nas duas direções pela ponte entre `mjolnir_01` e `mjolnir_02`, inclusive câmera, desempenho e posição de chegada em aparelho real. Os mapas originais permanecem locais e fora das builds distribuídas.
 

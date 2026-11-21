@@ -1,5 +1,9 @@
 # Changelog
 
+## Escala de Prontera
+
+- Ampliados cenário, piso caminhável e posições dos obstáculos provisórios de Prontera em 5× para acertar a proporção com o Espadachim. O personagem e os mapas Mjolnir conservam suas escalas. Corrigido o ponto inicial da cidade após uma transição de mapa no mesmo processo.
+
 ## Mapas completos de Mjolnir e prévia de Prontera
 
 - A ponta leste da ponte de `mjolnir_01` agora leva ao mapa vizinho `mjolnir_02`, com retorno pela ponte oeste. Adicionado piso de colisão à ponte estreita do segundo mapa. Criada cena experimental de Prontera com mapa visual e malha GAT completos, mantendo os arquivos do cliente apenas localmente. Portais e paredes precisas das casas de Prontera aguardam definição.

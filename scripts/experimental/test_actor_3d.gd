@@ -33,6 +33,7 @@ var attack_time_remaining := 0.0
 var attack_arc: MeshInstance3D
 var locked_floor_height := 0.0
 var obstacle_grid: Dictionary = {}
+var obstacle_cell_size := 2.0
 
 func _ready() -> void:
 	collision_layer = 2
@@ -123,7 +124,7 @@ func _is_designated_bridge(point: Vector3) -> bool:
 	return point.x >= 10.5 and point.x <= 39.0 and absf(point.z + 11.29) <= 1.1
 
 func _can_enter_obstacle_space(ahead: Vector3) -> bool:
-	var cell := Vector2i(floori(ahead.x / 2.0), floori(ahead.z / 2.0))
+	var cell := Vector2i(floori(ahead.x / obstacle_cell_size), floori(ahead.z / obstacle_cell_size))
 	var here := Vector2(global_position.x, global_position.z)
 	var next := Vector2(ahead.x, ahead.z)
 	for dx in range(-1, 2):
@@ -140,7 +141,7 @@ func _can_enter_obstacle_space(ahead: Vector3) -> bool:
 	return true
 
 func is_clear_of_obstacles() -> bool:
-	var cell := Vector2i(floori(global_position.x / 2.0), floori(global_position.z / 2.0))
+	var cell := Vector2i(floori(global_position.x / obstacle_cell_size), floori(global_position.z / obstacle_cell_size))
 	var here := Vector2(global_position.x, global_position.z)
 	for dx in range(-1, 2):
 		for dz in range(-1, 2):
