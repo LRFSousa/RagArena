@@ -34,7 +34,7 @@ func _ready() -> void:
 	actor.ramp_passages = [Rect2(-8, -31, 10, 4), Rect2(1, 30.7, 10, 4)]
 	camera = OrbitCamera.new()
 	camera.name = "ArenaCamera"
-	camera.distance = 46.0
+	camera.distance = 34.0
 	camera.min_distance = 12.0
 	camera.max_distance = 78.0
 	add_child(camera)
