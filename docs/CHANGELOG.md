@@ -1,5 +1,9 @@
 # Changelog
 
+## Interface 3D como entrada principal
+
+- A arena 3D passou a ser a cena inicial. A interface mobile recebeu ícones de ataque e três habilidades no canto inferior direito, três poções acima, minimapa no canto superior direito e câmera orbital com rotação e zoom por toque. O movimento continua relativo à câmera. A arena 2D permanece apenas como código legado durante a migração.
+
 ## Prévia web da arena 3D fechada
 
 - Criada cena experimental independente com arena provisória autoral, Espadachim 3D, controle de toque, três alvos com HP, ataque básico que causa dano e efeitos de Proteção, Cura e Determinação. Incluído um único GLB fornecido pelo responsável para a prévia pública; os mapas do cliente Ragnarok permanecem locais.

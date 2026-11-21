@@ -12,6 +12,16 @@ func _run() -> void:
 	assert(scene.markers.size() == 3)
 	assert(scene.actor.model_3d != null)
 	assert(scene.actor.attack_model_3d != null)
+	assert(scene.camera is ArenaOrbitCamera3D)
+	assert(scene.controls._map_rect().position.x > scene.controls.size.x * 0.5)
+	assert(scene.controls._button_center("ATK").y > scene.controls._button_center("POT_HP").y)
+	var original_distance: float = scene.camera.distance
+	scene.camera.zoom_by_steps(-1)
+	assert(scene.camera.distance < original_distance)
+	var original_yaw: float = scene.camera.yaw_degrees
+	scene.camera.orbit_by_pixels(Vector2(100, 0))
+	assert(scene.camera.yaw_degrees != original_yaw)
+	assert(scene.actor.movement_direction(Vector2(0, -1)).length() > 0.9)
 	var touch := InputEventScreenTouch.new()
 	touch.index = 0
 	touch.position = scene.controls._joystick_center() + Vector2(50, 0)
@@ -31,6 +41,7 @@ func _run() -> void:
 	assert(scene.actor.attack_time_remaining > 0.0)
 	scene._on_action("CURA")
 	assert(scene.player_hp == 100)
+	assert(scene.skill_cooldowns[1] > 0)
 	scene._on_action("FOR")
 	assert(scene.determination_time > 0.0)
 	scene.attack_cooldown = 0.0
@@ -39,5 +50,8 @@ func _run() -> void:
 	assert(scene.target_hp[0] == 50)
 	scene._on_action("ALVO")
 	assert(scene.selected_marker == 1)
+	scene.player_hp = 40
+	scene._on_action("POT_HP")
+	assert(scene.player_hp == 80 and scene.potions[0] == 2)
 	print("PASS: arena 3D, toque, ataque, dano e habilidades")
 	quit()

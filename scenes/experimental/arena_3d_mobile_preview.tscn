@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/experimental/arena_3d_mobile_preview.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/experimental/test_actor_3d.tscn" id="2"]
-[ext_resource type="Script" path="res://scripts/experimental/test_camera_3d.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/experimental/orbit_camera_3d.gd" id="3"]
 
 [node name="Arena3DMobilePreview" type="Node3D"]
 script = ExtResource("1")

@@ -2,6 +2,9 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
+- Migrar para a arena 3D as regras completas da versão 2D: inventário e equipamentos persistentes, progressão, bots, partidas, colisões de ataques e seleção direta de alvos. A prévia 3D tem apenas ações e poções locais de teste.
+- Validar em aparelho físico a rotação por arrasto, zoom por pinça, legibilidade do minimapa e sobreposição dos botões em telas menores.
+
 - Prévia 3D mobile: validar em celular real joystick, botões, leitura do HUD, fluidez do Espadachim e pacote web. Os três bonecos estáticos e números de dano são apenas para testar ataques; integrar bots e regras finais de combate em etapa posterior.
 
 - Conferir visualmente no Godot o Espadachim experimental 1,5× maior e a pose vertical do braço direito em todas as direções da câmera; os GLBs ainda não contêm animações próprias.

@@ -7,7 +7,7 @@ const RAMP_RISE := 2.5
 const RAMP_RUN := 7.0
 
 @onready var actor: MountainTestActor3D = $TestActor
-@onready var camera: MountainTestCamera3D = $TestCamera
+@onready var camera: Camera3D = $TestCamera
 
 var platforms: Array[StaticBody3D] = []
 var ramps: Array[StaticBody3D] = []
@@ -21,9 +21,12 @@ var flash_time := 0.0
 
 func _ready() -> void:
 	build_graybox()
-	camera.target = actor
-	camera.global_position = actor.global_position + camera.camera_offset
-	camera.look_at(actor.global_position + Vector3.UP, Vector3.UP)
+	if camera is MountainTestCamera3D:
+		camera.target = actor
+		camera.global_position = actor.global_position + camera.camera_offset
+		camera.look_at(actor.global_position + Vector3.UP, Vector3.UP)
+	elif camera is ArenaOrbitCamera3D:
+		camera.target = actor
 	build_hud()
 
 func material(color: Color) -> StandardMaterial3D:
@@ -186,9 +189,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		selected_marker = event.physical_keycode - KEY_1
 		feedback = "Alvo selecionado"
 	elif event.physical_keycode == KEY_C:
-		camera.overview = not camera.overview
-		camera.size = 48.0 if camera.overview else 24.0
-		feedback = "Visão geral" if camera.overview else "Visão próxima"
+		if camera is MountainTestCamera3D:
+			camera.overview = not camera.overview
+			camera.size = 48.0 if camera.overview else 24.0
+			feedback = "Visão geral" if camera.overview else "Visão próxima"
 	elif event.physical_keycode == KEY_SPACE or event.physical_keycode == KEY_F:
 		var skill: bool = event.physical_keycode == KEY_F
 		var result: Dictionary = Probe.inspect(get_world_3d().direct_space_state, actor.global_position, markers[selected_marker].global_position, 4.5 if skill else 3.5, 1.5 if skill else 1.2)
