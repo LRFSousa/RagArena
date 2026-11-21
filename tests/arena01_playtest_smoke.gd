@@ -45,6 +45,28 @@ func _run() -> void:
 	scene.player_hp = 50
 	scene._on_action("POT_HP")
 	assert(scene.player_hp == 90 and scene.potions[0] == 2)
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	click.position = scene.controls._button_center("ESC")
+	scene.controls._input(click)
+	assert(scene.shield_time > 0 and scene.skill_cooldowns[0] > 0)
+	click.position = scene.controls._button_center("ALVO")
+	scene.controls._input(click)
+	assert(scene.selected_marker == 2)
+	click.position = scene.controls._button_center("POT_ELIXIR")
+	scene.controls._input(click)
+	assert(scene.potions[1] == 1)
+	var old_zoom: float = scene.camera.distance
+	click.position = scene.controls._button_center("ZOOM_IN")
+	scene.controls._input(click)
+	assert(scene.camera.distance < old_zoom)
+	scene.selected_marker = 0
+	scene.attack_cooldown = 0
+	scene.actor.attack_time_remaining = 0
+	click.position = scene.controls._button_center("ATK")
+	scene.controls._input(click)
+	assert(scene.hits_landed == 3 and scene.target_hp[0] == 20)
 	scene.actor.global_position = Vector3(1, 0.2, -29)
 	scene.actor.velocity = Vector3.ZERO
 	scene.actor.guard_walkable_edges = true

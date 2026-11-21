@@ -14,6 +14,8 @@ A cena `scenes/Arena01.tscn`, criada pelo responsável, é agora a cena inicial 
 
 `tests/arena01_playtest_smoke.gd`: carregamento da cena, presença do modelo e da interface, colisões físicas em morro e rocha, fechamento das bordas, movimentação, ataque, bônus de dano, seleção de alvo, poção e subida por ambas as rampas. O teste passou no Godot 4.7.2. A prévia anterior também passou após a mudança do minimapa.
 
+Os botões também respondem ao clique esquerdo no computador. O teste cobre ataque, Proteção, seleção de alvo, elixir e zoom pelo mouse. Toques que gerem um clique sintético são ignorados por uma curta janela de 120 ms para evitar ação duplicada.
+
 ## Pendências
 
 Validar manualmente em celular a escala do personagem, legibilidade do minimapa, fluidez da cena CSG e gestos de câmera. Os alvos são bonecos estáticos; a migração de bots, progressão e inventário persistente continua pendente.

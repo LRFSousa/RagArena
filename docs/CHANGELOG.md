@@ -1,5 +1,9 @@
 # Changelog
 
+## Clique de mouse na interface 3D
+
+- Corrigidos os botões de ataque, habilidades, poções, alvo e zoom para funcionar com clique esquerdo no computador, além do toque no celular. Incluída proteção contra clique sintético duplicado após um toque.
+
 ## Arena01 jogável para validação
 
 - Integrada a cena autoral `Arena01.tscn` como entrada 3D, com Espadachim, câmera orbital, HUD mobile, minimapa de 80 × 80, três alvos e habilidades de teste. Colisões ativadas nos objetos CSG, rampas liberadas na proteção contra quedas e aberturas centrais das bordas fechadas. Relatório em `docs/ARENA01_VALIDACAO.md`.

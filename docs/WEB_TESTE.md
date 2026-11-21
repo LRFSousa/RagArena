@@ -19,6 +19,8 @@ Arena 3D com barra de habilidades, poções, minimapa e câmera orbital: https:/
 
 Teste da Arena01 criada pelo responsável: https://lrfsousa.github.io/RagArena/arena01-playtest/. Mantém os mesmos controles e acrescenta os dois morros com rampas, ruínas, cercas, rochas e três alvos. Veja `docs/ARENA01_VALIDACAO.md`.
 
+No computador, use o clique esquerdo nos ícones de ataque, habilidades, poções, alvo e zoom. O botão direito do mouse gira a câmera e a roda aproxima ou afasta; WASD move o personagem.
+
 Prévia histórica da release 0.7 em 2D: https://lrfsousa.github.io/RagArena/preview-07/. A página principal agora inicia a arena 3D; esta prévia antiga permanece apenas para comparação.
 
 Revisão do minimapa no canto superior direito e golpe de dois quadros: https://lrfsousa.github.io/RagArena/preview-07-range2/. O endereço separado evita carregar o pacote antigo do cache e permite comparar as duas versões.

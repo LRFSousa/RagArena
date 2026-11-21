@@ -13,6 +13,8 @@ const ACTIONS := ["POT_HP", "POT_ELIXIR", "POT_STRENGTH", "ALVO", "ESC", "CURA",
 var arena: Node3D
 var movement := Vector2.ZERO
 var joystick_touch := -1
+var _last_button := ""
+var _last_button_time := 0
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -101,6 +103,10 @@ func _map_point(world: Vector2, inner: Rect2) -> Vector2:
 	return inner.position + (world - bounds.position) / bounds.size * inner.size
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if _activate_button_at(event.position):
+			get_viewport().set_input_as_handled()
+		return
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			if event.position.distance_to(_joystick_center()) <= 95 and joystick_touch < 0:
@@ -108,16 +114,9 @@ func _input(event: InputEvent) -> void:
 				_set_joystick(event.position)
 				get_viewport().set_input_as_handled()
 				return
-			for action in ACTIONS:
-				if event.position.distance_to(_button_center(action)) <= _button_radius(action):
-					if action == "ZOOM_IN":
-						arena.camera.zoom_by_steps(-1)
-					elif action == "ZOOM_OUT":
-						arena.camera.zoom_by_steps(1)
-					else:
-						action_pressed.emit(action)
-					get_viewport().set_input_as_handled()
-					return
+			if _activate_button_at(event.position):
+				get_viewport().set_input_as_handled()
+				return
 		elif event.index == joystick_touch:
 			joystick_touch = -1
 			movement = Vector2.ZERO
@@ -126,6 +125,24 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventScreenDrag and event.index == joystick_touch:
 		_set_joystick(event.position)
 		get_viewport().set_input_as_handled()
+
+func _activate_button_at(point: Vector2) -> bool:
+	for action in ACTIONS:
+		if point.distance_to(_button_center(action)) > _button_radius(action):
+			continue
+		var now := Time.get_ticks_msec()
+		if action == _last_button and now - _last_button_time < 120:
+			return true
+		_last_button = action
+		_last_button_time = now
+		if action == "ZOOM_IN":
+			arena.camera.zoom_by_steps(-1)
+		elif action == "ZOOM_OUT":
+			arena.camera.zoom_by_steps(1)
+		else:
+			action_pressed.emit(action)
+		return true
+	return false
 
 func _set_joystick(point: Vector2) -> void:
 	movement = ((point - _joystick_center()) / 65.0).limit_length(1.0)
