@@ -3,6 +3,8 @@ extends SceneTree
 const MAP_FILE := "res://assets/experimental/ro_reference/mjolnir_01.glb"
 const WALK_FILE := "res://assets/experimental/ro_reference/mjolnir_01_nav.gltf"
 const MODEL_FILE := "res://assets/characters/swordsman/Espadachim.glb"
+const WALK_MODEL_FILE := "res://assets/characters/swordsman/Espadachim Caminhando.glb"
+const ATTACK_MODEL_FILE := "res://assets/characters/swordsman/Espadachim Atacando.glb"
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -19,10 +21,14 @@ func _run() -> void:
 	assert(scene.has_node("MapaVisualLocal"))
 	assert(scene.has_node("ColisaoGAT"))
 	assert(scene.actor != null)
-	if ResourceLoader.exists(MODEL_FILE):
+	if ResourceLoader.exists(MODEL_FILE) or ResourceLoader.exists(WALK_MODEL_FILE):
 		assert(scene.actor.model_3d != null)
 		assert(not scene.actor.sprite.visible)
 		assert(is_equal_approx(scene.actor.model_3d.scale.y, 1.84))
+		if ResourceLoader.exists(WALK_MODEL_FILE):
+			assert(scene.actor.walk_skeleton != null)
+		if ResourceLoader.exists(ATTACK_MODEL_FILE):
+			assert(scene.actor.attack_skeleton != null)
 		var toggle := InputEventKey.new()
 		toggle.keycode = KEY_T
 		toggle.pressed = true
@@ -98,5 +104,20 @@ func _run() -> void:
 	displacement.y = 0.0
 	assert(displacement.length() > 0.05)
 	assert(displacement.normalized().dot(expected) > 0.9)
-	print("PASS: mapa, colisão, câmera orbital, zoom e movimento relativo a 0°/45°/90°/180°/270°")
+	if scene.actor.attack_model_3d != null:
+		scene.actor.start_attack_preview()
+		assert(scene.actor.attack_model_3d.visible)
+		assert(not scene.actor.walk_model_3d.visible)
+		for i in range(11):
+			await physics_frame
+		assert(scene.actor.velocity.x == 0.0 and scene.actor.velocity.z == 0.0)
+		assert(scene.actor.attack_arc.visible)
+		var arm: int = scene.actor.attack_skeleton.find_bone("mixamorig_RightArm")
+		assert(not scene.actor.attack_skeleton.get_bone_pose_rotation(arm).is_equal_approx(scene.actor.attack_base_rotations["mixamorig_RightArm"]))
+		for i in range(40):
+			await physics_frame
+		assert(scene.actor.attack_time_remaining == 0.0)
+		assert(scene.actor.walk_model_3d.visible)
+		assert(not scene.actor.attack_model_3d.visible)
+	print("PASS: mapa, câmera, movimento relativo, caminhada e ataque visuais")
 	quit()

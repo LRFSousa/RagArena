@@ -65,7 +65,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _update_status() -> void:
 	var mode := "3D" if actor != null and actor.model_3d != null and actor.model_3d.visible else "sprite 2D"
-	status.text = "Monte Mjolnir 01 | Espadachim %s | T: alternar | WASD: mover | Botão direito: girar | Roda: zoom" % mode
+	status.text = "Monte Mjolnir 01 | Espadachim %s | T: alternar | WASD: mover | Espaço: golpe visual | Botão direito: girar | Roda: zoom" % mode
 
 func _process(_delta: float) -> void:
 	if actor != null and actor.global_position.y < -10.0:

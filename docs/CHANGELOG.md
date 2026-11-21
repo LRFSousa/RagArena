@@ -1,5 +1,9 @@
 # Changelog
 
+## Caminhada e ataque do Espadachim 3D experimental
+
+- Carregados localmente os GLBs `Espadachim Caminhando` e `Espadachim Atacando` na cena Mjolnir. Como os arquivos não incluem animações, adicionados movimentos provisórios dos ossos para caminhada e ataque, troca de modelo durante o golpe e arco dourado de teste ao pressionar Espaço. Não há dano ou alteração no combate existente.
+
 ## Prévia local do Espadachim 3D
 
 - Integrado opcionalmente o `Espadachim.glb` enviado pelo usuário à cena experimental do mapa Mjolnir, com escala adequada ao colisor e rotação na direção do movimento. T alterna entre o modelo e o sprite; arquivo GLB permanece local e fora do repositório. O modelo ainda não inclui animações.

@@ -15,7 +15,7 @@ Coloque os seguintes arquivos em `assets/experimental/ro_reference/`:
 
 A pasta está no `.gitignore`. Os arquivos originais e convertidos do Ragnarok pertencem à Gravity e não são incluídos no GitHub, na build web ou em APKs. A cena exibe uma mensagem se eles não estiverem presentes.
 
-O `Espadachim.glb` foi gerado pelo usuário no Tripo AI e mantido localmente para esta prévia, evitando aumentar o download do jogo. Ele contém uma malha única sem animações; por isso, o personagem desliza ao caminhar e apenas gira na direção do movimento. A animação de caminhada exigirá um modelo rigado ou sequências adicionais.
+Os arquivos `Espadachim.glb`, `Espadachim Caminhando.glb` e `Espadachim Atacando.glb` foram gerados pelo usuário no Tripo AI e mantidos localmente para esta prévia, evitando aumentar o download do jogo. Os dois GLBs novos possuem esqueleto, mas não contêm trilhas de animação; suas malhas, poses e dados binários são iguais. O Godot aplica uma caminhada e um golpe provisórios aos ossos, troca o modelo usado durante o golpe e desenha um arco dourado de teste. Use WASD para caminhar e Espaço ou clique esquerdo para acionar o golpe visual. Essa ação não causa dano nem modifica o combate da arena. Os GLBs rigados não exibiram uma espada na prévia; o equipamento precisa ser conferido no arquivo exportado.
 
 ## Verificação
 
@@ -24,4 +24,4 @@ godot --headless --path . --script res://tests/ragnarok_map_reference_smoke.gd
 godot --path . --scene res://scenes/experimental/ragnarok_map_reference.tscn
 ```
 
-O teste automatizado conferiu carregamento do mapa, malha de colisão GAT, modelo 3D quando presente, alternância com sprite, ator apoiado no chão, órbita, limites de zoom e movimento relativo à câmera em diferentes ângulos. A navegação em trilhas, pontes e diferentes alturas ainda precisa de teste manual. A malha GAT delimita o piso caminhável; objetos decorativos não possuem colisores individuais. A conversão visual tem milhares de nós e ainda não foi avaliada para Android.
+O teste automatizado conferiu carregamento do mapa, malha de colisão GAT, modelos 3D quando presentes, alternância com sprite, poses de caminhada e ataque, retorno ao modelo de caminhada, ator apoiado no chão, órbita, limites de zoom e movimento relativo à câmera em diferentes ângulos. A navegação em trilhas, pontes e diferentes alturas ainda precisa de teste manual. A malha GAT delimita o piso caminhável; objetos decorativos não possuem colisores individuais. A conversão visual tem milhares de nós e ainda não foi avaliada para Android.

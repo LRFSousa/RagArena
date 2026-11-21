@@ -76,7 +76,7 @@
 
 ## Releases posteriores
 
-- Espadachim 3D experimental: obter rig e animações de caminhada, ataque e habilidades; validar orientação e proporção em diferentes câmeras. A prévia atual usa modelo estático local e não entra na build distribuída.
+- Espadachim 3D experimental: exportar do Tripo animações reais de caminhada, ataque e habilidades. Os GLBs recebidos possuem rig, mas nenhuma trilha de animação e geometria idêntica; a prévia usa poses geradas no Godot. Conferir a espada/equipamento no modelo rigado, validar orientação e proporção em diferentes câmeras e medir desempenho. Os GLBs permanecem locais e não entram na build distribuída.
 
 - Mapa completo `mjolnir_01`: validar visualmente trilhas, pontes, bordas e alturas durante a navegação manual. A colisão usa apenas células GAT caminháveis; objetos decorativos e penhascos ainda não têm colisores próprios. Medir custo de importação e desempenho em celular antes de qualquer integração. Substituir o mapa provisório por cenário autoral para distribuição.
 
