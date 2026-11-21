@@ -29,6 +29,7 @@ var effect_time := 0.0
 func _ready() -> void:
 	_configure_geometry()
 	actor.accept_player_input = false
+	actor.speed = 8.0
 	actor.use_3d_model = true
 	actor.guard_walkable_edges = true
 	actor.ramp_passages = [Rect2(-54, -36, 4, 10), Rect2(-36, -59, 10, 4), Rect2(50, 26, 4, 10), Rect2(26, 55, 10, 4)]
@@ -107,6 +108,36 @@ func _configure_geometry() -> void:
 	_add_boundary("FechamentoSul", Vector3(0, 2, 79.5))
 	_add_ramp_collider("RampaOestePiso", Vector3(-52, 2.3, -31), 1.0)
 	_add_ramp_collider("RampaOeste2Piso", Vector3(52, 2.3, 31), -1.0)
+	# Bordas funcionais impedem que o personagem escape pela lateral no meio da subida.
+	_add_ramp_rails("RampaOeste", Vector3(-52, 2.9, -31), Vector3(1, 0, 0), 1.0)
+	_add_ramp_rails("RampaLeste", Vector3(-31, 2.9, -57), Vector3(0, 0, 1), -1.0)
+	_add_ramp_rails("RampaOeste2", Vector3(52, 2.9, 31), Vector3(1, 0, 0), -1.0)
+	_add_ramp_rails("RampaLeste2", Vector3(31, 2.9, 57), Vector3(0, 0, 1), 1.0)
+
+func _add_ramp_rails(ramp_name: String, center: Vector3, lateral: Vector3, slope_sign: float) -> void:
+	for side in [-1.0, 1.0]:
+		var rail := StaticBody3D.new()
+		rail.name = "%sBorda%s" % [ramp_name, "A" if side < 0 else "B"]
+		rail.collision_layer = 1
+		rail.position = center + lateral * (side * 2.05)
+		if lateral.x != 0:
+			rail.rotation.x = slope_sign * atan2(5.0, 10.0)
+		else:
+			rail.rotation.z = slope_sign * atan2(5.0, 10.0)
+		add_child(rail)
+		var shape := BoxShape3D.new()
+		shape.size = Vector3(0.3, 1.1, sqrt(125.0)) if lateral.x != 0 else Vector3(sqrt(125.0), 1.1, 0.3)
+		var collider := CollisionShape3D.new()
+		collider.shape = shape
+		rail.add_child(collider)
+		var display := MeshInstance3D.new()
+		var mesh := BoxMesh.new()
+		mesh.size = shape.size
+		display.mesh = mesh
+		var material := StandardMaterial3D.new()
+		material.albedo_color = Color("b79765")
+		display.material_override = material
+		rail.add_child(display)
 
 func _add_ramp_collider(collider_name: String, center: Vector3, slope_sign: float) -> void:
 	var body := StaticBody3D.new()

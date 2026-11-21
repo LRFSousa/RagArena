@@ -23,3 +23,9 @@
 ## Limites desta validação
 
 O teste automatizado confirma física e enquadramento; ainda é preciso conferir visualmente em aparelho real a escala, a fluidez da arena e a direção do GLB de ataque. Os alvos continuam estáticos e não representam o combate final.
+
+## Ajuste após teste no celular
+
+- O relato mostrou o personagem saindo pela lateral de uma rampa e ficando junto à parede do morro. Foram instaladas bordas inclinadas de colisão nas quatro rampas, sem mudar o perfil da subida.
+- A velocidade da Arena01 passou de 4 para 8 m/s para compensar o percurso de 160 m; outras cenas mantêm a velocidade anterior.
+- O smoke test passou novamente, incluindo subida e descida de todas as rampas em 8 m/s e tentativa de atravessar uma lateral com comando diagonal.

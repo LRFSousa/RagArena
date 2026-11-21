@@ -17,6 +17,7 @@ func _run() -> void:
 	assert(scene.controls._map_point(Vector2(-80, -80), Rect2(0, 0, 100, 100)) == Vector2.ZERO)
 	assert(scene.controls._map_point(Vector2(80, 80), Rect2(0, 0, 100, 100)) == Vector2(100, 100))
 	assert(scene.actor.model_3d != null and scene.camera != null and scene.controls != null)
+	assert(is_equal_approx(scene.actor.speed, 8.0), "Arena ampliada deve usar deslocamento dobrado")
 	assert(scene.markers.size() == 3)
 	assert(Vector2(scene.get_node("MorroOeste").position.x, scene.get_node("MorroOeste").position.z).distance_to(Vector2(scene.get_node("MorroOeste2").position.x, scene.get_node("MorroOeste2").position.z)) > 100)
 	for name in ["MorroOeste", "MorroOeste2"]:
@@ -30,6 +31,10 @@ func _run() -> void:
 		assert((scene.get_node(name) as CSGBox3D).size == (backup.get_node(name) as CSGBox3D).size)
 	backup.free()
 	var space := scene.get_world_3d().direct_space_state
+	for name in ["RampaOeste", "RampaLeste", "RampaOeste2", "RampaLeste2"]:
+		for side in ["A", "B"]:
+			var rail: StaticBody3D = scene.get_node(name + "Borda" + side)
+			assert(rail.collision_layer == 1 and rail.get_child_count() == 2, "Rampas precisam de bordas físicas")
 	for point in [Vector2(-70, -70), Vector2(70, -70), Vector2(-70, 70), Vector2(70, 70)]:
 		var ground := space.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(point.x, 3, point.y), Vector3(point.x, -2, point.y), 1))
 		assert(not ground.is_empty() and absf(ground.position.y) < 0.2)
@@ -110,6 +115,16 @@ func _run() -> void:
 			await physics_frame
 		scene.controls.movement = Vector2.ZERO
 		assert(scene.actor.global_position.y < 1, "Todas as rampas devem permitir descer")
+	scene.actor.global_position = Vector3(-52, 2.6, -31)
+	scene.actor.velocity = Vector3.ZERO
+	scene.actor.attack_time_remaining = 0
+	for i in range(5):
+		await physics_frame
+	scene.controls.movement = Vector2(1, -1)
+	for i in range(25):
+		await physics_frame
+	scene.controls.movement = Vector2.ZERO
+	assert(scene.actor.global_position.x < -50.3 and scene.actor.global_position.y > 2.5, "Movimento diagonal não deve sair pela lateral da rampa")
 	scene.actor.global_position = Vector3(70, 0.1, 70)
 	scene.camera.zoom_by_steps(100)
 	assert(is_equal_approx(scene.camera.distance, scene.camera.max_distance))

@@ -1,5 +1,11 @@
 # Changelog
 
+## Arena01 — deslocamento e bordas das rampas
+
+- Dobrada de 4 para 8 m/s a velocidade do Espadachim apenas na Arena01 ampliada.
+- Adicionadas bordas físicas baixas às quatro rampas, acompanhando a inclinação existente para evitar saída lateral durante a subida e descida.
+- Verificados subida, descida e deslocamento diagonal na rampa com teste automatizado.
+
 ## Arena01 160 × 160 e orientação do ataque
 
 - Salva cópia jogável da Arena01 de 80 × 80 m. Ampliados piso e limites para 160 × 160 m; morros e rampas movidos para quadrantes opostos; ruína, cercas, muros internos, rochas, jogador e alvos redistribuídos sem escalar os objetos. Minimap atualizado.

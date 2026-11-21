@@ -1,5 +1,7 @@
 # Pendências
 
+- Validar no celular a velocidade de 8 m/s e as bordas das quatro rampas da Arena01 após o ajuste de colisão lateral.
+
 ## Redesenho antes do próximo desenvolvimento
 
 - Arena01 160 × 160 m: validar em computador e celular real a sensação de escala, a câmera na visão geral, o desempenho das formas CSG e se a direção visual do GLB de ataque coincide com a caminhada em todos os ângulos. O teste automatizado cobre geometria, física e enquadramento; avaliação visual do modelo permanece necessária.
