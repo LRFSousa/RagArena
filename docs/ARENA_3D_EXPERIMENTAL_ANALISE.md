@@ -51,3 +51,5 @@ O projeto [ragx](https://github.com/joaopedrosgs/ragx) declara exportar mapas de
 **Impacto no projeto atual:** apenas novos arquivos em `scenes/experimental`, `scripts/experimental`, testes e, se necessário, assets provisórios originais. `project.godot` mantém `scenes/main.tscn` como entrada; `arena.gd`, `player.gd`, combate, HUD e progressão atuais permanecem como estão. Um atalho de desenvolvimento ou comando de teste poderá abrir a cena experimental sem expô-la no fluxo normal. O resultado dos probes informará o custo de adaptar combate e navegação 2D para 3D no futuro.
 
 **Próximo passo após esta análise:** construir um graybox original da cena isolada e executar os testes físicos. A integração de ataques e habilidades reais exige uma proposta separada e aprovação antes de tocar no combate ou na movimentação atuais.
+
+**Andamento:** o graybox isolado e os testes físicos foram implementados. Consulte `docs/RELATORIOS/RELATORIO_ARENA_3D_EXPERIMENTAL.md`. A integração dos sistemas reais permanece fora deste experimento.

@@ -2,7 +2,7 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
-- Arena 3D experimental: análise técnica e escopo de cena isolada documentados em `docs/ARENA_3D_EXPERIMENTAL_ANALISE.md`. A construção do graybox e os probes de altura aguardam revisão desta análise; combate e movimentação atuais não devem ser alterados sem aprovação.
+- Arena 3D experimental: graybox e sondas de altura implementados em cena isolada; relatório em `docs/RELATORIOS/RELATORIO_ARENA_3D_EXPERIMENTAL.md`. Faltam teste em celular, navegação automática, toque, minimapa e avaliação da integração real de combate. Combate e movimentação atuais não devem ser alterados sem aprovação.
 - Progressão Base/Job inicial implementada conforme `docs/PRIMEIRA_IMPLEMENTACAO_PROGRESSAO.md`; relatório em `docs/RELATORIOS/RELATORIO_PROGRESSAO_BASE_JOB.md`. Falta validar em celular a meta de 150/200 partidas e migrar a autoridade de recompensas ao servidor quando o multiplayer for desenvolvido.
 - Assistências entre jogadores e janela de contribuição de 10 s aguardam multiplayer; no protótipo local a categoria está pronta no cálculo, mas não há outros jogadores nem combate entre bots para produzi-la. Noviço ainda usa combate provisório do Paladino.
 - Depois da progressão, seguir os tópicos Classes, Habilidades, Atributos, Itens e Inventário, Navegação e Mapa de `docs/BACKLOG_NOVA_FASE.md`. Evolução em três etapas, papéis e ramificações futuras continuam pendentes.

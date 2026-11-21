@@ -49,11 +49,14 @@ godot --headless --path . --script res://tests/release04_smoke.gd
 godot --headless --path . --script res://tests/release05_smoke.gd
 godot --headless --path . --script res://tests/arena_progression_smoke.gd
 godot --headless --path . --script res://tests/arena_participation_smoke.gd
+godot --headless --path . --script res://tests/mountain_arena_3d_smoke.gd
 godot --headless --path . --script res://tests/health_damage_regression.gd
 godot --headless --path . --quit-after 60
 ```
 
 O alvo é Android em paisagem, mas ainda falta uma validação manual em aparelho real.
+
+A cena 3D experimental pode ser executada separadamente com `godot --path . --scene res://scenes/experimental/mountain_arena_3d.tscn`. Ela usa WASD, `C` para visão geral, `1`–`3` para selecionar alvo, Espaço para sondar o golpe e `F` para sondar um efeito visual. Veja `docs/RELATORIOS/RELATORIO_ARENA_3D_EXPERIMENTAL.md`.
 
 ## Teste no Android
 

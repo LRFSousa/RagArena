@@ -1,5 +1,9 @@
 # Changelog
 
+## Graybox da arena 3D experimental
+
+- Criada cena isolada com três patamares, rampas, passagem estreita, rochas, colisões 3D, personagem com sprite, câmera inclinada e visão geral. Adicionadas sondas de ataque/efeito entre alturas e teste automatizado de física. Arena 2D, movimentação e combate reais não foram alterados.
+
 ## Análise da arena 3D experimental
 
 - Avaliada a viabilidade de uma cena isolada de montanha com patamares, rampas, barreiras, sprites 2D em 3D e câmera inclinada. Analisado o `ragx` para inspeção de GLB sem incorporar assets originais. Registrados arquivos, testes e impacto em `docs/ARENA_3D_EXPERIMENTAL_ANALISE.md`; nenhuma cena ou sistema jogável foi modificado.
