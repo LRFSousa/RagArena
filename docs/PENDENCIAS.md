@@ -2,6 +2,8 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
+- Mapa Mjolnir experimental: validar manualmente a travessia completa da ponte e o contorno de flores, árvores e demais objetos; substituir as áreas circulares provisórias por colisores ajustados; cadastrar rampas e escadas autorizadas para trocar de nível. A tecla R recupera a última posição segura enquanto essa validação não termina.
+
 - Arena 3D experimental: graybox e sondas de altura implementados em cena isolada; relatório em `docs/RELATORIOS/RELATORIO_ARENA_3D_EXPERIMENTAL.md`. Faltam teste em celular, navegação automática, toque, minimapa e avaliação da integração real de combate. Combate e movimentação atuais não devem ser alterados sem aprovação.
 - Progressão Base/Job inicial implementada conforme `docs/PRIMEIRA_IMPLEMENTACAO_PROGRESSAO.md`; relatório em `docs/RELATORIOS/RELATORIO_PROGRESSAO_BASE_JOB.md`. Falta validar em celular a meta de 150/200 partidas e migrar a autoridade de recompensas ao servidor quando o multiplayer for desenvolvido.
 - Assistências entre jogadores e janela de contribuição de 10 s aguardam multiplayer; no protótipo local a categoria está pronta no cálculo, mas não há outros jogadores nem combate entre bots para produzi-la. Noviço ainda usa combate provisório do Paladino.

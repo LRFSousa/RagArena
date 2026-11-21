@@ -15,6 +15,8 @@ const ATTACK_DURATION := 0.75
 @export var speed := 4.0
 @export var accept_player_input := true
 @export var use_3d_model := false
+@export var guard_walkable_edges := false
+@export var lock_elevation_level := false
 var move_input := Vector2.ZERO
 var direction_name := "down"
 var sprite: Sprite3D
@@ -29,6 +31,8 @@ var walk_base_rotations: Dictionary = {}
 var attack_base_rotations: Dictionary = {}
 var attack_time_remaining := 0.0
 var attack_arc: MeshInstance3D
+var locked_floor_height := 0.0
+var obstacle_grid: Dictionary = {}
 
 func _ready() -> void:
 	collision_layer = 2
@@ -79,6 +83,8 @@ func _physics_process(delta: float) -> void:
 			start_attack_preview()
 	attack_time_remaining = maxf(attack_time_remaining - delta, 0.0)
 	var direction := movement_direction(move_input) if attack_time_remaining <= 0.0 else Vector3.ZERO
+	if guard_walkable_edges and is_on_floor() and direction.length_squared() > 0.01 and not _has_safe_floor_ahead(direction, delta):
+		direction = Vector3.ZERO
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
 	velocity.y -= 9.8 * delta
@@ -95,6 +101,54 @@ func _physics_process(delta: float) -> void:
 	else:
 		sprite.frame = 0
 	_update_model_animation(delta, direction.length_squared() > 0.01)
+
+func _has_safe_floor_ahead(direction: Vector3, delta: float) -> bool:
+	var ahead := global_position + direction * (speed * delta + 0.08)
+	if not _can_enter_obstacle_space(ahead):
+		return false
+	var start := ahead + Vector3.UP * 1.2
+	var end := ahead + Vector3.DOWN * 1.8
+	var query := PhysicsRayQueryParameters3D.create(start, end, 1 | 4)
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	if hit.is_empty():
+		return false
+	var floor_y: float = hit.position.y
+	if floor_y < global_position.y - 1.1 or floor_y > global_position.y + 0.85:
+		return false
+	if lock_elevation_level and not _is_designated_bridge(ahead) and absf(floor_y - locked_floor_height) > 0.55:
+		return false
+	return true
+
+func _is_designated_bridge(point: Vector3) -> bool:
+	return point.x >= 10.5 and point.x <= 39.0 and absf(point.z + 11.29) <= 1.1
+
+func _can_enter_obstacle_space(ahead: Vector3) -> bool:
+	var cell := Vector2i(floori(ahead.x / 2.0), floori(ahead.z / 2.0))
+	var here := Vector2(global_position.x, global_position.z)
+	var next := Vector2(ahead.x, ahead.z)
+	for dx in range(-1, 2):
+		for dz in range(-1, 2):
+			for entry in obstacle_grid.get(cell + Vector2i(dx, dz), []):
+				var obstacle: Vector4 = entry
+				if absf(obstacle.y - global_position.y) > 1.4:
+					continue
+				var center := Vector2(obstacle.x, obstacle.z)
+				var before := here.distance_to(center)
+				var after := next.distance_to(center)
+				if after < obstacle.w and after < before - 0.001:
+					return false
+	return true
+
+func is_clear_of_obstacles() -> bool:
+	var cell := Vector2i(floori(global_position.x / 2.0), floori(global_position.z / 2.0))
+	var here := Vector2(global_position.x, global_position.z)
+	for dx in range(-1, 2):
+		for dz in range(-1, 2):
+			for entry in obstacle_grid.get(cell + Vector2i(dx, dz), []):
+				var obstacle: Vector4 = entry
+				if absf(obstacle.y - global_position.y) <= 1.4 and here.distance_to(Vector2(obstacle.x, obstacle.z)) < obstacle.w:
+					return false
+	return true
 
 func start_attack_preview() -> void:
 	attack_time_remaining = ATTACK_DURATION

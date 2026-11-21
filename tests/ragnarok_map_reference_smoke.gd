@@ -20,7 +20,28 @@ func _run() -> void:
 	await physics_frame
 	assert(scene.has_node("MapaVisualLocal"))
 	assert(scene.has_node("ColisaoGAT"))
+	assert(scene.has_node("ColisaoPonte"))
+	assert(scene.bridge_collision_count >= 10)
+	assert(scene.obstacle_count > 1000)
 	assert(scene.actor != null)
+	assert(scene.actor.guard_walkable_edges)
+	assert(scene.actor.lock_elevation_level)
+	assert(scene.actor.is_clear_of_obstacles())
+	var actor_position: Vector3 = scene.actor.global_position
+	var obstacle_center := actor_position + Vector3(0.5, 0, 0)
+	var obstacle_cell := Vector2i(floori(obstacle_center.x / 2.0), floori(obstacle_center.z / 2.0))
+	var previous_entries: Array = scene.actor.obstacle_grid.get(obstacle_cell, []).duplicate()
+	scene.actor.obstacle_grid[obstacle_cell] = [Vector4(obstacle_center.x, obstacle_center.y, obstacle_center.z, 0.45)]
+	assert(not scene.actor._can_enter_obstacle_space(actor_position + Vector3(0.1, 0, 0)))
+	assert(scene.actor._can_enter_obstacle_space(actor_position + Vector3(-0.1, 0, 0)))
+	scene.actor.obstacle_grid[obstacle_cell] = previous_entries
+	scene.actor.global_position = actor_position + Vector3.UP * 2.0
+	scene._recover_actor()
+	assert(scene.actor.global_position.is_equal_approx(scene.last_safe_position))
+	var bridge_ray := PhysicsRayQueryParameters3D.create(Vector3(25, 12, -11.3), Vector3(25, -5, -11.3), 4)
+	var bridge_hit := scene.get_world_3d().direct_space_state.intersect_ray(bridge_ray)
+	assert(not bridge_hit.is_empty())
+	assert(bridge_hit.collider.name == "ColisaoPonte")
 	if ResourceLoader.exists(MODEL_FILE) or ResourceLoader.exists(WALK_MODEL_FILE):
 		assert(scene.actor.model_3d != null)
 		assert(not scene.actor.sprite.visible)

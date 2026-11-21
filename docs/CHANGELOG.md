@@ -1,5 +1,9 @@
 # Changelog
 
+## Navegação segura no mapa 3D experimental
+
+- Adicionados piso segmentado à ponte, bloqueio de bordas e mudanças de altura fora de passagens designadas, áreas provisórias para flores e demais obstáculos e recuperação pela tecla R ou após queda. O ponto de entrada agora exige piso livre ao redor. Teste automatizado cobre colisão da ponte, bloqueio e saída de obstáculo, recuperação e movimento.
+
 ## Caminhada e ataque do Espadachim 3D experimental
 
 - Carregados localmente os GLBs `Espadachim Caminhando` e `Espadachim Atacando` na cena Mjolnir. Como os arquivos não incluem animações, adicionados movimentos provisórios dos ossos para caminhada e ataque, troca de modelo durante o golpe e arco dourado de teste ao pressionar Espaço. Não há dano ou alteração no combate existente.

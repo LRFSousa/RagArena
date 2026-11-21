@@ -24,4 +24,11 @@ godot --headless --path . --script res://tests/ragnarok_map_reference_smoke.gd
 godot --path . --scene res://scenes/experimental/ragnarok_map_reference.tscn
 ```
 
-O teste automatizado conferiu carregamento do mapa, malha de colisão GAT, modelos 3D quando presentes, alternância com sprite, poses de caminhada e ataque, retorno ao modelo de caminhada, ator apoiado no chão, órbita, limites de zoom e movimento relativo à câmera em diferentes ângulos. A navegação em trilhas, pontes e diferentes alturas ainda precisa de teste manual. A malha GAT delimita o piso caminhável; objetos decorativos não possuem colisores individuais. A conversão visual tem milhares de nós e ainda não foi avaliada para Android.
+O teste automatizado conferiu carregamento do mapa, malha de colisão GAT, modelos 3D quando presentes, alternância com sprite, poses de caminhada e ataque, retorno ao modelo de caminhada, ator apoiado no chão, órbita, limites de zoom e movimento relativo à câmera em diferentes ângulos.
+
+## Limites de navegação experimental
+
+- O personagem permanece no nível de altura em que nasceu. O piso à frente é consultado antes de cada passo; bordas, morros e mudanças de nível sem passagem designada bloqueiam o movimento. Futuras rampas e escadas deverão ser cadastradas como passagens explícitas.
+- A ponte principal possui piso de colisão segmentado, alinhado à sua descida e subida. Ela é a única passagem de altura habilitada nesta prévia.
+- Árvores, flores, barris e outros modelos importados recebem áreas circulares provisórias de bloqueio. O personagem pode se afastar caso já esteja dentro de uma área, evitando ficar preso ao tocar uma flor. A tecla **R** o devolve à última posição segura, e uma queda também aciona essa recuperação.
+- O ponto inicial é escolhido somente quando há piso livre ao redor. As áreas circulares são aproximações: ainda é necessário conferir manualmente a ponte inteira, rampas futuras e o contorno de cada objeto. A conversão visual tem milhares de nós e ainda não foi avaliada para Android.
