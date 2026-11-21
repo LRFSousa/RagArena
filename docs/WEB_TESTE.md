@@ -15,6 +15,8 @@ Sirva a pasta `web_build` por HTTP/HTTPS; abrir `index.html` diretamente como `f
 
 ## GitHub Pages
 
+Prévia da **arena 3D fechada com ataques e controles de toque**: https://lrfsousa.github.io/RagArena/preview-3d-arena/. Abra em paisagem, mova pelo controle esquerdo, alterne o alvo em **ALVO**, ataque com **ATK** e teste **ESC**, **CURA** e **FOR**. O cenário é provisório e autoral; os mapas do cliente Ragnarok continuam fora do pacote público.
+
 Prévia isolada da release 0.7 (câmera e mapa ampliado): https://lrfsousa.github.io/RagArena/preview-07/. Abra no celular em paisagem. A página principal continua na versão estável 0.5.2. A prévia usa o mesmo fluxo local de personagem e configuração antes da Arena.
 
 Revisão do minimapa no canto superior direito e golpe de dois quadros: https://lrfsousa.github.io/RagArena/preview-07-range2/. O endereço separado evita carregar o pacote antigo do cache e permite comparar as duas versões.
