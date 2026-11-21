@@ -15,7 +15,7 @@ Sirva a pasta `web_build` por HTTP/HTTPS; abrir `index.html` diretamente como `f
 
 ## GitHub Pages
 
-Arena 3D com barra de habilidades, poções, minimapa e câmera orbital: https://lrfsousa.github.io/RagArena/preview-3d-arena/. Abra em paisagem. Use o controle esquerdo para andar, arraste uma região livre para girar, use pinça ou +/− para zoom. O cenário é provisório e autoral; os mapas do cliente Ragnarok continuam fora do pacote público.
+Arena 3D com barra de habilidades, poções, minimapa e câmera orbital: https://lrfsousa.github.io/RagArena/arena-3d-mobile/. Abra em paisagem. Use o controle esquerdo para andar, arraste uma região livre para girar, use pinça ou +/− para zoom. O cenário é provisório e autoral; os mapas do cliente Ragnarok continuam fora do pacote público.
 
 Prévia histórica da release 0.7 em 2D: https://lrfsousa.github.io/RagArena/preview-07/. A página principal agora inicia a arena 3D; esta prévia antiga permanece apenas para comparação.
 

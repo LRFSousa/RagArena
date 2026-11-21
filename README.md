@@ -68,4 +68,4 @@ O APK de depuração e as instruções de instalação estão descritos em `docs
 
 Jogue no navegador em https://lrfsousa.github.io/RagArena/ (preferencialmente em paisagem). Veja `docs/WEB_TESTE.md` para exportação e hospedagem.
 
-A arena 3D é a cena inicial do projeto e da página principal. Teste com câmera orbital, minimapa, poções, habilidades e ataques em bonecos de treino: https://lrfsousa.github.io/RagArena/.
+A arena 3D é a cena inicial do projeto e da página principal. Teste com câmera orbital, minimapa, poções, habilidades e ataques em bonecos de treino: https://lrfsousa.github.io/RagArena/arena-3d-mobile/.

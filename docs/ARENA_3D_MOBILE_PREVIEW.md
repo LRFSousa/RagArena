@@ -13,6 +13,6 @@ Esta prévia usa uma arena autoral provisória com três patamares, rampas, roch
 
 ## Publicação e limites
 
-Prévia web: https://lrfsousa.github.io/RagArena/preview-3d-arena/. A cena 3D agora é a entrada principal do projeto. A exportação Web usa uma cópia mínima com apenas a arena 3D e seus recursos. Os arquivos locais de `assets/experimental/ro_reference/` não entram no pacote público. O download inicial soma cerca de 69 MB de arquivos Web, incluindo o runtime do Godot.
+Prévia web sem cache da versão 2D: https://lrfsousa.github.io/RagArena/arena-3d-mobile/. A cena 3D agora é a entrada principal do projeto. A exportação Web usa uma cópia mínima com apenas a arena 3D e seus recursos. Os arquivos locais de `assets/experimental/ro_reference/` não entram no pacote público. O download inicial soma cerca de 69 MB de arquivos Web, incluindo o runtime do Godot.
 
 O combate ainda usa bonecos estáticos, sem bots, inventário persistente, progressão, partida, rede ou balanceamento definitivo. As poções da prévia são estoques locais de teste. O código 2D legado permanece no repositório para servir de referência durante a migração, mas deixa de ser a cena inicial. O toque e o desempenho precisam ser conferidos em celular real.
