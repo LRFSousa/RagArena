@@ -2,6 +2,8 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
+- Prévia 3D mobile: validar em celular real joystick, botões, leitura do HUD, fluidez do Espadachim e pacote web. Os três bonecos estáticos e números de dano são apenas para testar ataques; integrar bots e regras finais de combate em etapa posterior.
+
 - Conferir visualmente no Godot o Espadachim experimental 1,5× maior e a pose vertical do braço direito em todas as direções da câmera; os GLBs ainda não contêm animações próprias.
 
 - Validar visualmente no Godot a caminhada 3D corrigida em todas as direções da câmera e a proporção de Prontera em 4×; os GLBs do Tripo AI continuam sem trilhas de animação próprias.

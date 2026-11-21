@@ -67,14 +67,14 @@ func _ready() -> void:
 		model_3d.add_child(walk_model_3d)
 		walk_skeleton = _find_skeleton(walk_model_3d)
 		walk_base_rotations = _capture_bone_rotations(walk_skeleton)
-		if ResourceLoader.exists(ATTACK_MODEL_PATH):
-			attack_model_3d = (load(ATTACK_MODEL_PATH) as PackedScene).instantiate()
-			attack_model_3d.hide()
-			model_3d.add_child(attack_model_3d)
-			attack_skeleton = _find_skeleton(attack_model_3d)
-			attack_base_rotations = _capture_bone_rotations(attack_skeleton)
-			attack_arc = _build_attack_arc()
-			model_3d.add_child(attack_arc)
+		var attack_path := ATTACK_MODEL_PATH if ResourceLoader.exists(ATTACK_MODEL_PATH) else walk_path
+		attack_model_3d = (load(attack_path) as PackedScene).instantiate()
+		attack_model_3d.hide()
+		model_3d.add_child(attack_model_3d)
+		attack_skeleton = _find_skeleton(attack_model_3d)
+		attack_base_rotations = _capture_bone_rotations(attack_skeleton)
+		attack_arc = _build_attack_arc()
+		model_3d.add_child(attack_arc)
 		sprite.hide()
 
 func _physics_process(delta: float) -> void:

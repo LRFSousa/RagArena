@@ -1,5 +1,9 @@
 # Changelog
 
+## Prévia web da arena 3D fechada
+
+- Criada cena experimental independente com arena provisória autoral, Espadachim 3D, controle de toque, três alvos com HP, ataque básico que causa dano e efeitos de Proteção, Cura e Determinação. Incluído um único GLB fornecido pelo responsável para a prévia pública; os mapas do cliente Ragnarok permanecem locais.
+
 ## Direção da arena fechada
 
 - Registrado que Prontera e a transição experimental de Mjolnir são referências técnicas, não o fluxo final do jogo. A arena será fechada, sem portais internos ou entrada em casas; portais antes da partida ficam para definição posterior.
