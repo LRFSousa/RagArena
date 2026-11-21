@@ -4,7 +4,7 @@
 
 O mapa completo `mjolnir_01` foi convertido a partir de `C:\Gravity\Ragnarok Online\data.grf` usando o [ragx](https://github.com/joaopedrosgs/ragx). O GLB visual ocupa cerca de 20 MB. Uma segunda exportação do GAT gera apenas as células caminháveis, usadas como colisão estática. Ambos vêm da mesma instalação do cliente.
 
-A cena `scenes/experimental/ragnarok_map_reference.tscn` instancia esses arquivos, o Espadachim de teste e uma câmera inclinada com órbita de 360° e zoom. É independente da arena 2D e da graybox 3D anterior. WASD move o personagem em relação à direção atual da câmera; botão direito do mouse arrastado gira a câmera; a roda aproxima ou afasta. Em tela sensível ao toque, arrastar com um dedo gira e o gesto de pinça controla o zoom. Ao cair abaixo do mapa, o personagem retorna ao ponto inicial. Não há combate nesta cena.
+A cena `scenes/experimental/ragnarok_map_reference.tscn` instancia esses arquivos, o Espadachim de teste e uma câmera inclinada com órbita de 360° e zoom. É independente da arena 2D e da graybox 3D anterior. Se `assets/characters/swordsman/Espadachim.glb` estiver disponível, usa o modelo 3D do usuário com altura ajustada ao colisor; caso contrário, exibe o sprite anterior. A tecla T alterna as duas visualizações. WASD move o personagem em relação à direção atual da câmera; botão direito do mouse arrastado gira a câmera; a roda aproxima ou afasta. Em tela sensível ao toque, arrastar com um dedo gira e o gesto de pinça controla o zoom. Ao cair abaixo do mapa, o personagem retorna ao ponto inicial. Não há combate nesta cena.
 
 ## Arquivos locais
 
@@ -15,6 +15,8 @@ Coloque os seguintes arquivos em `assets/experimental/ro_reference/`:
 
 A pasta está no `.gitignore`. Os arquivos originais e convertidos do Ragnarok pertencem à Gravity e não são incluídos no GitHub, na build web ou em APKs. A cena exibe uma mensagem se eles não estiverem presentes.
 
+O `Espadachim.glb` foi gerado pelo usuário no Tripo AI e mantido localmente para esta prévia, evitando aumentar o download do jogo. Ele contém uma malha única sem animações; por isso, o personagem desliza ao caminhar e apenas gira na direção do movimento. A animação de caminhada exigirá um modelo rigado ou sequências adicionais.
+
 ## Verificação
 
 ```text
@@ -22,4 +24,4 @@ godot --headless --path . --script res://tests/ragnarok_map_reference_smoke.gd
 godot --path . --scene res://scenes/experimental/ragnarok_map_reference.tscn
 ```
 
-O teste automatizado conferiu carregamento do mapa, malha de colisão GAT, ator apoiado no chão, órbita, limites de zoom e movimento relativo à câmera em diferentes ângulos. A navegação em trilhas, pontes e diferentes alturas ainda precisa de teste manual. A malha GAT delimita o piso caminhável; objetos decorativos não possuem colisores individuais. A conversão visual tem milhares de nós e ainda não foi avaliada para Android.
+O teste automatizado conferiu carregamento do mapa, malha de colisão GAT, modelo 3D quando presente, alternância com sprite, ator apoiado no chão, órbita, limites de zoom e movimento relativo à câmera em diferentes ângulos. A navegação em trilhas, pontes e diferentes alturas ainda precisa de teste manual. A malha GAT delimita o piso caminhável; objetos decorativos não possuem colisores individuais. A conversão visual tem milhares de nós e ainda não foi avaliada para Android.

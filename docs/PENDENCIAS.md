@@ -76,6 +76,8 @@
 
 ## Releases posteriores
 
+- Espadachim 3D experimental: obter rig e animações de caminhada, ataque e habilidades; validar orientação e proporção em diferentes câmeras. A prévia atual usa modelo estático local e não entra na build distribuída.
+
 - Mapa completo `mjolnir_01`: validar visualmente trilhas, pontes, bordas e alturas durante a navegação manual. A colisão usa apenas células GAT caminháveis; objetos decorativos e penhascos ainda não têm colisores próprios. Medir custo de importação e desempenho em celular antes de qualquer integração. Substituir o mapa provisório por cenário autoral para distribuição.
 
 - Refinar atributos, dano PvP e cooldowns após playtests; valores da release 0.3 ainda não são decisões finais.

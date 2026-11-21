@@ -1,5 +1,9 @@
 # Changelog
 
+## Prévia local do Espadachim 3D
+
+- Integrado opcionalmente o `Espadachim.glb` enviado pelo usuário à cena experimental do mapa Mjolnir, com escala adequada ao colisor e rotação na direção do movimento. T alterna entre o modelo e o sprite; arquivo GLB permanece local e fora do repositório. O modelo ainda não inclui animações.
+
 ## Movimento relativo à câmera no mapa provisório
 
 - WASD do Espadachim experimental agora acompanha a rotação da câmera, com vetores projetados no plano do chão; o sprite usa a direção do comando na tela. A arena 2D e a graybox 3D permanecem com os controles anteriores.

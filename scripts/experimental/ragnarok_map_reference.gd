@@ -36,6 +36,7 @@ func _ready() -> void:
 	walk_scene.queue_free()
 	actor = ACTOR_SCENE.instantiate()
 	actor.position = spawn_position
+	actor.use_3d_model = true
 	add_child(actor)
 	camera = CAMERA_SCRIPT.new()
 	camera.target = actor
@@ -54,7 +55,17 @@ func _ready() -> void:
 	env.ambient_light_color = Color(0.42, 0.42, 0.42)
 	environment.environment = env
 	add_child(environment)
-	status.text = "Monte Mjolnir 01 | WASD: mover | Botão direito: girar | Roda: zoom | Toque: girar/pinça: zoom"
+	_update_status()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_T and actor != null and actor.model_3d != null:
+		actor.model_3d.visible = not actor.model_3d.visible
+		actor.sprite.visible = not actor.model_3d.visible
+		_update_status()
+
+func _update_status() -> void:
+	var mode := "3D" if actor != null and actor.model_3d != null and actor.model_3d.visible else "sprite 2D"
+	status.text = "Monte Mjolnir 01 | Espadachim %s | T: alternar | WASD: mover | Botão direito: girar | Roda: zoom" % mode
 
 func _process(_delta: float) -> void:
 	if actor != null and actor.global_position.y < -10.0:

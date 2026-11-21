@@ -2,6 +2,7 @@ extends SceneTree
 
 const MAP_FILE := "res://assets/experimental/ro_reference/mjolnir_01.glb"
 const WALK_FILE := "res://assets/experimental/ro_reference/mjolnir_01_nav.gltf"
+const MODEL_FILE := "res://assets/characters/swordsman/Espadachim.glb"
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -18,6 +19,18 @@ func _run() -> void:
 	assert(scene.has_node("MapaVisualLocal"))
 	assert(scene.has_node("ColisaoGAT"))
 	assert(scene.actor != null)
+	if ResourceLoader.exists(MODEL_FILE):
+		assert(scene.actor.model_3d != null)
+		assert(not scene.actor.sprite.visible)
+		assert(is_equal_approx(scene.actor.model_3d.scale.y, 1.84))
+		var toggle := InputEventKey.new()
+		toggle.keycode = KEY_T
+		toggle.pressed = true
+		scene._unhandled_input(toggle)
+		assert(scene.actor.sprite.visible)
+		assert(not scene.actor.model_3d.visible)
+		scene._unhandled_input(toggle)
+		assert(scene.actor.model_3d.visible)
 	assert(scene.camera != null)
 	assert(scene.camera.projection == Camera3D.PROJECTION_PERSPECTIVE)
 	var start_yaw: float = scene.camera.yaw_degrees
