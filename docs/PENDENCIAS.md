@@ -6,9 +6,8 @@
 
 - Validar visualmente no Godot a caminhada 3D corrigida em todas as direções da câmera e a proporção de Prontera em 4×; os GLBs do Tripo AI continuam sem trilhas de animação próprias.
 
-- Validar visualmente em Prontera 5× a proporção entre personagem, ruas, portas e casas, além do tempo de carregamento. Ajustar colisores das paredes e portais após essa revisão.
-
-- Prontera experimental: definir contornos físicos das paredes externas das casas, aberturas de portas, colisão dos interiores e volumes de portal com destinos e pontos seguros. A cena atual serve para inspecionar o mapa inteiro; o bloqueio radial dos objetos é apenas provisório.
+- Usar Prontera experimental somente para avaliar proporção, câmera, movimentação e desempenho do cenário 3D em 4×. Não planejar entrada em casas ou portais internos para a arena fechada.
+- Definir posteriormente a área anterior à partida e seus portais de acesso à arena; essa etapa está fora da prévia 3D atual.
 - Mjolnir: conferir manualmente a transição nas duas direções pela ponte entre `mjolnir_01` e `mjolnir_02`, inclusive câmera, desempenho e posição de chegada em aparelho real. Os mapas originais permanecem locais e fora das builds distribuídas.
 
 - Conferir visualmente quais modelos de vegetação do Mjolnir ficam abaixo do joelho e ajustar a classificação por nome quando necessário. A altura física por modelo ainda não é confiável na importação atual; penhascos continuam bloqueados.

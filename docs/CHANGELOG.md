@@ -1,5 +1,9 @@
 # Changelog
 
+## Direção da arena fechada
+
+- Registrado que Prontera e a transição experimental de Mjolnir são referências técnicas, não o fluxo final do jogo. A arena será fechada, sem portais internos ou entrada em casas; portais antes da partida ficam para definição posterior.
+
 ## Tamanho e braço direito do Espadachim 3D
 
 - Ampliada a apresentação visual do Espadachim experimental em 1,5× (modelo e sprite alternativo). Corrigido o eixo de repouso do braço direito no rig importado, mantendo-o abaixado e vertical durante a caminhada; braços alternam a passada para frente e para trás. A física da arena 2D não foi modificada.

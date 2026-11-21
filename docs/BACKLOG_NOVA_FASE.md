@@ -8,7 +8,7 @@ Este documento organiza o redesenho do jogo **antes de alterar a jogabilidade**.
 2. **Habilidades** — fechar primeiro o Espadachim como referência; depois aplicar o mesmo contrato às outras quatro classes.
 3. **Atributos** — definir Base/Job XP, curva 1–99, pontos, dano, defesa e limites por faixa.
 4. **Itens e Inventário** — definir arma, armadura, acessório, estoque, atalhos, saque, upgrade e monetização.
-5. **Navegação e Mapa** — definir arenas por faixa, salas de 5/10/20, coberturas, eventos e fechamento.
+5. **Navegação e Mapa** — definir arenas fechadas por faixa, salas de 5/10/20, coberturas, eventos e fechamento. Portais de acesso ficam antes da partida e serão definidos depois; não haverá portais internos nem entrada em casas na arena.
 
 **Regra de execução:** a primeira implementação de personagens e progressão persistente está descrita em `docs/PRIMEIRA_IMPLEMENTACAO_PROGRESSAO.md` e no relatório correspondente; os demais tópicos serão tratados antes das respectivas mudanças. O mapa 3D segue como evolução futura.
 
