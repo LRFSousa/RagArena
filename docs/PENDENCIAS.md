@@ -2,6 +2,9 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
+- Prontera experimental: definir contornos físicos das paredes externas das casas, aberturas de portas, colisão dos interiores e volumes de portal com destinos e pontos seguros. A cena atual serve para inspecionar o mapa inteiro; o bloqueio radial dos objetos é apenas provisório.
+- Mjolnir: conferir manualmente a transição nas duas direções pela ponte entre `mjolnir_01` e `mjolnir_02`, inclusive câmera, desempenho e posição de chegada em aparelho real. Os mapas originais permanecem locais e fora das builds distribuídas.
+
 - Conferir visualmente quais modelos de vegetação do Mjolnir ficam abaixo do joelho e ajustar a classificação por nome quando necessário. A altura física por modelo ainda não é confiável na importação atual; penhascos continuam bloqueados.
 
 - Mapa Mjolnir experimental: validar manualmente a travessia completa da ponte e o contorno de flores, árvores e demais objetos; substituir as áreas circulares provisórias por colisores ajustados; cadastrar rampas e escadas autorizadas para trocar de nível. A tecla R recupera a última posição segura enquanto essa validação não termina.

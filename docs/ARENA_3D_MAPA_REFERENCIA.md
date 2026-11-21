@@ -12,6 +12,8 @@ Coloque os seguintes arquivos em `assets/experimental/ro_reference/`:
 
 - `mjolnir_01.glb`: cenário completo exportado pelo ragx com `--format glb --world-scale 0.2`.
 - `mjolnir_01_nav.gltf` e `mjolnir_01_nav.bin`: superfície caminhável gerada por `MapBuilder.build_nav_gltf()` com a mesma escala e cliente.
+- `mjolnir_02.glb`, `mjolnir_02_nav.gltf` e `mjolnir_02_nav.bin`: mapa vizinho e sua malha caminhável, exportados do mesmo cliente e com a mesma escala.
+- `prontera.glb`, `prontera_nav.gltf` e `prontera_nav.bin`: cidade e sua malha caminhável para a cena experimental `scenes/experimental/prontera_reference.tscn`.
 
 A pasta está no `.gitignore`. Os arquivos originais e convertidos do Ragnarok pertencem à Gravity e não são incluídos no GitHub, na build web ou em APKs. A cena exibe uma mensagem se eles não estiverem presentes.
 
@@ -21,7 +23,9 @@ Os arquivos `Espadachim.glb`, `Espadachim Caminhando.glb` e `Espadachim Atacando
 
 ```text
 godot --headless --path . --script res://tests/ragnarok_map_reference_smoke.gd
+godot --headless --path . --script res://tests/map_portals_smoke.gd
 godot --path . --scene res://scenes/experimental/ragnarok_map_reference.tscn
+godot --path . --scene res://scenes/experimental/prontera_reference.tscn
 ```
 
 O teste automatizado conferiu carregamento do mapa, malha de colisão GAT, modelos 3D quando presentes, alternância com sprite, poses de caminhada e ataque, retorno ao modelo de caminhada, ator apoiado no chão, órbita, limites de zoom e movimento relativo à câmera em diferentes ângulos.
@@ -29,6 +33,10 @@ O teste automatizado conferiu carregamento do mapa, malha de colisão GAT, model
 ## Limites de navegação experimental
 
 - O personagem permanece no nível de altura em que nasceu. O piso à frente é consultado antes de cada passo; bordas, morros e mudanças de nível sem passagem designada bloqueiam o movimento. Futuras rampas e escadas deverão ser cadastradas como passagens explícitas.
-- A ponte principal possui piso de colisão segmentado, alinhado à sua descida e subida. Ela é a única passagem de altura habilitada nesta prévia.
+- `mjolnir_01` já contém seu mapa inteiro. A ponte a leste termina no limite do arquivo e no Ragnarok leva ao mapa vizinho `mjolnir_02`; não há terreno inferior dentro de `mjolnir_01` depois dessa borda. A extremidade da ponte agora aciona a transição para o outro mapa, com retorno pela ponte correspondente. Ambos os mapas são carregados inteiros, um de cada vez, sem modificar seus modelos visuais. As duas pontes desse acesso têm piso de colisão segmentado. A ponte principal é a única passagem de altura habilitada nesta prévia.
 - Folhagens rasteiras identificadas no mapa como arbustos, mato, grama ou trepadeiras amarelas são atravessáveis (altura visual aproximada até o joelho). Flores altas, árvores, barris e outros modelos sólidos continuam com áreas circulares provisórias de bloqueio. O personagem pode se afastar caso já esteja dentro de uma área, evitando ficar preso ao tocar uma flor. A tecla **R** o devolve à última posição segura, e uma queda também aciona essa recuperação.
 - O ponto inicial é escolhido somente quando há piso livre ao redor. A classificação da vegetação usa os nomes dos modelos importados, pois a conversão não fornece uma altura de colisão confiável por objeto. Uma folhagem sobre a borda de um penhasco não torna a borda atravessável. As áreas circulares são aproximações: ainda é necessário conferir manualmente a ponte inteira, rampas futuras e o contorno de cada objeto. A conversão visual tem milhares de nós e ainda não foi avaliada para Android.
+
+## Prontera: casas e portais
+
+A cena de Prontera exibe o mapa completo original com a superfície GAT caminhável e o Espadachim de teste. As paredes visuais das casas ainda não têm colisores ajustados às suas formas: o bloqueio provisório por posição de modelo não garante que portas sejam passáveis nem que todas as paredes sejam sólidas. O próximo passo é marcar cada parede externa e porta em dados separados do GLB, conferir as células GAT dentro das construções e definir volumes de portal com destino e ponto seguro de chegada. Nenhum portal de Prontera está ativo nesta etapa.

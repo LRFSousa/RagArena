@@ -1,9 +1,12 @@
 extends Node3D
 
-const MAP_FILE := "res://assets/experimental/ro_reference/mjolnir_01.glb"
-const WALK_FILE := "res://assets/experimental/ro_reference/mjolnir_01_nav.gltf"
+const MAP_ROOT := "res://assets/experimental/ro_reference/"
 const ACTOR_SCENE := preload("res://scenes/experimental/test_actor_3d.tscn")
 const CAMERA_SCRIPT := preload("res://scripts/experimental/orbit_camera_3d.gd")
+
+@export_enum("mjolnir_01", "prontera") var starting_map := "mjolnir_01"
+static var pending_map := ""
+static var pending_spawn := Vector3.ZERO
 
 var actor: MountainTestActor3D
 var camera: ArenaOrbitCamera3D
@@ -14,18 +17,26 @@ var bridge_collision_count := 0
 var obstacle_grid: Dictionary = {}
 var obstacle_count := 0
 var passable_foliage_count := 0
+var map_name := ""
+var portal_cooldown := 1.0
 
 func _ready() -> void:
 	_build_ui()
-	if not ResourceLoader.exists(MAP_FILE) or not ResourceLoader.exists(WALK_FILE):
+	map_name = pending_map if pending_map != "" else starting_map
+	var portal_spawn := pending_spawn
+	pending_map = ""
+	var map_file := MAP_ROOT + map_name + ".glb"
+	var walk_file := MAP_ROOT + map_name + "_nav.gltf"
+	if not ResourceLoader.exists(map_file) or not ResourceLoader.exists(walk_file):
 		status.text = "Mapa local ausente. Veja docs/ARENA_3D_MAPA_REFERENCIA.md."
 		return
-	var visual := (load(MAP_FILE) as PackedScene).instantiate()
+	var visual := (load(map_file) as PackedScene).instantiate()
 	visual.name = "MapaVisualLocal"
 	add_child(visual)
-	bridge_collision_count = _add_bridge_collision()
+	if map_name.begins_with("mjolnir_"):
+		bridge_collision_count = _add_bridge_collision()
 	obstacle_count = _collect_obstacles(visual)
-	var walk_scene := (load(WALK_FILE) as PackedScene).instantiate()
+	var walk_scene := (load(walk_file) as PackedScene).instantiate()
 	var walk_mesh := _find_mesh(walk_scene)
 	if walk_mesh == null:
 		status.text = "Malha caminhável não encontrada."
@@ -38,7 +49,7 @@ func _ready() -> void:
 	shape.shape = walk_mesh.mesh.create_trimesh_shape()
 	body.add_child(shape)
 	add_child(body)
-	var spawn := _find_spawn(walk_mesh.mesh)
+	var spawn := _find_spawn(walk_mesh.mesh) if portal_spawn == Vector3.ZERO else portal_spawn
 	spawn_position = spawn + Vector3.UP * 0.2
 	last_safe_position = spawn_position
 	walk_scene.queue_free()
@@ -81,15 +92,33 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _update_status() -> void:
 	var mode := "3D" if actor != null and actor.model_3d != null and actor.model_3d.visible else "sprite 2D"
-	status.text = "Monte Mjolnir 01 | Espadachim %s | WASD: mover | R: recuperar | T: alternar | Espaço: golpe | Botão direito: girar | Roda: zoom" % mode
+	var title := "Prontera" if map_name == "prontera" else "Monte Mjolnir 02" if map_name == "mjolnir_02" else "Monte Mjolnir 01"
+	status.text = "%s | Espadachim %s | WASD: mover | R: recuperar | T: alternar | Espaço: golpe | Botão direito: girar | Roda: zoom" % [title, mode]
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if actor == null:
+		return
+	portal_cooldown = maxf(portal_cooldown - delta, 0.0)
+	if portal_cooldown == 0.0 and _at_mjolnir_portal():
+		_enter_mjolnir_portal()
 		return
 	if actor.is_on_floor() and actor.is_clear_of_obstacles():
 		last_safe_position = actor.global_position
 	elif actor.global_position.y < last_safe_position.y - 2.5:
 		_recover_actor()
+
+func _at_mjolnir_portal() -> bool:
+	var point := actor.global_position
+	if map_name == "mjolnir_01":
+		return point.x > 38.2 and absf(point.z + 11.29) < 0.9
+	if map_name == "mjolnir_02":
+		return point.x < -36.0 and absf(point.z + 11.68) < 0.9
+	return false
+
+func _enter_mjolnir_portal() -> void:
+	pending_map = "mjolnir_02" if map_name == "mjolnir_01" else "mjolnir_01"
+	pending_spawn = Vector3(-32.5, 2.73, -11.68) if map_name == "mjolnir_01" else Vector3(37.0, 5.25, -11.29)
+	get_tree().reload_current_scene()
 
 func _recover_actor() -> void:
 	actor.global_position = last_safe_position
@@ -138,6 +167,14 @@ func _add_bridge_collision() -> int:
 		Vector2(29, 4.369), Vector2(31, 4.520), Vector2(33, 4.720),
 		Vector2(35, 4.967), Vector2(37, 5.250), Vector2(39, 5.600),
 	]
+	var bridge_z := -11.29
+	if map_name == "mjolnir_02":
+		deck = [
+			Vector2(-38.5, 3.10), Vector2(-37, 2.98), Vector2(-35, 2.84),
+			Vector2(-33, 2.75), Vector2(-31, 2.71), Vector2(-29, 2.76),
+			Vector2(-27, 2.84), Vector2(-25, 3.00), Vector2(-24, 3.08),
+		]
+		bridge_z = -11.68
 	for i in range(deck.size() - 1):
 		var start: Vector2 = deck[i]
 		var finish: Vector2 = deck[i + 1]
@@ -145,7 +182,7 @@ func _add_bridge_collision() -> int:
 		var box := BoxShape3D.new()
 		box.size = Vector3(start.distance_to(finish) + 0.04, 0.18, 1.8)
 		collider.shape = box
-		collider.position = Vector3((start.x + finish.x) * 0.5, (start.y + finish.y) * 0.5 - 0.09, -11.29)
+		collider.position = Vector3((start.x + finish.x) * 0.5, (start.y + finish.y) * 0.5 - 0.09, bridge_z)
 		collider.rotation.z = atan2(finish.y - start.y, finish.x - start.x)
 		body.add_child(collider)
 	return deck.size() - 1
@@ -171,10 +208,10 @@ func _find_spawn(mesh: Mesh) -> Vector3:
 				best = vertex
 	return best
 
-func _is_clear_spawn(point: Vector3) -> bool:
-	for offset in [Vector2.ZERO, Vector2(0.5, 0), Vector2(-0.5, 0), Vector2(0, 0.5), Vector2(0, -0.5)]:
+func _is_clear_spawn(point: Vector3, clearance := 0.5) -> bool:
+	for offset in [Vector2.ZERO, Vector2(clearance, 0), Vector2(-clearance, 0), Vector2(0, clearance), Vector2(0, -clearance)]:
 		var sample := point + Vector3(offset.x, 0, offset.y)
-		var query := PhysicsRayQueryParameters3D.create(sample + Vector3.UP, sample + Vector3.DOWN, 1)
+		var query := PhysicsRayQueryParameters3D.create(sample + Vector3.UP, sample + Vector3.DOWN, 1 | 4)
 		var hit := get_world_3d().direct_space_state.intersect_ray(query)
 		if hit.is_empty() or absf(hit.position.y - point.y) > 0.4:
 			return false
