@@ -1,5 +1,9 @@
 # Changelog
 
+## Câmera do mapa provisório
+
+- Adicionada câmera em perspectiva com órbita horizontal de 360°, inclinação limitada, zoom por roda do mouse ou pinça e rotação por arraste com botão direito ou toque. Atualizados controles e teste da cena local; movimentação e combate das arenas atuais preservados.
+
 ## Teste local com mapa completo de Ragnarok
 
 - Convertido `mjolnir_01` da instalação local do usuário para GLB com `ragx` e extraída a malha caminhável GAT da mesma versão. Criada cena experimental independente com câmera, Espadachim e colisão na malha GAT. Arquivos convertidos ficam fora do controle de versão; arena 2D e combate não foram alterados.

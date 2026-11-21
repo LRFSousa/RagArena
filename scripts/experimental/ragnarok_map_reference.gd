@@ -3,10 +3,10 @@ extends Node3D
 const MAP_FILE := "res://assets/experimental/ro_reference/mjolnir_01.glb"
 const WALK_FILE := "res://assets/experimental/ro_reference/mjolnir_01_nav.gltf"
 const ACTOR_SCENE := preload("res://scenes/experimental/test_actor_3d.tscn")
-const CAMERA_SCRIPT := preload("res://scripts/experimental/test_camera_3d.gd")
+const CAMERA_SCRIPT := preload("res://scripts/experimental/orbit_camera_3d.gd")
 
 var actor: MountainTestActor3D
-var camera: MountainTestCamera3D
+var camera: ArenaOrbitCamera3D
 var status: Label
 var spawn_position := Vector3.ZERO
 
@@ -38,12 +38,9 @@ func _ready() -> void:
 	actor.position = spawn_position
 	add_child(actor)
 	camera = CAMERA_SCRIPT.new()
-	camera.camera_offset = Vector3(0.0, 15.0, 29.0)
 	camera.target = actor
 	camera.current = true
 	add_child(camera)
-	camera.size = 30.0
-	camera.far = 300.0
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-55, -30, 0)
 	sun.light_energy = 0.65
@@ -56,16 +53,12 @@ func _ready() -> void:
 	env.ambient_light_color = Color(0.42, 0.42, 0.42)
 	environment.environment = env
 	add_child(environment)
-	status.text = "Monte Mjolnir 01 | WASD: mover | Segurar C: visão ampla | Colisão: células GAT"
+	status.text = "Monte Mjolnir 01 | WASD: mover | Botão direito: girar | Roda: zoom | Toque: girar/pinça: zoom"
 
 func _process(_delta: float) -> void:
 	if actor != null and actor.global_position.y < -10.0:
 		actor.global_position = spawn_position
 		actor.velocity = Vector3.ZERO
-	if camera != null and Input.is_key_pressed(KEY_C):
-		camera.size = 72.0
-	elif camera != null:
-		camera.size = 30.0
 
 func _find_mesh(node: Node) -> MeshInstance3D:
 	if node is MeshInstance3D:
