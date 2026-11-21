@@ -122,7 +122,7 @@ func _collect_obstacles(node: Node) -> int:
 
 func _is_passable_foliage(model_name: String) -> bool:
 	# Folhagens rasteiras são decorativas; flores altas e objetos sólidos continuam bloqueados.
-	return model_name.contains("덤불") or model_name.contains("잡초") or model_name.contains("풀")
+	return model_name.contains("덤불") or model_name.contains("잡초") or model_name.contains("풀") or model_name.contains("넝쿨")
 
 func _add_bridge_collision() -> int:
 	var body := StaticBody3D.new()

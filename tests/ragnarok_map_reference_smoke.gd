@@ -25,6 +25,7 @@ func _run() -> void:
 	assert(scene.passable_foliage_count > 500)
 	assert(scene.obstacle_count > 100)
 	assert(scene._is_passable_foliage("덤불01_rsm"))
+	assert(scene._is_passable_foliage("묘르닐_넝쿨01_rsm"))
 	assert(not scene._is_passable_foliage("묘르닐_꽃02_rsm"))
 	assert(not scene._is_passable_foliage("나무02_rsm"))
 	assert(scene.actor != null)

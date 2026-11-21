@@ -1,5 +1,9 @@
 # Changelog
 
+## Trepadeiras amarelas atravessáveis
+
+- Incluídos os modelos de trepadeira baixa do Mjolnir entre as folhagens atravessáveis; flores altas e limites do terreno continuam bloqueados.
+
 ## Folhagens atravessáveis no mapa experimental
 
 - Arbustos, mato e grama baixos deixam de bloquear o Espadachim no mapa Mjolnir. Flores altas, árvores e objetos sólidos continuam bloqueados; penhascos permanecem intransponíveis fora das passagens designadas.
