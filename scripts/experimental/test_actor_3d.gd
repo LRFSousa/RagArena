@@ -35,6 +35,7 @@ var locked_floor_height := 0.0
 var obstacle_grid: Dictionary = {}
 var obstacle_cell_size := 2.0
 var ramp_passages: Array[Rect2] = []
+var facing_world := Vector3(0, 0, -1)
 
 func _ready() -> void:
 	collision_layer = 2
@@ -93,8 +94,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	if direction.length_squared() > 0.01:
 		walk_time += delta
-		if model_3d != null:
-			model_3d.rotation.y = atan2(direction.x, direction.z)
+		face_world_direction(direction)
 		var next_direction := "right" if absf(move_input.x) >= absf(move_input.y) and move_input.x > 0.0 else "left" if absf(move_input.x) >= absf(move_input.y) else "down" if move_input.y > 0.0 else "up"
 		if next_direction != direction_name:
 			direction_name = next_direction
@@ -103,6 +103,14 @@ func _physics_process(delta: float) -> void:
 	else:
 		sprite.frame = 0
 	_update_model_animation(delta, direction.length_squared() > 0.01)
+
+func face_world_direction(direction: Vector3) -> void:
+	var horizontal := Vector3(direction.x, 0, direction.z)
+	if horizontal.length_squared() < 0.001:
+		return
+	facing_world = horizontal.normalized()
+	if model_3d != null:
+		model_3d.rotation.y = atan2(facing_world.x, facing_world.z)
 
 func _has_safe_floor_ahead(direction: Vector3, delta: float) -> bool:
 	var ahead := global_position + direction * (speed * delta + 0.08)

@@ -2,7 +2,9 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
-- Arena01: medir desempenho e escala em celular real; conferir visualmente as quatro rampas, o contorno das ruínas e a leitura dos alvos no minimapa. Veja `docs/ARENA01_VALIDACAO.md`.
+- Arena01 160 × 160 m: validar em computador e celular real a sensação de escala, a câmera na visão geral, o desempenho das formas CSG e se a direção visual do GLB de ataque coincide com a caminhada em todos os ângulos. O teste automatizado cobre geometria, física e enquadramento; avaliação visual do modelo permanece necessária.
+
+- Arena01: conferir visualmente as quatro rampas, o contorno das ruínas e a leitura dos alvos no minimapa em aparelho real. Veja `docs/ARENA01_VALIDACAO.md`.
 
 - Migrar para a arena 3D as regras completas da versão 2D: inventário e equipamentos persistentes, progressão, bots, partidas, colisões de ataques e seleção direta de alvos. A prévia 3D tem apenas ações e poções locais de teste.
 - Validar em aparelho físico a rotação por arrasto, zoom por pinça, legibilidade do minimapa e sobreposição dos botões em telas menores.

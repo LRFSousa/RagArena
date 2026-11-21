@@ -1,0 +1,149 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/experimental/test_actor_3d.tscn" id="1_8slva"]
+[ext_resource type="Script" path="res://scripts/experimental/arena01_playtest_80x80_backup.gd" id="2_playtest"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_inrpd"]
+radius = 0.4
+height = 1.8
+
+[node name="Arena01_80x80Backup" type="Node3D"]
+script = ExtResource("2_playtest")
+
+[node name="Piso" type="CSGBox3D" parent="." unique_id=418084728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(80, 1, 80)
+
+[node name="MuroLeste" type="CSGBox3D" parent="." unique_id=1566179395]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.5, 2, 0)
+use_collision = true
+size = Vector3(1, 4, 80)
+
+[node name="MuroOeste" type="CSGBox3D" parent="." unique_id=939391750]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.5, 2, 0)
+use_collision = true
+size = Vector3(1, 4, 80)
+
+[node name="MuroNorteEsquerdo" type="CSGBox3D" parent="." unique_id=79964556]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 2, -39.5)
+use_collision = true
+size = Vector3(36, 4, 1)
+
+[node name="MuroSulEsquerdo" type="CSGBox3D" parent="." unique_id=121183817]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 2, 39.5)
+use_collision = true
+size = Vector3(36, 4, 1)
+
+[node name="MuroNorteDireito" type="CSGBox3D" parent="." unique_id=1658255401]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 2, -39.5)
+use_collision = true
+size = Vector3(36, 4, 1)
+
+[node name="MuroSulDireito" type="CSGBox3D" parent="." unique_id=1739437195]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 2, 39.5)
+use_collision = true
+size = Vector3(36, 4, 1)
+
+[node name="MorroOeste" type="CSGBox3D" parent="." unique_id=1563820833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 2.5, -20)
+size = Vector3(24, 5, 24)
+
+[node name="RampaOeste" type="CSGPolygon3D" parent="." unique_id=734396043]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -24, 0, 2.000019)
+use_collision = true
+polygon = PackedVector2Array(0, 0, 10, 0, 10, 5)
+depth = 4.0
+
+[node name="RampaLeste" type="CSGPolygon3D" parent="." unique_id=223797297]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 2, 0, -28.99998)
+use_collision = true
+polygon = PackedVector2Array(0, 0, 10, 0, 10, 5)
+depth = 4.0
+
+[node name="MorroOeste2" type="CSGBox3D" parent="." unique_id=1771395981]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 23, 2.5, 23.66669)
+size = Vector3(24, 5, 24)
+
+[node name="RampaOeste2" type="CSGPolygon3D" parent="." unique_id=942068623]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 26.999998, 0, 1.6666718)
+use_collision = true
+polygon = PackedVector2Array(0, 0, 10, 0, 10, 5)
+depth = 4.0
+
+[node name="RampaLeste2" type="CSGPolygon3D" parent="." unique_id=1317473521]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 32.66667)
+use_collision = true
+polygon = PackedVector2Array(0, 0, 10, 0, 10, 5)
+depth = 4.0
+
+[node name="RuinaCentralBase" type="CSGBox3D" parent="." unique_id=719139546]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.1, 0)
+size = Vector3(12, 0.2, 10)
+
+[node name="RuinaCentralNorte1" type="CSGBox3D" parent="." unique_id=1423475331]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.721857, 1.5, -4.75)
+size = Vector3(4.5, 3, 0.5)
+
+[node name="RuinaCentralNorte2" type="CSGBox3D" parent="." unique_id=885251306]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2606316, 1.5, -4.75)
+size = Vector3(4.5, 3, 0.5)
+
+[node name="RuinaCentralSul" type="CSGBox3D" parent="." unique_id=1571787920]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.5, 4.75)
+size = Vector3(12, 3, 0.5)
+
+[node name="RuinaCentralLeste" type="CSGBox3D" parent="." unique_id=891899610]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 1.5, 0)
+size = Vector3(0.5, 3, 9)
+
+[node name="RuinaCentralOeste" type="CSGBox3D" parent="." unique_id=1389416751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.75, 1.5, 0)
+size = Vector3(0.5, 3, 9)
+
+[node name="MuroInterno01" type="CSGBox3D" parent="." unique_id=2099406169]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.25, 12)
+use_collision = true
+size = Vector3(10, 2.5, 0.6)
+
+[node name="MuroInterno02" type="CSGBox3D" parent="." unique_id=47832526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1.25, -12)
+use_collision = true
+size = Vector3(0.6, 2.5, 9)
+
+[node name="Cerca01" type="CSGBox3D" parent="." unique_id=1617031455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.6, -17)
+use_collision = true
+size = Vector3(8, 1.2, 0.3)
+
+[node name="Cerca02" type="CSGBox3D" parent="." unique_id=333100308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.6, 13)
+use_collision = true
+size = Vector3(8, 1.2, 0.3)
+
+[node name="Cerca03" type="CSGBox3D" parent="." unique_id=1878746644]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.6, -30)
+use_collision = true
+size = Vector3(8, 1.2, 0.3)
+
+[node name="Rocha01" type="CSGBox3D" parent="." unique_id=1146648288]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, 0)
+size = Vector3(3, 2, 3)
+
+[node name="Rocha02" type="CSGBox3D" parent="." unique_id=340419310]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, -25)
+size = Vector3(3, 2, 3)
+
+[node name="Rocha03" type="CSGBox3D" parent="." unique_id=98323488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -25)
+size = Vector3(2, 2, 2)
+
+[node name="Rocha04" type="CSGBox3D" parent="." unique_id=1728006330]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -33)
+size = Vector3(2, 2, 2)
+
+[node name="TestActor3D" parent="." unique_id=1281305051 instance=ExtResource("1_8slva")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -6)
+use_3d_model = true
+accept_player_input = false
+

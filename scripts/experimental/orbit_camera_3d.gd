@@ -10,6 +10,9 @@ class_name ArenaOrbitCamera3D
 @export var rotation_sensitivity := 0.24
 @export var zoom_step := 2.0
 @export var follow_speed := 10.0
+@export var overview_center := Vector3.ZERO
+@export var overview_blend_start := 80.0
+@export var overview_blend_end := 420.0
 
 var _dragging_mouse := false
 var _touches: Dictionary = {}
@@ -20,7 +23,7 @@ func _ready() -> void:
 	projection = Camera3D.PROJECTION_PERSPECTIVE
 	fov = 45.0
 	near = 0.1
-	far = 350.0
+	far = 900.0
 	distance = clampf(distance, min_distance, max_distance)
 	pitch_degrees = clampf(pitch_degrees, 15.0, 78.0)
 	if is_instance_valid(target):
@@ -30,7 +33,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not is_instance_valid(target):
 		return
-	_focus = _focus.lerp(target.global_position + Vector3.UP * 1.0, clampf(delta * follow_speed, 0.0, 1.0))
+	var overview_weight := smoothstep(overview_blend_start, overview_blend_end, distance)
+	var desired_focus := (target.global_position + Vector3.UP).lerp(overview_center, overview_weight)
+	_focus = _focus.lerp(desired_focus, clampf(delta * follow_speed, 0.0, 1.0))
 	_update_transform(delta)
 
 func _update_transform(_delta: float) -> void:
@@ -47,7 +52,7 @@ func orbit_by_pixels(delta_pixels: Vector2) -> void:
 	_update_transform(0.0)
 
 func zoom_by_steps(steps: float) -> void:
-	distance = clampf(distance + steps * zoom_step, min_distance, max_distance)
+	distance = clampf(distance + steps * maxf(zoom_step, distance * 0.12), min_distance, max_distance)
 	_update_transform(0.0)
 
 func _unhandled_input(event: InputEvent) -> void:

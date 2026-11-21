@@ -21,8 +21,8 @@ var attack_cooldown := 0.0
 var skill_cooldowns := [0.0, 0.0, 0.0]
 var potions := [3, 2, 1]
 var feedback := "Aproxime-se de um alvo e toque em ATK"
-var map_bounds := Rect2(-40, -40, 80, 80)
-var map_regions: Array[Rect2] = [Rect2(-40, -40, 80, 80), Rect2(-32, -32, 24, 24), Rect2(11, 11.7, 24, 24)]
+var map_bounds := Rect2(-80, -80, 160, 160)
+var map_regions: Array[Rect2] = [Rect2(-80, -80, 160, 160), Rect2(-60, -60, 24, 24), Rect2(36, 36, 24, 24)]
 var effect: MeshInstance3D
 var effect_time := 0.0
 
@@ -31,19 +31,22 @@ func _ready() -> void:
 	actor.accept_player_input = false
 	actor.use_3d_model = true
 	actor.guard_walkable_edges = true
-	actor.ramp_passages = [Rect2(-8, -31, 10, 4), Rect2(1, 30.7, 10, 4)]
+	actor.ramp_passages = [Rect2(-54, -36, 4, 10), Rect2(-36, -59, 10, 4), Rect2(50, 26, 4, 10), Rect2(26, 55, 10, 4)]
+	actor.face_world_direction(Vector3(0, 0, -1))
 	camera = OrbitCamera.new()
 	camera.name = "ArenaCamera"
 	camera.distance = 34.0
 	camera.min_distance = 12.0
-	camera.max_distance = 78.0
+	camera.max_distance = 420.0
+	camera.overview_blend_start = 80.0
+	camera.overview_blend_end = 420.0
 	add_child(camera)
 	camera.target = actor
 	camera.current = true
 	actor.movement_camera = camera
-	_create_target("AlvoPiso", Vector3(0, 0, -11), Color("d77258"))
-	_create_target("AlvoMorroOeste", Vector3(-20, 5, -20), Color("edc568"))
-	_create_target("AlvoMorroLeste", Vector3(23, 5, 23.7), Color("82cce0"))
+	_create_target("AlvoPiso", Vector3(0, 0, -21), Color("d77258"))
+	_create_target("AlvoMorroOeste", Vector3(-48, 5, -48), Color("edc568"))
+	_create_target("AlvoMorroLeste", Vector3(48, 5, 48), Color("82cce0"))
 	var layer := CanvasLayer.new()
 	add_child(layer)
 	controls = Controls.new()
@@ -100,8 +103,23 @@ func _configure_geometry() -> void:
 	add_child(world)
 	# A cena recebida deixa aberturas de 8 m nas bordas norte e sul.
 	# Fecha-se apenas a versão jogável; o desenho original permanece como referência.
-	_add_boundary("FechamentoNorte", Vector3(0, 2, -39.5))
-	_add_boundary("FechamentoSul", Vector3(0, 2, 39.5))
+	_add_boundary("FechamentoNorte", Vector3(0, 2, -79.5))
+	_add_boundary("FechamentoSul", Vector3(0, 2, 79.5))
+	_add_ramp_collider("RampaOestePiso", Vector3(-52, 2.3, -31), 1.0)
+	_add_ramp_collider("RampaOeste2Piso", Vector3(52, 2.3, 31), -1.0)
+
+func _add_ramp_collider(collider_name: String, center: Vector3, slope_sign: float) -> void:
+	var body := StaticBody3D.new()
+	body.name = collider_name
+	body.collision_layer = 1
+	body.position = center
+	body.rotation.x = slope_sign * atan2(5.0, 10.0)
+	add_child(body)
+	var collider := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(4, 0.3, sqrt(125.0))
+	collider.shape = shape
+	body.add_child(collider)
 
 func _add_boundary(boundary_name: String, point: Vector3) -> void:
 	var body := StaticBody3D.new()
@@ -216,10 +234,11 @@ func _attack_selected() -> void:
 	attack_cooldown = 0.75
 	var target := markers[selected_marker]
 	var delta := target.global_position - actor.global_position
-	if actor.model_3d != null:
-		actor.model_3d.rotation.y = atan2(delta.x, delta.z)
-	actor.start_attack_preview()
+	var toward_target := Vector3(delta.x, 0, delta.z).normalized()
 	var result: Dictionary = Probe.inspect(get_world_3d().direct_space_state, actor.global_position, target.global_position)
+	if result["can_hit"] and actor.facing_world.dot(toward_target) < 0.7:
+		actor.face_world_direction(toward_target)
+	actor.start_attack_preview()
 	if not result["can_hit"]:
 		feedback = "Sem acerto: %s" % result["reason"]
 		return

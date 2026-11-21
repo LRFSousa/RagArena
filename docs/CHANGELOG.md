@@ -1,5 +1,11 @@
 # Changelog
 
+## Arena01 160 × 160 e orientação do ataque
+
+- Salva cópia jogável da Arena01 de 80 × 80 m. Ampliados piso e limites para 160 × 160 m; morros e rampas movidos para quadrantes opostos; ruína, cercas, muros internos, rochas, jogador e alvos redistribuídos sem escalar os objetos. Minimap atualizado.
+- Unificada a direção visual do Espadachim na caminhada e no ataque. O golpe preserva a orientação quando o alvo já está à frente. A câmera permite zoom de 12 a 420 m e centraliza a visão geral ao se afastar.
+- Testados as quatro rampas nos dois sentidos, a cobertura da ruína, os limites, o minimapa e o enquadramento de toda a arena.
+
 ## Clique de mouse na interface 3D
 
 - Corrigidos os botões de ataque, habilidades, poções, alvo e zoom para funcionar com clique esquerdo no computador, além do toque no celular. Incluída proteção contra clique sintético duplicado após um toque.
