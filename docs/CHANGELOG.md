@@ -1,5 +1,9 @@
 # Changelog
 
+## Arena01 jogável para validação
+
+- Integrada a cena autoral `Arena01.tscn` como entrada 3D, com Espadachim, câmera orbital, HUD mobile, minimapa de 80 × 80, três alvos e habilidades de teste. Colisões ativadas nos objetos CSG, rampas liberadas na proteção contra quedas e aberturas centrais das bordas fechadas. Relatório em `docs/ARENA01_VALIDACAO.md`.
+
 ## Interface 3D como entrada principal
 
 - A arena 3D passou a ser a cena inicial. A interface mobile recebeu ícones de ataque e três habilidades no canto inferior direito, três poções acima, minimapa no canto superior direito e câmera orbital com rotação e zoom por toque. O movimento continua relativo à câmera. A arena 2D permanece apenas como código legado durante a migração.

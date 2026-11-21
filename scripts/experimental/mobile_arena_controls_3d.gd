@@ -81,7 +81,8 @@ func _draw_minimap() -> void:
 	if arena == null:
 		return
 	var inner := box.grow(-12)
-	for plateau in [Rect2(-12, 10, 24, 12), Rect2(-10, -7, 20, 10), Rect2(-7, -24, 14, 10)]:
+	var regions: Array = arena.map_regions if arena.get("map_regions") != null else [Rect2(-12, 10, 24, 12), Rect2(-10, -7, 20, 10), Rect2(-7, -24, 14, 10)]
+	for plateau in regions:
 		draw_rect(_world_rect(plateau, inner), Color("77996c"))
 	for i in range(arena.markers.size()):
 		var marker: Node3D = arena.markers[i]
@@ -92,10 +93,12 @@ func _draw_minimap() -> void:
 	draw_line(player_point, player_point + forward * 12, Color("fff1a7"), 2)
 
 func _world_rect(world: Rect2, inner: Rect2) -> Rect2:
-	return Rect2(_map_point(world.position, inner), Vector2(world.size.x / 28.0 * inner.size.x, world.size.y / 48.0 * inner.size.y))
+	var bounds: Rect2 = arena.map_bounds if arena.get("map_bounds") != null else Rect2(-14, -25, 28, 48)
+	return Rect2(_map_point(world.position, inner), world.size / bounds.size * inner.size)
 
 func _map_point(world: Vector2, inner: Rect2) -> Vector2:
-	return inner.position + Vector2((world.x + 14.0) / 28.0, (world.y + 25.0) / 48.0) * inner.size
+	var bounds: Rect2 = arena.map_bounds if arena.get("map_bounds") != null else Rect2(-14, -25, 28, 48)
+	return inner.position + (world - bounds.position) / bounds.size * inner.size
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:

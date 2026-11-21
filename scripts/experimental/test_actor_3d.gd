@@ -34,6 +34,7 @@ var attack_arc: MeshInstance3D
 var locked_floor_height := 0.0
 var obstacle_grid: Dictionary = {}
 var obstacle_cell_size := 2.0
+var ramp_passages: Array[Rect2] = []
 
 func _ready() -> void:
 	collision_layer = 2
@@ -107,6 +108,9 @@ func _has_safe_floor_ahead(direction: Vector3, delta: float) -> bool:
 	var ahead := global_position + direction * (speed * delta + 0.08)
 	if not _can_enter_obstacle_space(ahead):
 		return false
+	for passage in ramp_passages:
+		if passage.has_point(Vector2(ahead.x, ahead.z)):
+			return true
 	var start := ahead + Vector3.UP * 1.2
 	var end := ahead + Vector3.DOWN * 1.8
 	var query := PhysicsRayQueryParameters3D.create(start, end, 1 | 4)

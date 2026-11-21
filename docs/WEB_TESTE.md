@@ -17,6 +17,8 @@ Sirva a pasta `web_build` por HTTP/HTTPS; abrir `index.html` diretamente como `f
 
 Arena 3D com barra de habilidades, poções, minimapa e câmera orbital: https://lrfsousa.github.io/RagArena/arena-3d-mobile/. Abra em paisagem. Use o controle esquerdo para andar, arraste uma região livre para girar, use pinça ou +/− para zoom. O cenário é provisório e autoral; os mapas do cliente Ragnarok continuam fora do pacote público.
 
+Teste da Arena01 criada pelo responsável: https://lrfsousa.github.io/RagArena/arena01-playtest/. Mantém os mesmos controles e acrescenta os dois morros com rampas, ruínas, cercas, rochas e três alvos. Veja `docs/ARENA01_VALIDACAO.md`.
+
 Prévia histórica da release 0.7 em 2D: https://lrfsousa.github.io/RagArena/preview-07/. A página principal agora inicia a arena 3D; esta prévia antiga permanece apenas para comparação.
 
 Revisão do minimapa no canto superior direito e golpe de dois quadros: https://lrfsousa.github.io/RagArena/preview-07-range2/. O endereço separado evita carregar o pacote antigo do cache e permite comparar as duas versões.
