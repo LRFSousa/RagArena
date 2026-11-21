@@ -13,6 +13,7 @@ var last_safe_position := Vector3.ZERO
 var bridge_collision_count := 0
 var obstacle_grid: Dictionary = {}
 var obstacle_count := 0
+var passable_foliage_count := 0
 
 func _ready() -> void:
 	_build_ui()
@@ -97,10 +98,13 @@ func _recover_actor() -> void:
 func _collect_obstacles(node: Node) -> int:
 	var count := 0
 	for child in node.get_children():
-		if not child is Node3D or not "_rsm" in str(child.name) or "다리" in str(child.name):
+		if not (child is Node3D) or not str(child.name).contains("_rsm") or str(child.name).contains("다리"):
 			continue
 		var model_name := str(child.name)
 		model_name = model_name.substr(model_name.rfind("\\") + 1)
+		if _is_passable_foliage(model_name):
+			passable_foliage_count += 1
+			continue
 		var radius := 0.45
 		if model_name.contains("꽃"):
 			radius = 0.72
@@ -115,6 +119,10 @@ func _collect_obstacles(node: Node) -> int:
 		obstacle_grid[cell].append(Vector4(position_3d.x, position_3d.y, position_3d.z, radius))
 		count += 1
 	return count
+
+func _is_passable_foliage(model_name: String) -> bool:
+	# Folhagens rasteiras são decorativas; flores altas e objetos sólidos continuam bloqueados.
+	return model_name.contains("덤불") or model_name.contains("잡초") or model_name.contains("풀")
 
 func _add_bridge_collision() -> int:
 	var body := StaticBody3D.new()

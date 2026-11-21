@@ -2,6 +2,8 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
+- Conferir visualmente quais modelos de vegetação do Mjolnir ficam abaixo do joelho e ajustar a classificação por nome quando necessário. A altura física por modelo ainda não é confiável na importação atual; penhascos continuam bloqueados.
+
 - Mapa Mjolnir experimental: validar manualmente a travessia completa da ponte e o contorno de flores, árvores e demais objetos; substituir as áreas circulares provisórias por colisores ajustados; cadastrar rampas e escadas autorizadas para trocar de nível. A tecla R recupera a última posição segura enquanto essa validação não termina.
 
 - Arena 3D experimental: graybox e sondas de altura implementados em cena isolada; relatório em `docs/RELATORIOS/RELATORIO_ARENA_3D_EXPERIMENTAL.md`. Faltam teste em celular, navegação automática, toque, minimapa e avaliação da integração real de combate. Combate e movimentação atuais não devem ser alterados sem aprovação.

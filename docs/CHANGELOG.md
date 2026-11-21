@@ -1,5 +1,9 @@
 # Changelog
 
+## Folhagens atravessáveis no mapa experimental
+
+- Arbustos, mato e grama baixos deixam de bloquear o Espadachim no mapa Mjolnir. Flores altas, árvores e objetos sólidos continuam bloqueados; penhascos permanecem intransponíveis fora das passagens designadas.
+
 ## Navegação segura no mapa 3D experimental
 
 - Adicionados piso segmentado à ponte, bloqueio de bordas e mudanças de altura fora de passagens designadas, áreas provisórias para flores e demais obstáculos e recuperação pela tecla R ou após queda. O ponto de entrada agora exige piso livre ao redor. Teste automatizado cobre colisão da ponte, bloqueio e saída de obstáculo, recuperação e movimento.
