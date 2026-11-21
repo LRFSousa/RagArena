@@ -1,5 +1,9 @@
 # Changelog
 
+## Proporção de Prontera e caminhada do Espadachim
+
+- Reduzida a ampliação experimental de Prontera de 5× para 4×. Corrigida a caminhada do rig 3D: as duas pernas e os dois braços oscilam ao longo da frente do personagem, em fases opostas, em vez de abrir lateralmente. A orientação do modelo acompanha o deslocamento.
+
 ## Escala de Prontera
 
 - Ampliados cenário, piso caminhável e posições dos obstáculos provisórios de Prontera em 5× para acertar a proporção com o Espadachim. O personagem e os mapas Mjolnir conservam suas escalas. Corrigido o ponto inicial da cidade após uma transição de mapa no mesmo processo.

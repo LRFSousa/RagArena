@@ -180,10 +180,21 @@ func _update_model_animation(_delta: float, moving: bool) -> void:
 	if walk_skeleton == null:
 		return
 	var stride := sin(walk_time * 9.0) * 0.34 if moving else 0.0
-	_pose_bone(walk_skeleton, walk_base_rotations, "mixamorig_LeftUpLeg", Vector3.RIGHT, stride)
-	_pose_bone(walk_skeleton, walk_base_rotations, "mixamorig_RightUpLeg", Vector3.RIGHT, -stride)
-	_pose_bone(walk_skeleton, walk_base_rotations, "mixamorig_LeftArm", Vector3.RIGHT, -1.15 - stride * 0.2)
-	_pose_bone(walk_skeleton, walk_base_rotations, "mixamorig_RightArm", Vector3.FORWARD, 1.15 + stride * 0.2)
+	# No rig importado, Z é a lateral do corpo. Girar as coxas nesse eixo
+	# leva as pernas para frente/trás, sem abri-las para os lados.
+	_pose_bone(walk_skeleton, walk_base_rotations, "mixamorig_LeftUpLeg", Vector3.FORWARD, stride)
+	_pose_bone(walk_skeleton, walk_base_rotations, "mixamorig_RightUpLeg", Vector3.FORWARD, -stride)
+	_pose_walk_arm("mixamorig_LeftArm", -stride * 0.9)
+	_pose_walk_arm("mixamorig_RightArm", -stride * 0.45)
+
+func _pose_walk_arm(bone_name: String, swing: float) -> void:
+	if walk_skeleton == null or not walk_base_rotations.has(bone_name):
+		return
+	var index := walk_skeleton.find_bone(bone_name)
+	var lateral_axis: Vector3 = walk_skeleton.get_bone_global_rest(index).basis.inverse() * Vector3.FORWARD
+	var lower_arm := Quaternion(Vector3.RIGHT, -1.15)
+	var forward_swing := Quaternion(lateral_axis.normalized(), swing)
+	walk_skeleton.set_bone_pose_rotation(index, forward_swing * lower_arm * (walk_base_rotations[bone_name] as Quaternion))
 
 func _build_attack_arc() -> MeshInstance3D:
 	var material := StandardMaterial3D.new()

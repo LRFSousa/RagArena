@@ -130,6 +130,33 @@ func _run() -> void:
 	displacement.y = 0.0
 	assert(displacement.length() > 0.05)
 	assert(displacement.normalized().dot(expected) > 0.9)
+	if scene.actor.walk_skeleton != null:
+		var facing: Vector3 = scene.actor.walk_skeleton.global_basis.x.normalized()
+		facing.y = 0.0
+		assert(facing.normalized().dot(expected) > 0.9)
+		var forearm: int = scene.actor.walk_skeleton.find_bone("mixamorig_RightForeArm")
+		var shin: int = scene.actor.walk_skeleton.find_bone("mixamorig_LeftLeg")
+		var other_forearm: int = scene.actor.walk_skeleton.find_bone("mixamorig_LeftForeArm")
+		var other_shin: int = scene.actor.walk_skeleton.find_bone("mixamorig_RightLeg")
+		assert(forearm >= 0 and shin >= 0 and other_forearm >= 0 and other_shin >= 0)
+		scene.actor.walk_time = 0.0
+		scene.actor._update_model_animation(0.0, false)
+		var arm_idle: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(forearm).origin
+		var leg_idle: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(shin).origin
+		var other_arm_idle: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(other_forearm).origin
+		var other_leg_idle: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(other_shin).origin
+		scene.actor.walk_time = PI / 18.0
+		scene.actor._update_model_animation(0.0, true)
+		var arm_swing: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(forearm).origin - arm_idle
+		var leg_swing: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(shin).origin - leg_idle
+		var other_arm_swing: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(other_forearm).origin - other_arm_idle
+		var other_leg_swing: Vector3 = scene.actor.walk_skeleton.get_bone_global_pose(other_shin).origin - other_leg_idle
+		assert(absf(arm_swing.x) > absf(arm_swing.z) * 2.0)
+		assert(absf(leg_swing.x) > absf(leg_swing.z) * 2.0)
+		assert(absf(other_arm_swing.x) > absf(other_arm_swing.z) * 2.0)
+		assert(absf(other_leg_swing.x) > absf(other_leg_swing.z) * 2.0)
+		assert(leg_swing.x * other_leg_swing.x < 0.0)
+		assert(arm_swing.x * other_arm_swing.x < 0.0)
 	if scene.actor.attack_model_3d != null:
 		scene.actor.start_attack_preview()
 		assert(scene.actor.attack_model_3d.visible)

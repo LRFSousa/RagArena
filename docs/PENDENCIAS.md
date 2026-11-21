@@ -2,6 +2,8 @@
 
 ## Redesenho antes do próximo desenvolvimento
 
+- Validar visualmente no Godot a caminhada 3D corrigida em todas as direções da câmera e a proporção de Prontera em 4×; os GLBs do Tripo AI continuam sem trilhas de animação próprias.
+
 - Validar visualmente em Prontera 5× a proporção entre personagem, ruas, portas e casas, além do tempo de carregamento. Ajustar colisores das paredes e portais após essa revisão.
 
 - Prontera experimental: definir contornos físicos das paredes externas das casas, aberturas de portas, colisão dos interiores e volumes de portal com destinos e pontos seguros. A cena atual serve para inspecionar o mapa inteiro; o bloqueio radial dos objetos é apenas provisório.

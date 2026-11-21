@@ -25,7 +25,7 @@ var portal_cooldown := 1.0
 func _ready() -> void:
 	_build_ui()
 	map_name = pending_map if pending_map != "" else starting_map
-	map_scale = 5.0 if map_name == "prontera" else 1.0
+	map_scale = 4.0 if map_name == "prontera" else 1.0
 	obstacle_cell_size = 2.0 * map_scale
 	var portal_spawn := pending_spawn
 	pending_map = ""
