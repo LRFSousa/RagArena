@@ -3,8 +3,8 @@ extends SceneTree
 const Store = preload("res://scripts/local_profile_store.gd")
 const Rules = preload("res://scripts/arena_attributes.gd")
 const PanelScript = preload("res://scripts/attribute_window.gd")
-const TEST_PATH := "res://../arena_attributes_test.json"
-const LEGACY_PATH := "res://../arena_attributes_v2_test.json"
+const TEST_PATH := "res://tests/.arena_attributes_test.json"
+const LEGACY_PATH := "res://tests/.arena_attributes_v2_test.json"
 var failures := 0
 
 func _initialize() -> void:

@@ -2,7 +2,7 @@ extends SceneTree
 
 const Probe = preload("res://scripts/experimental/height_attack_probe.gd")
 const Store = preload("res://scripts/local_profile_store.gd")
-const PROFILE_PATH := "res://../arena01_attributes_ui_test.json"
+const PROFILE_PATH := "res://tests/.arena01_attributes_ui_test.json"
 
 func _initialize() -> void:
 	call_deferred("_run")
