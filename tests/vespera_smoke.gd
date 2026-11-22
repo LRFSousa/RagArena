@@ -8,10 +8,12 @@ func _run() -> void:
 	root.add_child(map)
 	assert((map.get_node("Piso") as CSGBox3D).size == Vector3(160, 1, 160))
 	assert(map.get_node("MuroCidade").get_child_count() > 50)
-	var gate_material := _first_mesh(map.get_node("MuroCidade/Portão Principal")).get_active_material(0) as StandardMaterial3D
-	var tower_material := _first_mesh(map.get_node("MuroCidade/Torre2")).get_active_material(0) as StandardMaterial3D
-	assert(gate_material.albedo_color.r > 1.0 and tower_material.albedo_color.r < 1.0)
-	assert(gate_material.albedo_texture != null and tower_material.albedo_texture != null)
+	var gate_material := _first_mesh(map.get_node("MuroCidade/Portão Principal")).get_active_material(0) as ShaderMaterial
+	var tower_material := _first_mesh(map.get_node("MuroCidade/Torre2")).get_active_material(0) as ShaderMaterial
+	var broken_material := _first_mesh(map.get_node("MuroCidade/Mural de Castelo Quebrado2")).get_active_material(0) as ShaderMaterial
+	assert(gate_material.get_shader_parameter("stone_gain") > 1.0 and tower_material.get_shader_parameter("stone_gain") < 1.0)
+	assert(broken_material.get_shader_parameter("moss_gain") < 1.0)
+	assert(gate_material.get_shader_parameter("base_color_map") != null and tower_material.get_shader_parameter("normal_map") != null and broken_material.get_shader_parameter("rm_map") != null)
 	var scene: Arena01Playtest = load("res://scenes/VesperaPlaytest.tscn").instantiate()
 	root.add_child(scene)
 	for i in range(4):

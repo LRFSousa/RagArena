@@ -22,3 +22,5 @@ Validar visualmente escala, iluminação, textura, enquadramento da câmera e de
 ## Harmonização de materiais
 
 O portão apresentava pedra mais escura e a torre, pedra mais clara do que o muro grande. A cena agora aplica multiplicadores de cor por tipo de modelo, usando o muro grande como referência. O ajuste preserva as texturas e pode ser refinado após comparação visual no celular.
+
+A captura de teste mostrou que os multiplicadores gerais não bastaram. O material atual separa os pixels de pedra dos pixels verdes da vegetação: aproxima a torre do cinza do muro principal e reduz o verde do trecho quebrado. Os detalhes saturados, como bandeiras e fogo, preservam sua cor. Validar novamente no celular.

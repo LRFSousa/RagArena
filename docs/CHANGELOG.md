@@ -1,5 +1,11 @@
 # Changelog
 
+## Véspera — pedra e musgo com correção separada
+
+- A captura do celular mostrou que o tingimento geral ainda deixava a torre clara e o muro quebrado verde. Substituído o tingimento por um material que ajusta pedra neutra e vegetação separadamente.
+- A pedra da torre foi aproximada ao tom do muro principal; o verde do muro quebrado foi suavizado. Bandeiras, madeira e fogo mantêm suas cores; mapas de normal e rugosidade continuam ativos.
+- Teste automatizado confirma os parâmetros por peça e a preservação das texturas. A leitura visual no aparelho ainda precisa ser confirmada.
+
 ## Véspera — harmonização das cores da muralha
 
 - Ajustados os materiais do portão, das torres e dos muros quebrados para aproximar o tom de pedra do muro principal. Texturas de cor, normal e rugosidade continuam nos GLBs originais.
