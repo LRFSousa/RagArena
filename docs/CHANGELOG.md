@@ -1,5 +1,11 @@
 # Changelog
 
+## Correção — habilidades no celular e enquadramento inicial
+
+- Removida a quebra de linha automática do cabeçalho da árvore de habilidades, que empurrava os painéis e o botão Fechar para fora da tela. Adicionado fechamento no topo e pela tecla Esc/Voltar.
+- A câmera da Véspera recebe o Espadachim como alvo antes de entrar na cena, iniciando atrás dele e apontada para a via central.
+- Testes verificam que a janela cabe no viewport, que o botão de fechamento está visível, que o modelo 3D carrega e que a câmera inicia atrás do personagem.
+
 ## Véspera — linhas de habilidades do Espadachim
 
 - Substituída a lista única por uma tela de três áreas: linhas à esquerda, habilidades ao centro e detalhes do nó selecionado à direita. Incluídos Combate, Defesa, Espadas, Recuperação e Especiais, com espaços bloqueados para segunda e terceira classe.

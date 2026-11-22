@@ -36,6 +36,13 @@ func _run() -> void:
 	root.add_child(panel)
 	await process_frame
 	assert(panel.lines.get_child_count() >= 8 and panel.list.get_child_count() >= 3 and panel.details.get_child_count() >= 7, "Janela mostra linhas, habilidades e detalhes")
+	assert(panel.panel.get_global_rect().position.y >= 0 and panel.panel.get_global_rect().end.y <= panel.get_viewport_rect().size.y, "Janela cabe na altura do celular")
+	assert(panel.panel.get_global_rect().position.x >= 0 and panel.panel.get_global_rect().end.x <= panel.get_viewport_rect().size.x, "Janela cabe na largura do celular")
+	assert(panel.close_button.get_global_rect().end.y <= panel.get_viewport_rect().size.y, "Fechar fica visível")
+	var close_event := {"received": false}
+	panel.closed.connect(func(): close_event["received"] = true)
+	panel.close_button.pressed.emit()
+	assert(close_event["received"], "Botão superior fecha a janela")
 	panel._select_line("defense")
 	assert(panel.selected_skill == "SM_PROVOKE" and panel.list.get_child_count() >= 3)
 	panel._select_line("combat")

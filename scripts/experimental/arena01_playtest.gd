@@ -61,8 +61,8 @@ func _ready() -> void:
 	camera.max_distance = 420.0
 	camera.overview_blend_start = 80.0
 	camera.overview_blend_end = 420.0
-	add_child(camera)
 	camera.target = actor
+	add_child(camera)
 	camera.current = true
 	actor.movement_camera = camera
 	_create_target("AlvoPiso", Vector3(0, 0, -21), Color("d77258"))

@@ -14,6 +14,8 @@ var lines: VBoxContainer
 var details: VBoxContainer
 var points_label: Label
 var feedback: Label
+var panel: PanelContainer
+var close_button: Button
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -26,7 +28,7 @@ func _ready() -> void:
 	var center := CenterContainer.new()
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(center)
-	var panel := PanelContainer.new()
+	panel = PanelContainer.new()
 	panel.custom_minimum_size = Vector2(1170, 640)
 	panel.add_theme_stylebox_override("panel", _style(Color("242027"), 3, 15))
 	center.add_child(panel)
@@ -37,10 +39,16 @@ func _ready() -> void:
 	outer.add_child(header)
 	_label("⚔  Habilidades", 25, header, Color("f4d292")).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var character := store.find_character(character_id) if store != null else {}
-	_label("Espadachim  •  Job %d" % int(character.get("job_level", 1)), 20, header)
+	_label("Espadachim  •  Job %d" % int(character.get("job_level", 1)), 20, header).custom_minimum_size.x = 250
 	points_label = _label("✦  Pontos disponíveis: %d" % int(character.get("skill_points", 0)), 19, header, Color("f4d292"))
-	points_label.custom_minimum_size.x = 300
+	points_label.custom_minimum_size.x = 285
 	points_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	close_button = Button.new()
+	close_button.name = "FecharTopo"
+	close_button.text = "✕"
+	close_button.custom_minimum_size = Vector2(54, 44)
+	close_button.pressed.connect(func(): closed.emit())
+	header.add_child(close_button)
 	var body := HBoxContainer.new()
 	body.add_theme_constant_override("separation", 11)
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -86,7 +94,7 @@ func _column(parent: Node, width: float) -> VBoxContainer:
 func _label(value: String, size: int, parent: Node, color: Color = Color("f2eee0")) -> Label:
 	var label := Label.new()
 	label.text = value
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	label.add_theme_font_size_override("font_size", size)
 	label.add_theme_color_override("font_color", color)
 	parent.add_child(label)
@@ -163,7 +171,8 @@ func refresh() -> void:
 	_label(str(selected["name"]), 22, details, Color("f4d292"))
 	_label(str(selected_detail.get("kind", "Habilidade futura")), 16, details, Color("d6aa7a"))
 	_label("✦", 66, details, Color("efbf69"))
-	_label(str(selected_detail.get("text", "Desbloqueio ainda não definido para a arena.")), 17, details)
+	var description := _label(str(selected_detail.get("text", "Desbloqueio ainda não definido para a arena.")), 17, details)
+	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	if not selected_detail.is_empty():
 		_label("Alcance: %s" % selected_detail.get("range", "—"), 16, details)
 		_label("Custo: %s" % selected_detail.get("cost", "—"), 16, details)
@@ -179,7 +188,13 @@ func refresh() -> void:
 	learn.add_theme_stylebox_override("normal", _style(Color("a6752b"), 2))
 	learn.pressed.connect(_spend.bind(selected_skill))
 	details.add_child(learn)
-	_label("Ranks salvos; efeitos de combate 3D ainda em integração.", 13, details, Color("cdbb9d"))
+	var note := _label("Ranks salvos; efeitos de combate 3D ainda em integração.", 13, details, Color("cdbb9d"))
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ESCAPE, KEY_BACK]:
+		closed.emit()
+		get_viewport().set_input_as_handled()
 
 func _prerequisites_met(character: Dictionary, skill: Dictionary) -> bool:
 	for required_id in skill["requires"]:
