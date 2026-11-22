@@ -2,6 +2,7 @@ extends RefCounted
 class_name ArenaDerivedStats
 
 const Attributes = preload("res://scripts/arena_attributes.gd")
+const ItemCatalog = preload("res://scripts/arena_item_catalog.gd")
 const HP_CURVES := {
 	"swordsman": [1000, 3000, 6000],
 	"thief": [900, 2600, 5000],
@@ -29,6 +30,17 @@ static func calculate(character: Dictionary) -> Dictionary:
 	var level := maxi(1, int(character.get("base_level", 1)))
 	var atk := 14 + s + (s / 10) * (s / 10) + d / 5 + l / 5
 	var hp := roundi(float(base_hp(str(character.get("class_id", "swordsman")), level)) * (1.0 + float(v) / 100.0))
+	var equip_atk := 0
+	var equip_def := 0
+	var equip_hp := 0
+	var equipment: Dictionary = character.get("equipment", {})
+	for slot in ItemCatalog.EQUIPMENT_SLOTS:
+		var definition := ItemCatalog.item(str(equipment.get(slot, "")))
+		equip_atk += int(definition.get("atk", 0))
+		equip_def += int(definition.get("def", 0))
+		equip_hp += int(definition.get("hp", 0))
+	atk += equip_atk
+	hp += equip_hp
 	return {
 		"hp": hp,
 		"sp": 30 + level + i * 2,
@@ -37,7 +49,7 @@ static func calculate(character: Dictionary) -> Dictionary:
 		"atk": atk,
 		"basic_damage": maxi(1, roundi(float(atk) * (2.5 + 0.22 * float(level - 1)))),
 		"matk": 5 + i + (i / 5) * (i / 5),
-		"def": v,
+		"def": v + equip_def,
 		"mdef": i + v / 2,
 		"hit": 80 + level + d + l / 3,
 		"flee": 80 + level + a + l / 5,

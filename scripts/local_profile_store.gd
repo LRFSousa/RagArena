@@ -8,6 +8,7 @@ const DEFAULT_PATH := "user://profile_v1.json"
 const ProgressionScript = preload("res://scripts/arena_progression.gd")
 const AttributesScript = preload("res://scripts/arena_attributes.gd")
 const SkillTree = preload("res://scripts/swordsman_skill_tree.gd")
+const ItemCatalog = preload("res://scripts/arena_item_catalog.gd")
 
 var path := DEFAULT_PATH
 var data: Dictionary = {}
@@ -67,6 +68,12 @@ func load_profile() -> bool:
 		if not character.has("skill_ranks"):
 			character["skill_ranks"] = {}
 			needs_upgrade = true
+		if not character.has("inventory") or not character["inventory"] is Dictionary:
+			character["inventory"] = {}
+			needs_upgrade = true
+		if not character.has("equipment") or not character["equipment"] is Dictionary:
+			character["equipment"] = {}
+			needs_upgrade = true
 	if was_legacy and str(data["account_id"]) != "":
 		var old_class := "swordsman"
 		var legacy_preset := find_preset(str(data["selected_id"]))
@@ -108,7 +115,58 @@ func save_profile() -> bool:
 	return true
 
 static func new_character(id: String, character_name: String, class_id: String) -> Dictionary:
-	return {"id": id, "name": character_name, "class_id": class_id, "base_level": 1, "base_exp": 0, "job_level": 1, "job_exp": 0, "attributes": AttributesScript.initial_values(), "attribute_points": 0, "skill_points": 0, "skill_ranks": {}, "attribute_awarded_through_level": 1, "skill_awarded_through_level": 1}
+	return {"id": id, "name": character_name, "class_id": class_id, "base_level": 1, "base_exp": 0, "job_level": 1, "job_exp": 0, "attributes": AttributesScript.initial_values(), "attribute_points": 0, "skill_points": 0, "skill_ranks": {}, "inventory": {}, "equipment": {}, "attribute_awarded_through_level": 1, "skill_awarded_through_level": 1}
+
+func grant_item(character_id: String, item_id: String, quantity: int = 1) -> bool:
+	var character := find_character(character_id)
+	var definition: Dictionary = ItemCatalog.item(item_id)
+	if character.is_empty() or definition.is_empty() or quantity < 1:
+		last_error = "Item ou personagem inválido."
+		return false
+	var inventory: Dictionary = character["inventory"]
+	var old_count := int(inventory.get(item_id, 0))
+	if old_count + quantity > int(definition["max_stack"]):
+		last_error = "Limite de itens atingido."
+		return false
+	inventory[item_id] = old_count + quantity
+	if not save_profile():
+		if old_count == 0: inventory.erase(item_id)
+		else: inventory[item_id] = old_count
+		return false
+	return true
+
+func equip_item(character_id: String, item_id: String) -> bool:
+	var character := find_character(character_id)
+	var definition: Dictionary = ItemCatalog.item(item_id)
+	if character.is_empty() or not definition.has("slot") or int(character["inventory"].get(item_id, 0)) < 1:
+		last_error = "Equipamento indisponível."
+		return false
+	var slot: String = definition["slot"]
+	var old_id := str(character["equipment"].get(slot, ""))
+	character["inventory"].erase(item_id)
+	if old_id != "": character["inventory"][old_id] = 1
+	character["equipment"][slot] = item_id
+	if not save_profile():
+		character["equipment"][slot] = old_id
+		character["inventory"][item_id] = 1
+		if old_id != "": character["inventory"].erase(old_id)
+		return false
+	return true
+
+func use_item(character_id: String, item_id: String) -> bool:
+	var character := find_character(character_id)
+	var definition: Dictionary = ItemCatalog.item(item_id)
+	if character.is_empty() or not definition.has("heal_percent"):
+		return false
+	var inventory: Dictionary = character["inventory"]
+	var old_count := int(inventory.get(item_id, 0))
+	if old_count < 1: return false
+	if old_count == 1: inventory.erase(item_id)
+	else: inventory[item_id] = old_count - 1
+	if not save_profile():
+		inventory[item_id] = old_count
+		return false
+	return true
 
 func create_character(character_name: String, class_id: String) -> String:
 	if not has_identity() or not valid_character_name(character_name) or not CHARACTER_CLASS_IDS.has(class_id) or data["characters"].size() >= MAX_CHARACTERS:

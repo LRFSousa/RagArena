@@ -1,0 +1,35 @@
+extends SceneTree
+
+const Store = preload("res://scripts/local_profile_store.gd")
+const Derived = preload("res://scripts/arena_derived_stats.gd")
+
+func _initialize() -> void:
+	var path := "user://vespera_inventory_smoke.json"
+	var store := Store.new(path)
+	store.data = store.empty_profile()
+	assert(store.create_identity("TesteVespera"))
+	var id := store.create_character("Guerreiro", "swordsman")
+	assert(id != "")
+	var original := Derived.calculate(store.find_character(id))
+	assert(store.grant_item(id, "iron_sword"))
+	assert(store.grant_item(id, "vital_ring"))
+	assert(store.grant_item(id, "health_potion", 2))
+	assert(not store.grant_item(id, "iron_sword"))
+	assert(store.equip_item(id, "iron_sword"))
+	assert(store.equip_item(id, "vital_ring"))
+	var equipped := Derived.calculate(store.find_character(id))
+	assert(equipped["atk"] == original["atk"] + 22)
+	assert(equipped["hp"] == original["hp"] + 150)
+	assert(store.use_item(id, "health_potion"))
+	var report := {"match_id": "vespera-test-1", "active_seconds": 480.0, "arena_limit_seconds": 480.0, "kills": 1, "assists": 0, "effective_skills": 1, "completed_with_winner": true, "won": true}
+	var reward := store.settle_match(id, report)
+	assert(not reward.is_empty())
+	assert(store.settle_match(id, report).is_empty())
+	var reloaded := Store.new(path)
+	var character := reloaded.find_character(id)
+	assert(int(character["inventory"].get("health_potion", 0)) == 1)
+	assert(character["equipment"]["weapon"] == "iron_sword")
+	assert(int(character["base_exp"]) == int(reward["base_awarded"]))
+	assert(int(character["job_exp"]) == int(reward["job_awarded"]))
+	print("vespera_inventory_smoke: OK")
+	quit()

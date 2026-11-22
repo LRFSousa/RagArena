@@ -8,6 +8,8 @@ const ProfileStore = preload("res://scripts/local_profile_store.gd")
 const AttributePanel = preload("res://scripts/attribute_window.gd")
 const SkillPanel = preload("res://scripts/skill_window.gd")
 const Derived = preload("res://scripts/arena_derived_stats.gd")
+const InventoryPanel = preload("res://scripts/arena_inventory_window.gd")
+const ItemCatalog = preload("res://scripts/arena_item_catalog.gd")
 
 @export var use_vespera_map := false
 
@@ -36,18 +38,19 @@ var effect_time := 0.0
 var profile_store: LocalProfileStore
 var attribute_window: AttributeWindow
 var skill_window: SkillWindow
+var inventory_window: ArenaInventoryWindow
 var ui_layer: CanvasLayer
 
 func _ready() -> void:
 	if use_vespera_map:
-		map_regions = [map_bounds]
+		map_regions = [map_bounds, Rect2(-13, -70, 26, 30), Rect2(-54, -48, 12, 12), Rect2(42, -48, 12, 12), Rect2(-58, -17, 12, 12), Rect2(46, -17, 12, 12), Rect2(-54, 36, 12, 12), Rect2(42, 36, 12, 12)]
 	_configure_geometry()
 	actor.accept_player_input = false
 	actor.speed = 8.0
 	actor.use_3d_model = true
 	actor.guard_walkable_edges = true
 	if use_vespera_map:
-		actor.ramp_passages.clear()
+		actor.ramp_passages = [Rect2(-6, -42, 12, 13)]
 	else:
 		actor.ramp_passages = [Rect2(-54, -36, 4, 10), Rect2(-36, -59, 10, 4), Rect2(50, 26, 4, 10), Rect2(26, 55, 10, 4)]
 	actor.face_world_direction(Vector3(0, 0, -1))
@@ -63,8 +66,8 @@ func _ready() -> void:
 	camera.current = true
 	actor.movement_camera = camera
 	_create_target("AlvoPiso", Vector3(0, 0, -21), Color("d77258"))
-	_create_target("AlvoMorroOeste", Vector3(-48, 0 if use_vespera_map else 5, -48), Color("edc568"))
-	_create_target("AlvoMorroLeste", Vector3(48, 0 if use_vespera_map else 5, 48), Color("82cce0"))
+	_create_target("AlvoMorroOeste", Vector3(-25 if use_vespera_map else -48, 0 if use_vespera_map else 5, -6 if use_vespera_map else -48), Color("edc568"))
+	_create_target("AlvoMorroLeste", Vector3(25 if use_vespera_map else 48, 0 if use_vespera_map else 5, 24 if use_vespera_map else 48), Color("82cce0"))
 	ui_layer = CanvasLayer.new()
 	add_child(ui_layer)
 	controls = Controls.new()
@@ -91,6 +94,12 @@ func _ready() -> void:
 	skills_button.size = Vector2(145, 43)
 	skills_button.pressed.connect(show_skills)
 	ui_layer.add_child(skills_button)
+	var inventory_button := Button.new()
+	inventory_button.text = "Inventário"
+	inventory_button.position = Vector2(485, 92)
+	inventory_button.size = Vector2(145, 43)
+	inventory_button.pressed.connect(show_inventory)
+	ui_layer.add_child(inventory_button)
 	hud = Label.new()
 	hud.position = Vector2(20, 20)
 	hud.add_theme_font_size_override("font_size", 20)
@@ -108,6 +117,15 @@ func _ready() -> void:
 	add_child(effect)
 	var active_id := _ensure_test_character()
 	if active_id != "":
+		if use_vespera_map:
+			var character := profile_store.find_character(active_id)
+			if not bool(character.get("starter_kit_claimed", false)):
+				profile_store.grant_item(active_id, "training_sword")
+				profile_store.grant_item(active_id, "health_potion", 3)
+				profile_store.grant_item(active_id, "elixir", 2)
+				character["starter_kit_claimed"] = true
+				profile_store.save_profile()
+				profile_store.equip_item(active_id, "training_sword")
 		_sync_vitals(profile_store.find_character(active_id))
 
 func _configure_geometry() -> void:
@@ -233,7 +251,7 @@ func _create_target(target_name: String, foot: Vector3, color: Color) -> void:
 
 func _physics_process(delta: float) -> void:
 	if controls != null:
-		actor.move_input = Vector2.ZERO if is_instance_valid(attribute_window) or is_instance_valid(skill_window) else (Input.get_vector("move_left", "move_right", "move_up", "move_down") + controls.movement).limit_length(1)
+		actor.move_input = Vector2.ZERO if is_instance_valid(attribute_window) or is_instance_valid(skill_window) or is_instance_valid(inventory_window) else (Input.get_vector("move_left", "move_right", "move_up", "move_down") + controls.movement).limit_length(1)
 	attack_cooldown = maxf(0, attack_cooldown - delta)
 	shield_time = maxf(0, shield_time - delta)
 	determination_time = maxf(0, determination_time - delta)
@@ -246,10 +264,14 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	if hud != null:
-		hud.text = "ARENA 01 | HP %d/%d | Alvo %d: %d HP | Acertos %d\n%s" % [player_hp, player_max_hp, selected_marker + 1, target_hp[selected_marker], hits_landed, feedback]
+		var character := profile_store.find_character(str(profile_store.data.get("selected_character_id", ""))) if profile_store != null else {}
+		if not character.is_empty():
+			potions[0] = int(character["inventory"].get("health_potion", 0))
+			potions[1] = int(character["inventory"].get("elixir", 0))
+		hud.text = "Vespera | Base %d Job %d | HP %d/%d | Alvo %d: %d HP | Acertos %d\n%s" % [int(character.get("base_level", 1)), int(character.get("job_level", 1)), player_hp, player_max_hp, selected_marker + 1, target_hp[selected_marker], hits_landed, feedback]
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_instance_valid(attribute_window) or is_instance_valid(skill_window):
+	if is_instance_valid(attribute_window) or is_instance_valid(skill_window) or is_instance_valid(inventory_window):
 		return
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
@@ -268,6 +290,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			show_attributes()
 		KEY_K:
 			show_skills()
+		KEY_I:
+			show_inventory()
 
 func _ensure_test_character() -> String:
 	if profile_store == null:
@@ -291,7 +315,7 @@ func _ensure_test_character() -> String:
 
 func show_attributes() -> void:
 	var id := _ensure_test_character()
-	if id == "" or is_instance_valid(attribute_window) or is_instance_valid(skill_window):
+	if id == "" or is_instance_valid(attribute_window) or is_instance_valid(skill_window) or is_instance_valid(inventory_window):
 		return
 	controls.movement = Vector2.ZERO
 	attribute_window = AttributePanel.new()
@@ -306,7 +330,7 @@ func show_attributes() -> void:
 
 func show_skills() -> void:
 	var id := _ensure_test_character()
-	if id == "" or is_instance_valid(skill_window) or is_instance_valid(attribute_window):
+	if id == "" or is_instance_valid(skill_window) or is_instance_valid(attribute_window) or is_instance_valid(inventory_window):
 		return
 	controls.movement = Vector2.ZERO
 	skill_window = SkillPanel.new()
@@ -316,6 +340,17 @@ func show_skills() -> void:
 	skill_window.closed.connect(func():
 		skill_window.queue_free()
 		skill_window = null)
+
+func show_inventory() -> void:
+	var id := _ensure_test_character()
+	if id == "" or is_instance_valid(inventory_window) or is_instance_valid(attribute_window) or is_instance_valid(skill_window): return
+	controls.movement = Vector2.ZERO
+	inventory_window = InventoryPanel.new()
+	inventory_window.store = profile_store
+	inventory_window.character_id = id
+	ui_layer.add_child(inventory_window)
+	inventory_window.inventory_changed.connect(func(): _sync_vitals(profile_store.find_character(id)))
+	inventory_window.closed.connect(func(): inventory_window.queue_free(); inventory_window = null)
 
 func _grant_test_exp() -> void:
 	var id := _ensure_test_character()
@@ -358,13 +393,11 @@ func _on_action(action: String) -> void:
 				_show_effect(actor.global_position + Vector3.UP, Color("ffae39aa"))
 				feedback = "Determinação ativa por 10 s"
 		"POT_HP":
-			if potions[0] > 0 and player_hp < player_max_hp:
-				potions[0] -= 1
+			if player_hp < player_max_hp and profile_store.use_item(_ensure_test_character(), "health_potion"):
 				player_hp = mini(player_max_hp, player_hp + roundi(player_max_hp * 0.20))
 		"POT_ELIXIR":
-			if potions[1] > 0:
-				potions[1] -= 1
-				player_hp = mini(player_max_hp, player_hp + roundi(player_max_hp * 0.12))
+			if player_hp < player_max_hp and profile_store.use_item(_ensure_test_character(), "elixir"):
+				player_hp = mini(player_max_hp, player_hp + roundi(player_max_hp * 0.40))
 		"POT_STRENGTH":
 			if potions[2] > 0:
 				potions[2] -= 1
@@ -393,7 +426,12 @@ func _attack_selected() -> void:
 	_show_effect(target.global_position + Vector3.UP, Color("ffd568bb"))
 	if target_hp[selected_marker] <= 0:
 		target_hp[selected_marker] = target_max_hp
-		feedback = "Alvo %d derrotado; treino reiniciado" % (selected_marker + 1)
+		var loot := ["health_potion", "elixir", "iron_sword", "cloth_armor", "leather_cap", "vital_ring"]
+		var item_id: String = loot[(hits_landed - 1) % loot.size()]
+		if profile_store.grant_item(_ensure_test_character(), item_id):
+			feedback = "Alvo %d derrotado; recebeu %s" % [selected_marker + 1, ItemCatalog.item(item_id)["name"]]
+		else:
+			feedback = "Alvo derrotado; inventário cheio para este item"
 	else:
 		feedback = "Golpe: %d de dano no alvo %d" % [damage, selected_marker + 1]
 

@@ -20,7 +20,9 @@ func _run() -> void:
 		await physics_frame
 	assert(scene.use_vespera_map and scene.actor != null and scene.camera != null and scene.controls != null)
 	assert(scene.markers.size() == 3 and scene.map_bounds == Rect2(-80, -80, 160, 160))
-	assert(scene.actor.ramp_passages.is_empty())
+	assert(scene.actor.ramp_passages.size() == 1)
+	assert(map.get_node("Cidade/TerracoIgreja") != null)
+	assert(map.get_node("Cidade/ObstaculosCidade").get_child_count() >= 9)
 	var space := scene.get_world_3d().direct_space_state
 	var center := space.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(0, 2, 0), Vector3(0, -2, 0), 1))
 	assert(not center.is_empty() and absf(center.position.y) < 0.2)

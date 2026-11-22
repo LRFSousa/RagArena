@@ -1,5 +1,14 @@
 # RagnArena — backlog de definição da nova fase
 
+## Protótipo Véspera em andamento
+
+- [x] Cena fechada com casas, igreja, praça, ruas e escadaria central; modelos próprios fornecidos pelo responsável.
+- [x] Inventário local persistente por personagem com poções e quatro tipos de equipamento; atalhos da arena consomem itens reais.
+- [x] Bônus provisórios de equipamento em ATK, DEF e HP, sem alterar a curva existente de EXP Base/Job.
+- [ ] Teste visual e de movimento em celular, ajuste de colisores e proporções.
+- [ ] Partidas PvP 3D com participação, eliminações, assistências e recompensas; os alvos estáticos ainda são treino.
+- [ ] Balanceamento com dados reais, obtenção de itens na partida, raridade e upgrade.
+
 Este documento organiza o redesenho do jogo **antes de alterar a jogabilidade**. O backlog de releases em `docs/BACKLOG.md` registra o protótipo que já funciona; itens concluídos nele são evidência histórica, não aprovação automática das novas regras.
 
 ## Ordem de definição

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/walls/Muro Quebrado/Mural de Castelo Quebrado.glb" id="3_p0tsw"]
 [ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/walls/Muro Grande/Mural de Castelo Grande.glb" id="4_8ouvk"]
 [ext_resource type="Script" path="res://scripts/experimental/vespera_palette.gd" id="5_palette"]
+[ext_resource type="PackedScene" path="res://scenes/VesperaCity.tscn" id="6_city"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hg2di"]
 size = Vector3(160, 6, 0.8)
@@ -23,6 +24,8 @@ size = Vector3(160, 6, 0.8)
 
 [node name="Vespera" type="Node3D" unique_id=771386468]
 script = ExtResource("5_palette")
+
+[node name="Cidade" parent="." instance=ExtResource("6_city")]
 
 [node name="Piso" type="CSGBox3D" parent="." unique_id=1448632304]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)

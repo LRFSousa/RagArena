@@ -1,5 +1,8 @@
 # Pendências
 
+- Véspera cidade: testar visualmente no celular a escala de igreja, casas e escada, além de subir e descer a escadaria. As escadas laterais são visuais nesta versão; só a escadaria central tem rampa física. Confirmar desempenho e legibilidade do minimapa.
+- Inventário V1 local: definir capacidade, peso, aquisição real, raridade, descarte, moedas e upgrades. Os alvos de treino entregam itens provisórios; partidas PvP, atribuição segura de drops e sincronização online ainda não existem. Ajustar ATK/DEF/HP de equipamento com dados de partidas reais.
+
 - Véspera: validar visualmente as proporções dos modelos e o desempenho no computador e celular. Os portões estão dentro do perímetro fechado, com colisores contínuos; só abrir acessos quando forem definidos. Adicionar colisões próprias aos modelos internos quando eles entrarem na arena.
 
 - Curva de HP e dano da Arena01: validar em jogo a duração percebida, os números exibidos e a utilidade da cura/poções. A meta de 15–25 s foi verificada apenas por cálculo de golpes básicos simétricos; falta simulação PvP com habilidades, defesa, equipamentos e latência.

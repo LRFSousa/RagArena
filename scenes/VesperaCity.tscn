@@ -1,0 +1,131 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/Igreja/Igreja.glb" id="1_church"]
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/Casa 1/Casinha Medieval 1.glb" id="2_house"]
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/Casa 2/Casa Medieval 2.glb" id="3_house"]
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/Escada Grande/Escada Grande 1.glb" id="4_stairs"]
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/Escada Pequena/Escada 1.glb" id="5_stairs"]
+
+[sub_resource type="StandardMaterial3D" id="StoneGround"]
+albedo_color = Color(0.62, 0.61, 0.56, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="PlazaGround"]
+albedo_color = Color(0.71, 0.69, 0.62, 1)
+roughness = 0.92
+
+[sub_resource type="BoxShape3D" id="ChurchShape"]
+size = Vector3(17, 20, 19)
+
+[sub_resource type="BoxShape3D" id="HouseShape"]
+size = Vector3(9.5, 10, 9.5)
+
+[sub_resource type="BoxShape3D" id="SmallHouseShape"]
+size = Vector3(7.5, 10, 7.5)
+
+[sub_resource type="BoxShape3D" id="RampShape"]
+size = Vector3(11.5, 0.4, 10.5)
+
+[node name="VesperaCity" type="Node3D"]
+
+[node name="RuaCentral" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.025, 4)
+size = Vector3(13, 0.05, 90)
+material = SubResource("StoneGround")
+
+[node name="RuaLesteOeste" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.03, 14)
+size = Vector3(120, 0.05, 10)
+material = SubResource("StoneGround")
+
+[node name="PracaCentral" type="CSGCylinder3D" parent="."]
+position = Vector3(0, 0.04, 13)
+radius = 14.0
+height = 0.05
+material = SubResource("PlazaGround")
+
+[node name="TerracoIgreja" type="CSGBox3D" parent="."]
+position = Vector3(0, 1.25, -55)
+size = Vector3(27, 2.5, 29)
+use_collision = true
+material = SubResource("StoneGround")
+
+[node name="Igreja" parent="." instance=ExtResource("1_church")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 2.5, -55)
+
+[node name="EscadariaIgreja" parent="." instance=ExtResource("4_stairs")]
+transform = Transform3D(12, 0, 0, 0, 3.3, 0, 0, 0, 10.5, 0, 0, -35.5)
+
+[node name="EscadaLateralOeste" parent="." instance=ExtResource("5_stairs")]
+transform = Transform3D(3, 0, 0, 0, 1.5, 0, 0, 0, 3, -18, 0, -52)
+
+[node name="EscadaLateralLeste" parent="." instance=ExtResource("5_stairs")]
+transform = Transform3D(3, 0, 0, 0, 1.5, 0, 0, 0, 3, 18, 0, -52)
+
+[node name="CasaNoroeste" parent="." instance=ExtResource("2_house")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -48, 0, -43)
+
+[node name="CasaNordeste" parent="." instance=ExtResource("3_house")]
+transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 48, 0, -43)
+
+[node name="CasaOeste" parent="." instance=ExtResource("3_house")]
+transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, -52, 0, -12)
+
+[node name="CasaLeste" parent="." instance=ExtResource("2_house")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 52, 0, -12)
+
+[node name="CasaSudoeste" parent="." instance=ExtResource("2_house")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -48, 0, 41)
+
+[node name="CasaSudeste" parent="." instance=ExtResource("3_house")]
+transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 48, 0, 41)
+
+[node name="CasaSulOeste" parent="." instance=ExtResource("3_house")]
+transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, -24, 0, 57)
+
+[node name="CasaSulLeste" parent="." instance=ExtResource("2_house")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 24, 0, 57)
+
+[node name="ObstaculosCidade" type="StaticBody3D" parent="."]
+collision_layer = 1
+
+[node name="Igreja" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(0, 12.5, -55)
+shape = SubResource("ChurchShape")
+
+[node name="CasaNoroeste" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(-48, 5, -43)
+shape = SubResource("HouseShape")
+
+[node name="CasaNordeste" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(48, 5, -43)
+shape = SubResource("SmallHouseShape")
+
+[node name="CasaOeste" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(-52, 5, -12)
+shape = SubResource("SmallHouseShape")
+
+[node name="CasaLeste" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(52, 5, -12)
+shape = SubResource("HouseShape")
+
+[node name="CasaSudoeste" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(-48, 5, 41)
+shape = SubResource("HouseShape")
+
+[node name="CasaSudeste" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(48, 5, 41)
+shape = SubResource("SmallHouseShape")
+
+[node name="CasaSulOeste" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(-24, 5, 57)
+shape = SubResource("SmallHouseShape")
+
+[node name="CasaSulLeste" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(24, 5, 57)
+shape = SubResource("HouseShape")
+
+[node name="RampaIgreja" type="CollisionShape3D" parent="ObstaculosCidade"]
+position = Vector3(0, 1.28, -35.5)
+rotation = Vector3(0.234, 0, 0)
+shape = SubResource("RampShape")

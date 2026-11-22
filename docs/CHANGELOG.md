@@ -1,5 +1,13 @@
 # Changelog
 
+## Véspera — cidade de teste, inventário e equipamentos
+
+- Incluídos igreja elevada, escadaria com rampa física, praça, ruas e oito casas na arena fechada Véspera. As casas e a igreja bloqueiam passagem; não há entrada nem portais.
+- Criado inventário persistente por personagem para poções e equipamentos, com slots de arma, armadura, capacete e acessório. Alvos de treino concedem itens provisórios; o kit inicial é entregue uma vez ao Espadachim da Véspera.
+- Equipamentos passam a acrescentar ATK, DEF e HP aos atributos derivados. Os atalhos de poção consomem o estoque salvo. A janela Inventário permite equipar e verificar quantidades.
+- A curva Base/Job e as recompensas de partidas continuam configuradas como antes; o botão EXP teste permanece para ensaiar a progressão enquanto não há partida PvP 3D.
+- Validados importação e carregamento da cena, limites e colisores, inventário, persistência, efeito dos equipamentos e proteção contra recompensa duplicada.
+
 ## Véspera — pedra e musgo com correção separada
 
 - A captura do celular mostrou que o tingimento geral ainda deixava a torre clara e o muro quebrado verde. Substituído o tingimento por um material que ajusta pedra neutra e vegetação separadamente.
