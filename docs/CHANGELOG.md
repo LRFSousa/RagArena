@@ -1,5 +1,10 @@
 # Changelog
 
+## Véspera — janela de atributos redesenhada
+
+- A janela de distribuição ganhou visual escuro e dourado, saldo de pontos em destaque, seis linhas com base, bônus, custo e botão de toque, e painel de resultados com gráfico dos atributos.
+- Os botões continuam usando a regra de custo progressivo e salvamento por personagem. O teste automatizado confirma distribuição, atualização da janela e persistência.
+
 ## Véspera — Espadachim visível na entrada
 
 - O modelo 3D é habilitado na própria cena antes da criação do personagem. O ponto inicial fica na via central, próximo ao portão sul, voltado para a praça.
