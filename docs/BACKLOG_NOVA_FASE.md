@@ -18,8 +18,11 @@ Este documento organiza o redesenho do jogo **antes de alterar a jogabilidade**.
 |---|---|---|---|
 | 2. Habilidades | Ataque básico e três habilidades para cada um dos quatro protótipos; botão de ataque, Q/E/F e efeitos provisórios | Definir primeiro o Espadachim como modelo para as outras classes | Confirmar kit, alcance, custo, recarga, desbloqueio, melhoria e persistência do Espadachim; replicar a estrutura às demais classes depois |
 | 3. Atributos | Atributos V1 persistentes; dois painéis de atributos e secundários; FOR afeta o ATK e VIT afeta HP na Arena01 | Base/Job Level e EXP persistentes por personagem com teto inicial 40 | Validar ritmo e fórmulas em PvP; integrar os demais secundários ao combate, definir bônus, faixas de arena e curva além do nível 40 |
+
 | 4. Itens e Inventário | Quatro slots de consumíveis temporários, drops e buffs provisórios | Propriedade de equipamentos e itens persiste após vitória ou morte; começar com arma, armadura e acessório; quatro botões rápidos são atalhos do inventário | Capacidade, obtenção, raridade, equipar, uso, upgrade, moedas, preços, regras de compra e armazenamento no servidor |
 | 5. Navegação e Mapa | Arena 2D maior que a tela, câmera, minimapa, pedras e caixas; layout lógico preparado para 3D futuro | Salas de 5, 10 ou 20 pessoas; barris, pedras, saque e eventos na arena; sem mundo aberto | Mapa por capacidade/faixa, spawns, espera da sala, fechamento, objetivos, distribuição de recursos e desempenho mobile |
+
+Referência pesquisada para bônus automáticos Job e HP/SP das cinco classes: `docs/research/first_class_job_bonuses_reference.md`. Esses bônus são distintos dos pontos livres Base e dos pontos de habilidade Job; a transposição das curvas numéricas para a arena ainda depende de balanceamento.
 
 Essas linhas são um **inventário de decisões e lacunas**, não tarefas marcadas como concluídas. Cada tópico terá seu próprio contrato e critérios de aceite quando for discutido.
 
