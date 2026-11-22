@@ -1,5 +1,23 @@
 # Changelog
 
+## Véspera — arena inicial de teste
+
+- Incorporada a cena `vespera.tscn` fornecida pelo criador, com piso 160 × 160 m, muralha, torres e portões, junto dos GLBs e texturas necessários.
+- Criada `VesperaPlaytest.tscn` com o Espadachim, câmera, HUD, minimapa, ataque, habilidades e poções da Arena01. Esta passa a ser a cena inicial do projeto; a Arena01 anterior continua disponível como teste separado.
+- Validado carregamento no Godot 4.7.2, piso e colisões nas quatro bordas. O cenário permanece plano e sem obstáculos internos nesta versão.
+
+## Curva de HP da arena e escala inicial de dano
+
+- Criada curva de HP por classe até Base 40, com marcos em Base 1/20/40: Espadachim 1000/3000/6000; Gatuno 900/2600/5000; Arqueiro 850/2400/4600; Noviço 900/2500/4800; Mago 800/2100/4000. VIT efetiva aumenta o total proporcionalmente.
+- O ataque básico da Arena01 usa dano de teste escalonado com Base Level e ATK. Alvos de treino acompanham o HP máximo do Espadachim; cura e poções recuperam percentuais, e evolução mantém a proporção de HP atual.
+- Meta de referência: duelo simétrico com golpes básicos e cadência de 0,75 s entre 15 e 25 s nos marcos Base 1, 20 e 40. Esta simulação ainda não inclui defesa, equipamentos, habilidades ofensivas ou outros jogadores.
+
+## Bônus automáticos por Job Level — cinco classes iniciais
+
+- Integrados os 12 marcos de bônus até Job 40 para Espadachim, Mago, Arqueiro, Noviço e Gatuno, conforme a referência Pre-Renewal pesquisada. A janela mostra o bônus separado do atributo investido.
+- O bônus é calculado a partir da classe e do Job Level persistidos; personagens existentes o recebem ao carregar, sem migração de perfil nem concessão duplicada de pontos. Atributos efetivos alimentam os secundários já disponíveis, incluindo ATK por FOR.
+- Validados os totais das cinco classes, marcos iniciais, recálculo de ATK e persistência. Curvas de HP/SP por classe e novas regras de combate continuam pendentes.
+
 ## Progressão — distribuição de habilidades do Espadachim
 
 - Mantida a recompensa persistente Base/Job EXP por participação válida, eliminações, assistências e conclusão da partida. A subida de Base concede pontos de atributos; a de Job concede pontos de habilidade.

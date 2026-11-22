@@ -1,9 +1,13 @@
 # Pendências
 
+- Véspera: validar visualmente as proporções dos modelos e o desempenho no computador e celular. Os portões estão dentro do perímetro fechado, com colisores contínuos; só abrir acessos quando forem definidos. Adicionar colisões próprias aos modelos internos quando eles entrarem na arena.
+
+- Curva de HP e dano da Arena01: validar em jogo a duração percebida, os números exibidos e a utilidade da cura/poções. A meta de 15–25 s foi verificada apenas por cálculo de golpes básicos simétricos; falta simulação PvP com habilidades, defesa, equipamentos e latência.
+
 - Atributos secundários: calibrar a escala de ATK e HP em partidas PvP reais. SP, regeneração, M.ATK, M.DEF, acerto, esquiva e velocidade de ataque já aparecem no painel, mas ainda precisam de integração às respectivas mecânicas quando elas existirem na Arena01. A velocidade de caminhada permanece fixa.
 
 - Atributos V1: validar em celular a legibilidade e o toque na janela, a persistência após fechar e reabrir o navegador e o ritmo dos pontos em partidas reais. O botão “EXP teste” é temporário e deverá ser removido antes de uma build pública de produção.
-- Decidir se os marcos de bônus Job das cinco classes pesquisados em `docs/research/first_class_job_bonuses_reference.md` serão adotados; definir curvas próprias de HP/SP para a arena e impacto dos atributos nas demais fórmulas PvP. Pontos de Job já podem ser gastos na árvore principal do Espadachim; integrar os ranks comprados aos efeitos de combate e ao custo de SP.
+- Os marcos de bônus Job das cinco classes foram adotados conforme `docs/research/first_class_job_bonuses_reference.md`. A primeira curva própria de HP está em teste; definir a de SP e calibrar as demais fórmulas PvP. Pontos de Job já podem ser gastos na árvore principal do Espadachim; integrar os ranks comprados aos efeitos de combate e ao custo de SP.
 
 - Validar no celular a velocidade de 8 m/s e as bordas das quatro rampas da Arena01 após o ajuste de colisão lateral.
 

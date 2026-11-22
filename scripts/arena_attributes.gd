@@ -4,6 +4,16 @@ class_name ArenaAttributes
 const CONFIG_PATH := "res://resources/attribute_points_v1.json"
 const KEYS := ["for", "agi", "vit", "int", "des", "sor"]
 const LABELS := {"for": "FOR", "agi": "AGI", "vit": "VIT", "int": "INT", "des": "DES", "sor": "SOR"}
+# Marcos de BonusStats das primeiras classes Pre-Renewal do rAthena, ate Job 40.
+# Os valores sao calculados a partir do nivel salvo, sem alterar pontos livres.
+const JOB_BONUS_LEVELS := [2, 6, 10, 14, 18, 22, 26, 30, 33, 36, 38, 40]
+const JOB_BONUS_KEYS := {
+	"swordsman": ["for", "vit", "des", "for", "vit", "des", "sor", "agi", "for", "des", "vit", "for"],
+	"mage": ["int", "des", "des", "int", "agi", "int", "agi", "sor", "int", "des", "int", "agi"],
+	"archer": ["des", "for", "int", "des", "des", "sor", "agi", "des", "agi", "des", "for", "for"],
+	"acolyte": ["sor", "vit", "int", "des", "sor", "agi", "for", "vit", "int", "des", "sor", "agi"],
+	"thief": ["agi", "for", "des", "vit", "int", "des", "sor", "for", "agi", "agi", "for", "sor"]
+}
 
 var config: Dictionary = {}
 var last_error := ""
@@ -47,9 +57,19 @@ static func next_cost(current_base: int) -> int:
 static func base_value(character: Dictionary, key: String) -> int:
 	return int(character.get("attributes", {}).get(key, 5))
 
-static func bonus_value(_character: Dictionary, _key: String) -> int:
-	# Equipamentos, buffs e bônus por classe entram aqui em uma etapa futura.
-	return 0
+static func bonus_value(character: Dictionary, key: String) -> int:
+	if not KEYS.has(key):
+		return 0
+	var class_id := str(character.get("class_id", ""))
+	if not JOB_BONUS_KEYS.has(class_id):
+		return 0
+	var level := clampi(int(character.get("job_level", 1)), 1, 40)
+	var bonuses: Array = JOB_BONUS_KEYS[class_id]
+	var result := 0
+	for index in JOB_BONUS_LEVELS.size():
+		if JOB_BONUS_LEVELS[index] <= level and bonuses[index] == key:
+			result += 1
+	return result
 
 static func effective_value(character: Dictionary, key: String) -> int:
 	return base_value(character, key) + bonus_value(character, key)

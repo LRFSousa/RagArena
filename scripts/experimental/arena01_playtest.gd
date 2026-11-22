@@ -9,6 +9,8 @@ const AttributePanel = preload("res://scripts/attribute_window.gd")
 const SkillPanel = preload("res://scripts/skill_window.gd")
 const Derived = preload("res://scripts/arena_derived_stats.gd")
 
+@export var use_vespera_map := false
+
 @onready var actor: MountainTestActor3D = $TestActor3D
 
 var camera: ArenaOrbitCamera3D
@@ -17,6 +19,7 @@ var hud: Label
 var markers: Array[Node3D] = []
 var selected_marker := 0
 var target_hp := [100, 100, 100]
+var target_max_hp := 100
 var player_hp := 75
 var player_max_hp := 100
 var hits_landed := 0
@@ -36,12 +39,17 @@ var skill_window: SkillWindow
 var ui_layer: CanvasLayer
 
 func _ready() -> void:
+	if use_vespera_map:
+		map_regions = [map_bounds]
 	_configure_geometry()
 	actor.accept_player_input = false
 	actor.speed = 8.0
 	actor.use_3d_model = true
 	actor.guard_walkable_edges = true
-	actor.ramp_passages = [Rect2(-54, -36, 4, 10), Rect2(-36, -59, 10, 4), Rect2(50, 26, 4, 10), Rect2(26, 55, 10, 4)]
+	if use_vespera_map:
+		actor.ramp_passages.clear()
+	else:
+		actor.ramp_passages = [Rect2(-54, -36, 4, 10), Rect2(-36, -59, 10, 4), Rect2(50, 26, 4, 10), Rect2(26, 55, 10, 4)]
 	actor.face_world_direction(Vector3(0, 0, -1))
 	camera = OrbitCamera.new()
 	camera.name = "ArenaCamera"
@@ -55,8 +63,8 @@ func _ready() -> void:
 	camera.current = true
 	actor.movement_camera = camera
 	_create_target("AlvoPiso", Vector3(0, 0, -21), Color("d77258"))
-	_create_target("AlvoMorroOeste", Vector3(-48, 5, -48), Color("edc568"))
-	_create_target("AlvoMorroLeste", Vector3(48, 5, 48), Color("82cce0"))
+	_create_target("AlvoMorroOeste", Vector3(-48, 0 if use_vespera_map else 5, -48), Color("edc568"))
+	_create_target("AlvoMorroLeste", Vector3(48, 0 if use_vespera_map else 5, 48), Color("82cce0"))
 	ui_layer = CanvasLayer.new()
 	add_child(ui_layer)
 	controls = Controls.new()
@@ -134,6 +142,8 @@ func _configure_geometry() -> void:
 	world.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	world.environment.ambient_light_color = Color("d0d8d1")
 	add_child(world)
+	if use_vespera_map:
+		return
 	# A cena recebida deixa aberturas de 8 m nas bordas norte e sul.
 	# Fecha-se apenas a versão jogável; o desenho original permanece como referência.
 	_add_boundary("FechamentoNorte", Vector3(0, 2, -79.5))
@@ -338,7 +348,7 @@ func _on_action(action: String) -> void:
 		"CURA":
 			if skill_cooldowns[1] <= 0:
 				skill_cooldowns[1] = 8
-				player_hp = mini(player_max_hp, player_hp + 25)
+				player_hp = mini(player_max_hp, player_hp + roundi(player_max_hp * 0.12))
 				_show_effect(actor.global_position + Vector3.UP, Color("50ff80aa"))
 				feedback = "Cura: %d/%d HP" % [player_hp, player_max_hp]
 		"FOR":
@@ -350,11 +360,11 @@ func _on_action(action: String) -> void:
 		"POT_HP":
 			if potions[0] > 0 and player_hp < player_max_hp:
 				potions[0] -= 1
-				player_hp = mini(player_max_hp, player_hp + 40)
+				player_hp = mini(player_max_hp, player_hp + roundi(player_max_hp * 0.20))
 		"POT_ELIXIR":
 			if potions[1] > 0:
 				potions[1] -= 1
-				player_hp = mini(player_max_hp, player_hp + 25)
+				player_hp = mini(player_max_hp, player_hp + roundi(player_max_hp * 0.12))
 		"POT_STRENGTH":
 			if potions[2] > 0:
 				potions[2] -= 1
@@ -375,19 +385,24 @@ func _attack_selected() -> void:
 		feedback = "Sem acerto: %s" % result["reason"]
 		return
 	var character := profile_store.find_character(_ensure_test_character())
-	var damage := int(Derived.calculate(character)["atk"]) + (10 if determination_time > 0 else 0)
+	var damage := int(Derived.calculate(character)["basic_damage"])
+	if determination_time > 0:
+		damage = roundi(damage * 1.2)
 	target_hp[selected_marker] -= damage
 	hits_landed += 1
 	_show_effect(target.global_position + Vector3.UP, Color("ffd568bb"))
 	if target_hp[selected_marker] <= 0:
-		target_hp[selected_marker] = 100
+		target_hp[selected_marker] = target_max_hp
 		feedback = "Alvo %d derrotado; treino reiniciado" % (selected_marker + 1)
 	else:
 		feedback = "Golpe: %d de dano no alvo %d" % [damage, selected_marker + 1]
 
 func _sync_vitals(character: Dictionary) -> void:
 	var next_max := int(Derived.calculate(character)["hp"])
-	player_hp = mini(next_max, player_hp + next_max - player_max_hp)
+	player_hp = clampi(roundi(float(player_hp) / float(maxi(1, player_max_hp)) * next_max), 0, next_max)
+	for index in target_hp.size():
+		target_hp[index] = clampi(roundi(float(target_hp[index]) / float(maxi(1, target_max_hp)) * next_max), 0, next_max)
+	target_max_hp = next_max
 	player_max_hp = next_max
 
 func _show_effect(point: Vector3, color: Color) -> void:

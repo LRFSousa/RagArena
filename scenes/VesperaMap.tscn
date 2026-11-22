@@ -1,0 +1,254 @@
+[gd_scene format=3 uid="uid://cgnsdsgrtolf0"]
+
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/walls/Portão Principal/Portão Principal.glb" id="1_hg2di"]
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/walls/Torre/Torre.glb" id="2_fx0d7"]
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/walls/Muro Quebrado/Mural de Castelo Quebrado.glb" id="3_p0tsw"]
+[ext_resource type="PackedScene" path="res://assets/arenas/vespera/structures/walls/Muro Grande/Mural de Castelo Grande.glb" id="4_8ouvk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hg2di"]
+size = Vector3(160, 6, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_inrpd"]
+size = Vector3(7, 6, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fx0d7"]
+size = Vector3(160, 6, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p0tsw"]
+size = Vector3(160, 6, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8ouvk"]
+size = Vector3(160, 6, 0.8)
+
+[node name="Vespera" type="Node3D" unique_id=771386468]
+
+[node name="Piso" type="CSGBox3D" parent="." unique_id=1448632304]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(160, 1, 160)
+
+[node name="MuroCidade" type="StaticBody3D" parent="." unique_id=1907019617]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MuroCidade" unique_id=1519052455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3501158, 77.38367)
+shape = SubResource("BoxShape3D_hg2di")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="MuroCidade" unique_id=1278737702]
+transform = Transform3D(0.024695465, 0, -0.999695, 0, 1, 0, 0.999695, 0, 0.024695465, -71.258575, 3.0379562, 74.88367)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="MuroCidade" unique_id=1351003666]
+transform = Transform3D(0.9999335, 0, -0.011535604, 0, 1, 0, 0.011535604, 0, 0.9999335, -74.30845, 2.8561258, -70.536385)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="MuroCidade" unique_id=2010721493]
+transform = Transform3D(0.008755635, 0, 0.9999617, 0, 1, 0, -0.9999617, 0, 0.008755635, -71.51625, 3.0415566, -73.81045)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="MuroCidade" unique_id=1509535604]
+transform = Transform3D(-0.020321358, 0, -0.9997935, 0, 1, 0, 0.9997935, 0, -0.020321358, 71.32196, 2.8561258, -74.37749)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D9" type="CollisionShape3D" parent="MuroCidade" unique_id=2033168088]
+transform = Transform3D(0.99984604, 0, -0.017541751, 0, 1, 0, 0.017541751, 0, 0.99984604, 74.571365, 3.0415566, -71.55663)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D10" type="CollisionShape3D" parent="MuroCidade" unique_id=990327860]
+transform = Transform3D(-0.999541, 0, -0.030294072, 0, 1, 0, 0.030294072, 0, -0.999541, 74.43742, 2.8561258, 69.69433)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D11" type="CollisionShape3D" parent="MuroCidade" unique_id=93368677]
+transform = Transform3D(0.033072777, 0, -0.9994529, 0, 1, 0, 0.9994529, 0, 0.033072777, 71.59202, 3.0415566, 72.44666)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D12" type="CollisionShape3D" parent="MuroCidade" unique_id=872780933]
+transform = Transform3D(-0.999541, 0, -0.030294072, 0, 1, 0, 0.030294072, 0, -0.999541, -74.11207, 2.8561258, 71.615074)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D13" type="CollisionShape3D" parent="MuroCidade" unique_id=1159418956]
+transform = Transform3D(0.033072777, 0, -0.9994529, 0, 1, 0, 0.9994529, 0, 0.033072777, -77.61408, 3.0415566, 72.44666)
+shape = SubResource("BoxShape3D_inrpd")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MuroCidade" unique_id=1909881548]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3501158, -77.53436)
+shape = SubResource("BoxShape3D_fx0d7")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="MuroCidade" unique_id=813483765]
+transform = Transform3D(-0.0038025049, 0, -0.9999927, 0, 1, 0, 0.9999927, 0, -0.0038025049, 77.79462, 2.3501158, 0.40996933)
+shape = SubResource("BoxShape3D_p0tsw")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="MuroCidade" unique_id=277218052]
+transform = Transform3D(-0.00715043, 0, -0.9999744, 0, 1, 0, 0.9999744, 0, -0.00715043, -77.49013, 2.3501158, 0.40996933)
+shape = SubResource("BoxShape3D_8ouvk")
+debug_color = Color(0.3021323, 0.4938727, 1, 1)
+
+[node name="Portão Principal" parent="MuroCidade" unique_id=950000029 instance=ExtResource("1_hg2di")]
+transform = Transform3D(0.08191182, 0, -14.999777, 0, 15, 0, 14.999777, 0, 0.08191182, 78.148094, 0, 10.967121)
+
+[node name="Portão Principal2" parent="MuroCidade" unique_id=596848415 instance=ExtResource("1_hg2di")]
+transform = Transform3D(0.08191183, 0, -14.999777, 0, 14.999998, 0, 14.999777, 0, 0.08191183, -77.89846, 0, 10.967121)
+
+[node name="Torre2" parent="MuroCidade" unique_id=623099951 instance=ExtResource("2_fx0d7")]
+transform = Transform3D(-0.1816354, 0, -14.998899, 0, 14.999999, 0, 14.998899, 0, -0.1816354, -75.35598, 0, -73.30435)
+
+[node name="Torre3" parent="MuroCidade" unique_id=1141231997 instance=ExtResource("2_fx0d7")]
+transform = Transform3D(-14.999932, 0, -0.045802236, 0, 15.000001, 0, 0.045802236, 0, -14.999932, 74.13543, 0, -75.492256)
+
+[node name="Torre4" parent="MuroCidade" unique_id=750959161 instance=ExtResource("2_fx0d7")]
+transform = Transform3D(0.06100472, 0, 14.999876, 0, 14.999999, 0, -14.999876, 0, 0.06100472, 75.485535, 0, 72.45464)
+
+[node name="Torre5" parent="MuroCidade" unique_id=483208375 instance=ExtResource("2_fx0d7")]
+transform = Transform3D(14.99908, 0, 0.16643384, 0, 15.000001, 0, -0.16643384, 0, 14.99908, -73.98345, 0, 75.84471)
+
+[node name="Mural de Castelo Quebrado2" parent="MuroCidade" unique_id=1517553527 instance=ExtResource("3_p0tsw")]
+transform = Transform3D(10, 0, 0, 0, 11.5, 0, 0, 0, 12, -61.511898, 0.0072455406, -77.97604)
+
+[node name="Mural de Castelo Quebrado4" parent="MuroCidade" unique_id=188059601 instance=ExtResource("3_p0tsw")]
+transform = Transform3D(0.048394512, 0, -7.9998536, 0, 8, 0, 7.9998536, 0, 0.048394512, 78.00563, 0.0072455406, -62.57669)
+
+[node name="Mural de Castelo Grande12" parent="MuroCidade" unique_id=789553534 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.499032, 0, 0.16769099, 0, 14.5, 0, -0.16769099, 0, 14.499032, -72.13343, 0, -78.09634)
+
+[node name="Mural de Castelo Grande13" parent="MuroCidade" unique_id=1672274233 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, 25.567991, 0, -77.99201)
+
+[node name="Mural de Castelo Grande14" parent="MuroCidade" unique_id=1798860691 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, 38.288517, 0, -78.03085)
+
+[node name="Mural de Castelo Grande15" parent="MuroCidade" unique_id=59382136 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, 50.971928, 0, -78.06958)
+
+[node name="Mural de Castelo Grande16" parent="MuroCidade" unique_id=1861052446 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, 63.694424, 0, -78.10842)
+
+[node name="Mural de Castelo Grande18" parent="MuroCidade" unique_id=1895095966 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, -25.399408, 0, -77.99201)
+
+[node name="Mural de Castelo Grande19" parent="MuroCidade" unique_id=1841463864 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, -12.678883, 0, -78.03085)
+
+[node name="Mural de Castelo Grande22" parent="MuroCidade" unique_id=971680942 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, -50.895447, 0, -77.99201)
+
+[node name="Mural de Castelo Grande23" parent="MuroCidade" unique_id=1460801522 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, -38.17492, 0, -78.03085)
+
+[node name="Mural de Castelo Grande20" parent="MuroCidade" unique_id=1193808254 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, 0.0045280457, 0, -78.06958)
+
+[node name="Mural de Castelo Grande21" parent="MuroCidade" unique_id=837756831 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.499934, 0, -0.04427558, 0, 14.499998, 0, 0.04427558, 0, -14.499934, 12.727024, 0, -78.10842)
+
+[node name="Mural de Castelo Grande17" parent="MuroCidade" unique_id=530869354 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-0.3598878, 0, -14.495533, 0, 14.5, 0, 14.495533, 0, -0.3598878, 78.217514, 0, -72.27355)
+
+[node name="Mural de Castelo Quebrado3" parent="MuroCidade" unique_id=616031885 instance=ExtResource("3_p0tsw")]
+transform = Transform3D(-9.999678, 0, -0.09650685, 0, 11.499999, 0, 0.08042243, 0, -11.999611, 61.679474, 0.0072455406, 77.23752)
+
+[node name="Mural de Castelo Grande24" parent="MuroCidade" unique_id=912627943 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.33104, 0, 23.90623)
+
+[node name="Mural de Castelo Grande25" parent="MuroCidade" unique_id=840322746 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.27931, 0, 36.626717)
+
+[node name="Mural de Castelo Grande26" parent="MuroCidade" unique_id=1359987190 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.22772, 0, 49.310074)
+
+[node name="Mural de Castelo Grande40" parent="MuroCidade" unique_id=1786210200 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.33104, 0, -27.700626)
+
+[node name="Mural de Castelo Grande41" parent="MuroCidade" unique_id=241094448 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.27931, 0, -14.980142)
+
+[node name="Mural de Castelo Grande43" parent="MuroCidade" unique_id=1725677528 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.33104, 0, -53.00094)
+
+[node name="Mural de Castelo Grande44" parent="MuroCidade" unique_id=1938961372 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.27931, 0, -40.280453)
+
+[node name="Mural de Castelo Grande42" parent="MuroCidade" unique_id=1219111374 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.22772, 0, -2.2967844)
+
+[node name="Mural de Castelo Grande27" parent="MuroCidade" unique_id=1613793125 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, 78.17598, 0, 62.03253)
+
+[node name="Mural de Castelo Quebrado5" parent="MuroCidade" unique_id=646187063 instance=ExtResource("3_p0tsw")]
+transform = Transform3D(0.048394512, 0, -7.9998536, 0, 8, 0, 7.9998536, 0, 0.048394512, -78.04092, 0.0072455406, -62.57669)
+
+[node name="Mural de Castelo Grande45" parent="MuroCidade" unique_id=452024486 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-0.3598878, 0, -14.495533, 0, 14.5, 0, 14.495533, 0, -0.3598878, -77.82903, 0, -72.27355)
+
+[node name="Mural de Castelo Grande46" parent="MuroCidade" unique_id=94522656 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.71551, 0, 23.90623)
+
+[node name="Mural de Castelo Grande47" parent="MuroCidade" unique_id=897704459 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.767235, 0, 36.626717)
+
+[node name="Mural de Castelo Grande48" parent="MuroCidade" unique_id=1737629779 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.818825, 0, 49.310074)
+
+[node name="Mural de Castelo Grande49" parent="MuroCidade" unique_id=2018860044 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.71551, 0, -27.700626)
+
+[node name="Mural de Castelo Grande50" parent="MuroCidade" unique_id=132585983 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.767235, 0, -14.980142)
+
+[node name="Mural de Castelo Grande51" parent="MuroCidade" unique_id=2130751133 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.71551, 0, -53.00094)
+
+[node name="Mural de Castelo Grande52" parent="MuroCidade" unique_id=1872909972 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.767235, 0, -40.280453)
+
+[node name="Mural de Castelo Grande53" parent="MuroCidade" unique_id=352197838 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.818825, 0, -2.2967844)
+
+[node name="Mural de Castelo Grande54" parent="MuroCidade" unique_id=1324179200 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.05897127, 0, 14.499882, 0, 14.499998, 0, -14.499882, 0, 0.05897127, -77.87057, 0, 62.03253)
+
+[node name="Mural de Castelo Grande28" parent="MuroCidade" unique_id=1735530260 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(-14.497214, 0, -0.2842903, 0, 14.499998, 0, 0.2842903, 0, -14.497214, 72.301636, 0, 77.272385)
+
+[node name="Mural de Castelo Grande29" parent="MuroCidade" unique_id=1559309270 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, -25.397476, 0, 77.953804)
+
+[node name="Mural de Castelo Grande30" parent="MuroCidade" unique_id=1808931346 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, -38.117283, 0, 78.09494)
+
+[node name="Mural de Castelo Grande31" parent="MuroCidade" unique_id=467923672 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, -50.799965, 0, 78.235664)
+
+[node name="Mural de Castelo Grande32" parent="MuroCidade" unique_id=2130476071 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, -63.52173, 0, 78.37682)
+
+[node name="Mural de Castelo Grande33" parent="MuroCidade" unique_id=121813055 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, 25.56828, 0, 77.543915)
+
+[node name="Mural de Castelo Grande34" parent="MuroCidade" unique_id=2139290840 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, 12.848477, 0, 77.68504)
+
+[node name="Mural de Castelo Grande35" parent="MuroCidade" unique_id=1601461192 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, 51.06349, 0, 77.338875)
+
+[node name="Mural de Castelo Grande36" parent="MuroCidade" unique_id=1455397711 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, 38.34369, 0, 77.48)
+
+[node name="Mural de Castelo Grande37" parent="MuroCidade" unique_id=2108898549 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, 0.16578865, 0, 77.825775)
+
+[node name="Mural de Castelo Grande38" parent="MuroCidade" unique_id=1897106072 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(14.49911, 0, 0.16088614, 0, 14.499995, 0, -0.16088614, 0, 14.49911, -12.5559845, 0, 77.966934)
+
+[node name="Mural de Castelo Grande39" parent="MuroCidade" unique_id=1921725471 instance=ExtResource("4_8ouvk")]
+transform = Transform3D(0.2432992, 0, 14.497958, 0, 14.5, 0, -14.497958, 0, 0.2432992, -78.21008, 0, 72.57961)

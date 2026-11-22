@@ -22,7 +22,7 @@ Este documento organiza o redesenho do jogo **antes de alterar a jogabilidade**.
 | 4. Itens e Inventário | Quatro slots de consumíveis temporários, drops e buffs provisórios | Propriedade de equipamentos e itens persiste após vitória ou morte; começar com arma, armadura e acessório; quatro botões rápidos são atalhos do inventário | Capacidade, obtenção, raridade, equipar, uso, upgrade, moedas, preços, regras de compra e armazenamento no servidor |
 | 5. Navegação e Mapa | Arena 2D maior que a tela, câmera, minimapa, pedras e caixas; layout lógico preparado para 3D futuro | Salas de 5, 10 ou 20 pessoas; barris, pedras, saque e eventos na arena; sem mundo aberto | Mapa por capacidade/faixa, spawns, espera da sala, fechamento, objetivos, distribuição de recursos e desempenho mobile |
 
-Referência pesquisada para bônus automáticos Job e HP/SP das cinco classes: `docs/research/first_class_job_bonuses_reference.md`. Esses bônus são distintos dos pontos livres Base e dos pontos de habilidade Job; a transposição das curvas numéricas para a arena ainda depende de balanceamento.
+Referência pesquisada para bônus automáticos Job e HP/SP das cinco classes: `docs/research/first_class_job_bonuses_reference.md`. Os bônus automáticos Job até o nível 40 estão implementados e são distintos dos pontos livres Base e dos pontos de habilidade Job. A primeira curva própria de HP da arena está em teste; a curva de SP e o balanceamento PvP continuam pendentes.
 
 Essas linhas são um **inventário de decisões e lacunas**, não tarefas marcadas como concluídas. Cada tópico terá seu próprio contrato e critérios de aceite quando for discutido.
 

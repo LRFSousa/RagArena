@@ -82,7 +82,8 @@ func _run() -> void:
 		await physics_frame
 	var initial_yaw: float = scene.actor.model_3d.rotation.y
 	scene._on_action("ATK")
-	assert(scene.hits_landed == 1 and scene.target_hp[0] == 100 - int(ArenaDerivedStats.calculate(scene.profile_store.find_character(test_id))["atk"]))
+	var basic_damage := int(ArenaDerivedStats.calculate(scene.profile_store.find_character(test_id))["basic_damage"])
+	assert(scene.hits_landed == 1 and scene.target_hp[0] == scene.target_max_hp - basic_damage)
 	assert(is_equal_approx(scene.actor.model_3d.rotation.y, initial_yaw), "Golpe não deve virar de lado diante do alvo")
 	scene.camera.orbit_by_pixels(Vector2(-188, 0))
 	var camera_forward := -scene.camera.global_basis.z
@@ -104,7 +105,7 @@ func _run() -> void:
 	scene.actor.attack_time_remaining = 0
 	scene.actor.face_world_direction(Vector3(0, 0, -1))
 	scene._on_action("ATK")
-	assert(scene.target_hp[0] == 100 - 2 * int(ArenaDerivedStats.calculate(scene.profile_store.find_character(test_id))["atk"]) - 10)
+	assert(scene.target_hp[0] == scene.target_max_hp - basic_damage - roundi(basic_damage * 1.2))
 	var click := InputEventMouseButton.new()
 	click.button_index = MOUSE_BUTTON_LEFT
 	click.pressed = true
@@ -123,7 +124,7 @@ func _run() -> void:
 	scene.player_hp = 50
 	click.position = scene.controls._button_center("POT_HP")
 	scene.controls._input(click)
-	assert(scene.player_hp == 90 and scene.potions[0] == 2)
+	assert(scene.player_hp == 50 + roundi(scene.player_max_hp * 0.20) and scene.potions[0] == 2)
 	for entry in [
 		[Vector3(-51, 0.2, -25), Vector2(0, -1)],
 		[Vector3(-25, 0.2, -57), Vector2(-1, 0)],

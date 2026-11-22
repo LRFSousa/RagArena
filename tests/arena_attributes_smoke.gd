@@ -40,6 +40,7 @@ func _run() -> void:
 	var character := store.find_character(first)
 	check(not paid.is_empty() and paid["base_levels"] > 1 and paid["job_levels"] > 1, "recompensa sobe múltiplos níveis")
 	check(int(character["attribute_points"]) == rules.total_at(int(character["base_level"])) - 48 and int(character["skill_points"]) == int(character["job_level"]) - 1, "pontos Base e Job concedidos em todos os marcos")
+	check(Rules.bonus_value(character, "for") >= 1 and Rules.bonus_value(store.find_character(second), "for") == 0, "bonus Job automatico respeita classe e nivel")
 	check(store.settle_match(first, {"match_id": "atributos-1", "active_seconds": 480}).is_empty() and character["attribute_points"] == paid["attribute_points_awarded"], "pagamento duplicado não concede pontos")
 	check(store.find_character(second) == other_before, "segundo personagem mantém progressão própria")
 	var old_balance := int(character["attribute_points"])
@@ -61,6 +62,7 @@ func _run() -> void:
 	await process_frame
 	var reloaded := Store.new(TEST_PATH)
 	check(reloaded.find_character(first)["attributes"]["for"] == 7 and reloaded.find_character(first)["skill_points"] == character["skill_points"], "atributos e pontos persistem após recarregar")
+	check(Rules.bonus_value(reloaded.find_character(first), "for") == Rules.bonus_value(character, "for"), "bonus Job reaplicado apos recarregar")
 	for i in range(120):
 		store.settle_match(first, {"match_id": "ate-40-%d" % i, "active_seconds": 480, "kills": 5, "assists": 5, "effective_skills": 5, "completed_with_winner": true, "won": true})
 		if int(character["base_level"]) == 40 and int(character["job_level"]) == 40:
