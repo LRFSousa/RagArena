@@ -1,5 +1,10 @@
 # Changelog
 
+## Véspera — harmonização das cores da muralha
+
+- Ajustados os materiais do portão, das torres e dos muros quebrados para aproximar o tom de pedra do muro principal. Texturas de cor, normal e rugosidade continuam nos GLBs originais.
+- A correção é aplicada somente na instância da Véspera; modelos de origem, colisões e jogabilidade permanecem iguais. Incluído teste de carregamento e de preservação das texturas.
+
 ## Véspera — arena inicial de teste
 
 - Incorporada a cena `vespera.tscn` fornecida pelo criador, com piso 160 × 160 m, muralha, torres e portões, junto dos GLBs e texturas necessários.

@@ -18,3 +18,7 @@ Fonte: `C:\Users\Luisr\.codex\.chatgpt-projects\vespera\vespera.tscn`, copiada s
 ## Próximos ajustes
 
 Validar visualmente escala, iluminação, textura, enquadramento da câmera e desempenho no aparelho. Planejar a distribuição de cobertura, pontos de nascimento e eventuais elevações; os modelos decorativos ainda não têm colisões próprias de combate.
+
+## Harmonização de materiais
+
+O portão apresentava pedra mais escura e a torre, pedra mais clara do que o muro grande. A cena agora aplica multiplicadores de cor por tipo de modelo, usando o muro grande como referência. O ajuste preserva as texturas e pode ser refinado após comparação visual no celular.

@@ -8,6 +8,10 @@ func _run() -> void:
 	root.add_child(map)
 	assert((map.get_node("Piso") as CSGBox3D).size == Vector3(160, 1, 160))
 	assert(map.get_node("MuroCidade").get_child_count() > 50)
+	var gate_material := _first_mesh(map.get_node("MuroCidade/Portão Principal")).get_active_material(0) as StandardMaterial3D
+	var tower_material := _first_mesh(map.get_node("MuroCidade/Torre2")).get_active_material(0) as StandardMaterial3D
+	assert(gate_material.albedo_color.r > 1.0 and tower_material.albedo_color.r < 1.0)
+	assert(gate_material.albedo_texture != null and tower_material.albedo_texture != null)
 	var scene: Arena01Playtest = load("res://scenes/VesperaPlaytest.tscn").instantiate()
 	root.add_child(scene)
 	for i in range(4):
@@ -23,3 +27,12 @@ func _run() -> void:
 		assert(not boundary.is_empty(), "Muralha precisa bloquear a borda %s" % point)
 	print("vespera_smoke: OK")
 	quit()
+
+func _first_mesh(node: Node) -> MeshInstance3D:
+	if node is MeshInstance3D:
+		return node
+	for child in node.get_children():
+		var mesh := _first_mesh(child)
+		if mesh != null:
+			return mesh
+	return null
