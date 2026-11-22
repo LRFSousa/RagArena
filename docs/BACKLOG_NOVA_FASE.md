@@ -95,6 +95,8 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 
 ### Kit do Espadachim aprovado em conceito
 
+**Decisão posterior:** usar a árvore completa do Espadachim clássico Pre-Renewal como referência de habilidades, em vez de limitar a classe às quatro habilidades da tabela abaixo. Os nomes são provisórios; não importar código, texto descritivo ou arte de terceiros. A tabela abaixo continua válida para as quatro habilidades já discutidas, e as demais estão inventariadas em `docs/research/swordsman_skill_tree_reference.md`.
+
 | Ação | Tipo e função | Alvo e alcance | Progressão a definir |
 |---|---|---|---|
 | Ataque básico — Golpe físico | Ataque comum com corte e arco luminoso | **Um alvo** inimigo ou objeto destrutível até **2 blocos**, incluindo o bloco adjacente; toque fora do alcance aproxima antes de atacar | Disponível desde o início; dano acompanha atributos e arma |
