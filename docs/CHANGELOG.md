@@ -1,5 +1,11 @@
 # Changelog
 
+## Arena01 — atributos secundários e ATK do Espadachim
+
+- O menu de atributos abre dois painéis juntos: distribuição dos seis atributos e visão geral de HP, SP, regeneração, ATK, M.ATK, DEF, M.DEF, acerto, esquiva e velocidades.
+- Atributos secundários usam uma escala própria da arena inspirada nos papéis Pre-Renewal. FOR aumenta o ATK do golpe básico na Arena01; VIT altera o HP máximo. O alcance de dois blocos e o bônus temporário de Determinação foram preservados.
+- Os valores da visão geral são recalculados imediatamente após distribuir pontos. Adicionados testes de fórmula e regressão da Arena01.
+
 ## Atributos V1 — pontos Base e Job persistentes
 
 - Adicionada tabela configurável de pontos acumulados até Base 40, com 48 pontos iniciais consumidos pelos seis atributos base 5. O saldo de novos pontos usa a diferença entre níveis consecutivos.

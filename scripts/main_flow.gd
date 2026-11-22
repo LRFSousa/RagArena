@@ -181,13 +181,9 @@ func show_attributes(character_id: String) -> void:
 		return
 	if is_instance_valid(attribute_window):
 		attribute_window.queue_free()
-	var character := store.find_character(character_id)
-	var class_id := str(COMBAT_CLASS_IDS.get(str(character["class_id"]), "paladin"))
-	var stats := ClassBalance.new().stats(class_id)
 	attribute_window = AttributePanel.new()
 	attribute_window.store = store
 	attribute_window.character_id = character_id
-	attribute_window.derived_stats = {"HP": stats["hp"], "ATQ": stats["damage"], "DEF": stats["defense"], "Velocidade": stats["speed"], "Alcance": stats["range"], "Cadência": stats["interval"]}
 	screen.add_child(attribute_window)
 	attribute_window.closed.connect(func():
 		attribute_window.queue_free()

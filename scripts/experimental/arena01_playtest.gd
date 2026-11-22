@@ -6,6 +6,7 @@ const Controls = preload("res://scripts/experimental/mobile_arena_controls_3d.gd
 const OrbitCamera = preload("res://scripts/experimental/orbit_camera_3d.gd")
 const ProfileStore = preload("res://scripts/local_profile_store.gd")
 const AttributePanel = preload("res://scripts/attribute_window.gd")
+const Derived = preload("res://scripts/arena_derived_stats.gd")
 
 @onready var actor: MountainTestActor3D = $TestActor3D
 
@@ -16,6 +17,7 @@ var markers: Array[Node3D] = []
 var selected_marker := 0
 var target_hp := [100, 100, 100]
 var player_hp := 75
+var player_max_hp := 100
 var hits_landed := 0
 var shield_time := 0.0
 var determination_time := 0.0
@@ -88,6 +90,9 @@ func _ready() -> void:
 	effect.mesh = sphere
 	effect.visible = false
 	add_child(effect)
+	var active_id := _ensure_test_character()
+	if active_id != "":
+		_sync_vitals(profile_store.find_character(active_id))
 
 func _configure_geometry() -> void:
 	for child in get_children():
@@ -223,7 +228,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	if hud != null:
-		hud.text = "ARENA 01 | HP %d/100 | Alvo %d: %d HP | Acertos %d\n%s" % [player_hp, selected_marker + 1, target_hp[selected_marker], hits_landed, feedback]
+		hud.text = "ARENA 01 | HP %d/%d | Alvo %d: %d HP | Acertos %d\n%s" % [player_hp, player_max_hp, selected_marker + 1, target_hp[selected_marker], hits_landed, feedback]
 
 func _unhandled_input(event: InputEvent) -> void:
 	if is_instance_valid(attribute_window):
@@ -272,8 +277,9 @@ func show_attributes() -> void:
 	attribute_window = AttributePanel.new()
 	attribute_window.store = profile_store
 	attribute_window.character_id = id
-	attribute_window.derived_stats = {"HP": 100, "ATQ": 20, "Velocidade": actor.speed, "Alcance": "2 blocos"}
+	attribute_window.derived_stats = Derived.calculate(profile_store.find_character(id))
 	ui_layer.add_child(attribute_window)
+	attribute_window.attribute_changed.connect(_sync_vitals)
 	attribute_window.closed.connect(func():
 		attribute_window.queue_free()
 		attribute_window = null)
@@ -288,6 +294,7 @@ func _grant_test_exp() -> void:
 		feedback = profile_store.last_error
 		return
 	var character := profile_store.find_character(id)
+	_sync_vitals(character)
 	feedback = "EXP teste: Base +%d, Job +%d | Base %d, Job %d | Pontos +%d/+%d" % [reward["base_awarded"], reward["job_awarded"], character["base_level"], character["job_level"], reward["attribute_points_awarded"], reward["skill_points_awarded"]]
 	if is_instance_valid(attribute_window):
 		attribute_window.refresh()
@@ -308,9 +315,9 @@ func _on_action(action: String) -> void:
 		"CURA":
 			if skill_cooldowns[1] <= 0:
 				skill_cooldowns[1] = 8
-				player_hp = mini(100, player_hp + 25)
+				player_hp = mini(player_max_hp, player_hp + 25)
 				_show_effect(actor.global_position + Vector3.UP, Color("50ff80aa"))
-				feedback = "Cura: %d/100 HP" % player_hp
+				feedback = "Cura: %d/%d HP" % [player_hp, player_max_hp]
 		"FOR":
 			if skill_cooldowns[2] <= 0:
 				skill_cooldowns[2] = 15
@@ -318,13 +325,13 @@ func _on_action(action: String) -> void:
 				_show_effect(actor.global_position + Vector3.UP, Color("ffae39aa"))
 				feedback = "Determinação ativa por 10 s"
 		"POT_HP":
-			if potions[0] > 0 and player_hp < 100:
+			if potions[0] > 0 and player_hp < player_max_hp:
 				potions[0] -= 1
-				player_hp = mini(100, player_hp + 40)
+				player_hp = mini(player_max_hp, player_hp + 40)
 		"POT_ELIXIR":
 			if potions[1] > 0:
 				potions[1] -= 1
-				player_hp = mini(100, player_hp + 25)
+				player_hp = mini(player_max_hp, player_hp + 25)
 		"POT_STRENGTH":
 			if potions[2] > 0:
 				potions[2] -= 1
@@ -344,7 +351,8 @@ func _attack_selected() -> void:
 	if not result["can_hit"]:
 		feedback = "Sem acerto: %s" % result["reason"]
 		return
-	var damage := 20 + (10 if determination_time > 0 else 0)
+	var character := profile_store.find_character(_ensure_test_character())
+	var damage := int(Derived.calculate(character)["atk"]) + (10 if determination_time > 0 else 0)
 	target_hp[selected_marker] -= damage
 	hits_landed += 1
 	_show_effect(target.global_position + Vector3.UP, Color("ffd568bb"))
@@ -353,6 +361,11 @@ func _attack_selected() -> void:
 		feedback = "Alvo %d derrotado; treino reiniciado" % (selected_marker + 1)
 	else:
 		feedback = "Golpe: %d de dano no alvo %d" % [damage, selected_marker + 1]
+
+func _sync_vitals(character: Dictionary) -> void:
+	var next_max := int(Derived.calculate(character)["hp"])
+	player_hp = mini(next_max, player_hp + next_max - player_max_hp)
+	player_max_hp = next_max
 
 func _show_effect(point: Vector3, color: Color) -> void:
 	effect.global_position = point

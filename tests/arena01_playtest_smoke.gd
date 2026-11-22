@@ -28,7 +28,7 @@ func _run() -> void:
 	var test_id: String = str(scene.profile_store.data["selected_character_id"])
 	assert(int(scene.profile_store.find_character(test_id)["attribute_points"]) > 0, "EXP de teste deve conceder pontos na Arena01")
 	scene.show_attributes()
-	assert(is_instance_valid(scene.attribute_window) and scene.attribute_window.content.get_child_count() >= 11)
+	assert(is_instance_valid(scene.attribute_window) and scene.attribute_window.content.get_child_count() >= 10 and scene.attribute_window.overview.get_child_count() >= 9)
 	var hits_before_modal: int = scene.hits_landed
 	var modal_click := InputEventMouseButton.new()
 	modal_click.button_index = MOUSE_BUTTON_LEFT
@@ -75,7 +75,7 @@ func _run() -> void:
 		await physics_frame
 	var initial_yaw: float = scene.actor.model_3d.rotation.y
 	scene._on_action("ATK")
-	assert(scene.hits_landed == 1 and scene.target_hp[0] == 80)
+	assert(scene.hits_landed == 1 and scene.target_hp[0] == 100 - int(ArenaDerivedStats.calculate(scene.profile_store.find_character(test_id))["atk"]))
 	assert(is_equal_approx(scene.actor.model_3d.rotation.y, initial_yaw), "Golpe não deve virar de lado diante do alvo")
 	scene.camera.orbit_by_pixels(Vector2(-188, 0))
 	var camera_forward := -scene.camera.global_basis.z
@@ -97,7 +97,7 @@ func _run() -> void:
 	scene.actor.attack_time_remaining = 0
 	scene.actor.face_world_direction(Vector3(0, 0, -1))
 	scene._on_action("ATK")
-	assert(scene.target_hp[0] == 50)
+	assert(scene.target_hp[0] == 100 - 2 * int(ArenaDerivedStats.calculate(scene.profile_store.find_character(test_id))["atk"]) - 10)
 	var click := InputEventMouseButton.new()
 	click.button_index = MOUSE_BUTTON_LEFT
 	click.pressed = true
