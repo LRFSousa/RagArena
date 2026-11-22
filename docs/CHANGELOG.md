@@ -1,5 +1,11 @@
 # Changelog
 
+## Correção — personagem e controles na prévia Web
+
+- Substituído o desenho manual dos controles móveis por botões e painéis do Godot: movimento, ataque, habilidades, poções, zoom e minimapa ficam como elementos próprios da interface.
+- O Espadachim mantém um sprite provisório atrás do modelo 3D na exportação Web, para permanecer visível caso o modelo animado não seja renderizado pelo navegador.
+- Adicionadas verificações da presença e posição dos controles na cena de Véspera.
+
 ## Correção — habilidades no celular e enquadramento inicial
 
 - Removida a quebra de linha automática do cabeçalho da árvore de habilidades, que empurrava os painéis e o botão Fechar para fora da tela. Adicionado fechamento no topo e pela tecla Esc/Voltar.

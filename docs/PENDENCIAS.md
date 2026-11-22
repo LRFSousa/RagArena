@@ -1,5 +1,7 @@
 # Pendências
 
+- Confirmar no celular que o Espadachim, o movimento, as ações e o minimapa aparecem na prévia Web. Investigar a renderização do GLB animado no navegador e retirar o sprite provisório quando estiver estável.
+
 - Árvore de habilidades: substituir símbolos provisórios por ícones próprios, validar no celular tamanho dos botões e leitura das três áreas. Implementar em etapa própria os efeitos reais dos ranks, consumo de SP e desbloqueio das habilidades adicionais; a tela já permite distribuir e salvar os pontos Job.
 
 - Véspera cidade: testar visualmente no celular a escala de igreja, casas e escada, além de subir e descer a escadaria. As escadas laterais são visuais nesta versão; só a escadaria central tem rampa física. Confirmar desempenho e legibilidade do minimapa.

@@ -40,7 +40,7 @@ func _run() -> void:
 	await process_frame
 	assert(not is_instance_valid(scene.attribute_window), "Janela fecha sem bloquear a arena")
 	scene.show_skills()
-	assert(is_instance_valid(scene.skill_window) and scene.skill_window.list.get_child_count() > 10, "Árvore de habilidades abre na Arena01")
+	assert(is_instance_valid(scene.skill_window) and scene.skill_window.lines.get_child_count() >= 5 and scene.skill_window.list.get_child_count() >= 2, "Árvore de habilidades abre na Arena01")
 	scene.controls._input(modal_click)
 	assert(scene.hits_landed == hits_before_modal, "Janela de habilidades bloqueia ataque por baixo")
 	scene.skill_window.closed.emit()
@@ -124,7 +124,7 @@ func _run() -> void:
 	scene.player_hp = 50
 	click.position = scene.controls._button_center("POT_HP")
 	scene.controls._input(click)
-	assert(scene.player_hp == 50 + roundi(scene.player_max_hp * 0.20) and scene.potions[0] == 2)
+	assert(scene.player_hp == mini(scene.player_max_hp, 50 + roundi(scene.player_max_hp * 0.20)) and scene.potions[0] == 2)
 	for entry in [
 		[Vector3(-51, 0.2, -25), Vector2(0, -1)],
 		[Vector3(-25, 0.2, -57), Vector2(-1, 0)],

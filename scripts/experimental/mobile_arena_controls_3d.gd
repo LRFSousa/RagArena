@@ -15,10 +15,98 @@ var movement := Vector2.ZERO
 var joystick_touch := -1
 var _last_button := ""
 var _last_button_time := 0
+var visual_buttons: Dictionary = {}
+var joystick_base: Panel
+var joystick_thumb: Panel
+var minimap_panel: Panel
+var minimap_player: ColorRect
+var minimap_targets: Array[ColorRect] = []
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_build_visuals()
+	resized.connect(_layout_visuals)
+	call_deferred("_layout_visuals")
+
+func _circle_style(color: Color, radius: int) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = color
+	style.border_color = Color("d7b46b")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(radius)
+	return style
+
+func _build_visuals() -> void:
+	joystick_base = Panel.new()
+	joystick_base.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	joystick_base.size = Vector2(146, 146)
+	joystick_base.add_theme_stylebox_override("panel", _circle_style(Color("14242ecc"), 73))
+	add_child(joystick_base)
+	joystick_thumb = Panel.new()
+	joystick_thumb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	joystick_thumb.size = Vector2(58, 58)
+	joystick_thumb.add_theme_stylebox_override("panel", _circle_style(Color("75b8b3"), 29))
+	add_child(joystick_thumb)
+	var captions := {"ATK": "ATK", "ESC": "Escudo", "CURA": "Cura", "FOR": "Força", "POT_HP": "HP", "POT_ELIXIR": "Elixir", "POT_STRENGTH": "Buff", "ALVO": "Alvo", "ZOOM_IN": "+", "ZOOM_OUT": "−"}
+	for action in ACTIONS:
+		var button := Button.new()
+		button.name = "Acao" + action
+		button.text = captions[action]
+		button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		button.focus_mode = Control.FOCUS_NONE
+		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		button.add_theme_font_size_override("font_size", 17 if action != "ATK" else 23)
+		button.add_theme_color_override("font_color", Color.WHITE)
+		button.add_theme_stylebox_override("normal", _circle_style(Color("733a2ae8") if action == "ATK" else Color("14242ee8"), 70))
+		visual_buttons[action] = button
+		add_child(button)
+	minimap_panel = Panel.new()
+	minimap_panel.name = "Minimapa"
+	minimap_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	minimap_panel.add_theme_stylebox_override("panel", _circle_style(Color("13242be8"), 4))
+	add_child(minimap_panel)
+	var map_ground := ColorRect.new()
+	map_ground.color = Color("77996c")
+	map_ground.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	map_ground.position = Vector2(12, 12)
+	map_ground.size = Vector2(186, 146)
+	minimap_panel.add_child(map_ground)
+	minimap_player = ColorRect.new()
+	minimap_player.color = Color("fff1a7")
+	minimap_player.size = Vector2(10, 10)
+	minimap_player.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	minimap_panel.add_child(minimap_player)
+	for i in range(3):
+		var target := ColorRect.new()
+		target.color = Color("f7a883")
+		target.size = Vector2(7, 7)
+		target.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		minimap_panel.add_child(target)
+		minimap_targets.append(target)
+
+func _layout_visuals() -> void:
+	if size.x < 1 or size.y < 1 or joystick_base == null: return
+	joystick_base.position = _joystick_center() - joystick_base.size * 0.5
+	joystick_thumb.position = _joystick_center() + movement * 49 - joystick_thumb.size * 0.5
+	for action in ACTIONS:
+		var button: Button = visual_buttons[action]
+		var diameter := _button_radius(action) * 2.0
+		button.size = Vector2(diameter, diameter)
+		button.position = _button_center(action) - button.size * 0.5
+	minimap_panel.position = _map_rect().position
+	minimap_panel.size = _map_rect().size
+
+func _process(_delta: float) -> void:
+	if joystick_thumb == null: return
+	joystick_thumb.position = _joystick_center() + movement * 49 - joystick_thumb.size * 0.5
+	if arena == null: return
+	for i in range(POTIONS.size()):
+		visual_buttons[POTIONS[i]].text = "%s\n%d" % [["HP", "Elixir", "Buff"][i], arena.potions[i]]
+	for i in range(mini(minimap_targets.size(), arena.markers.size())):
+		var marker: Node3D = arena.markers[i]
+		minimap_targets[i].position = _map_point(Vector2(marker.global_position.x, marker.global_position.z), Rect2(12, 12, 186, 146)) - Vector2(3, 3)
+	minimap_player.position = _map_point(Vector2(arena.actor.global_position.x, arena.actor.global_position.z), Rect2(12, 12, 186, 146)) - Vector2(5, 5)
 
 func _joystick_center() -> Vector2:
 	return Vector2(95, size.y - 105)
@@ -46,31 +134,7 @@ func _map_rect() -> Rect2:
 	return Rect2(size.x - 228, 15, 210, 170)
 
 func _draw() -> void:
-	var center := _joystick_center()
-	draw_circle(center, 73, Color("14242e88"))
-	draw_arc(center, 73, 0, TAU, 40, Color("8ebbb2"), 3)
-	draw_circle(center + movement * 49, 29, Color("75b8b3c9"))
-	for action in ACTIONS:
-		var point := _button_center(action)
-		var radius := _button_radius(action)
-		draw_circle(point, radius, Color("14242ecc") if action != "ATK" else Color("733a2acc"))
-		draw_arc(point, radius, 0, TAU, 32, Color("d7b46b"), 2)
-		if action == "ATK" or action in SKILLS:
-			var icon_index := 0 if action == "ATK" else SKILLS.find(action) + 1
-			draw_texture_rect_region(ICONS, Rect2(point - Vector2.ONE * (radius - 7), Vector2.ONE * (radius - 7) * 2), ICON_RECTS[icon_index])
-		elif action in POTIONS:
-			var index := POTIONS.find(action)
-			draw_texture_rect(POTION_TEXTURES[index], Rect2(point - Vector2(18, 18), Vector2(36, 36)), false)
-			if arena != null:
-				_label(str(arena.potions[index]), point + Vector2(12, 24), 15)
-		else:
-			_label("O" if action == "ALVO" else "+" if action == "ZOOM_IN" else "-", point + Vector2(-10, 9), 25)
-		if action in SKILLS and arena != null:
-			var remaining: float = arena.skill_cooldowns[SKILLS.find(action)]
-			if remaining > 0:
-				draw_circle(point, radius - 2, Color("071018aa"))
-				_label("%ds" % ceili(remaining), point + Vector2(-17, 8), 18)
-	_draw_minimap()
+	pass
 
 func _label(value: String, point: Vector2, font_size: int) -> void:
 	draw_string(ThemeDB.fallback_font, point, value, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.WHITE)
@@ -103,7 +167,7 @@ func _map_point(world: Vector2, inner: Rect2) -> Vector2:
 	return inner.position + (world - bounds.position) / bounds.size * inner.size
 
 func _input(event: InputEvent) -> void:
-	if arena is Arena01Playtest and (is_instance_valid(arena.attribute_window) or is_instance_valid(arena.skill_window)):
+	if arena is Arena01Playtest and (is_instance_valid(arena.attribute_window) or is_instance_valid(arena.skill_window) or is_instance_valid(arena.inventory_window)):
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if _activate_button_at(event.position):

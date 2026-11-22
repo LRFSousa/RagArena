@@ -77,7 +77,13 @@ func _ready() -> void:
 		attack_base_rotations = _capture_bone_rotations(attack_skeleton)
 		attack_arc = _build_attack_arc()
 		model_3d.add_child(attack_arc)
-		sprite.hide()
+		# A importacao de modelos animados pode falhar na renderizacao Web.
+		# Mantemos o sprite atras do modelo para o personagem continuar visivel.
+		if OS.has_feature("web"):
+			sprite.position = Vector3(0, 1.35, -0.32)
+			sprite.pixel_size = 0.020
+		else:
+			sprite.hide()
 
 func _physics_process(delta: float) -> void:
 	if accept_player_input:
