@@ -93,13 +93,15 @@ func refresh() -> void:
 		return
 	var header := HBoxContainer.new()
 	content.add_child(header)
-	_label("Atributos — %s" % str(character["name"]), 26, header).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_label("Atributos", 26, header).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var close_button := Button.new()
 	close_button.text = "Fechar"
 	close_button.custom_minimum_size = Vector2(95, 44)
 	close_button.pressed.connect(func(): closed.emit())
 	header.add_child(close_button)
-	_label("Base %d  |  Job %d  |  Pontos de atributo: %d  |  Pontos de habilidade: %d" % [int(character["base_level"]), int(character["job_level"]), int(character["attribute_points"]), int(character["skill_points"])], 18)
+	_label(str(character["name"]), 17)
+	_label("Base %d  |  Job %d" % [int(character["base_level"]), int(character["job_level"])], 18)
+	_label("Pontos: atributo %d  ·  habilidade %d" % [int(character["attribute_points"]), int(character["skill_points"])], 17)
 	_label("Os 48 pontos iniciais formam os seis atributos 5.", 15)
 	for key in Rules.KEYS:
 		var base := Rules.base_value(character, key)
@@ -131,12 +133,13 @@ func refresh() -> void:
 	]:
 		var row := HBoxContainer.new()
 		overview.add_child(row)
-		_label("%s: %s" % [pair[0], str(stats[pair[1]])], 17, row, true).custom_minimum_size = Vector2(220, 0)
+		_label("%s: %s" % [pair[0], str(stats[pair[1]])], 16, row, true).custom_minimum_size = Vector2(190, 0)
 		if pair[2] != "":
-			_label("%s: %s" % [pair[2], str(stats[pair[3]])], 17, row, true)
-	_label("FOR: ATK · AGI: esquiva/ataque · VIT: HP/DEF", 14, overview, true)
-	_label("INT: SP/M.ATK · DES: acerto · SOR: sorte", 14, overview, true)
-	_label("Escala adaptada para arena; SP e demais secundários aguardam integração ao combate.", 14, overview, true)
+			_label("%s: %s" % [pair[2], str(stats[pair[3]])], 16, row, true)
+	_label("FOR: ATK · VIT: HP/DEF", 14, overview, true)
+	_label("AGI: esquiva/ataque · DES: acerto", 14, overview, true)
+	_label("INT: SP/M.ATK · SOR: sorte", 14, overview, true)
+	_label("Demais efeitos de combate em desenvolvimento.", 14, overview, true)
 
 func _spend(key: String) -> void:
 	if not store.spend_attribute_point(character_id, key):

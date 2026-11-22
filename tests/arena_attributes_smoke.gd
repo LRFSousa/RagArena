@@ -52,7 +52,7 @@ func _run() -> void:
 	root.add_child(window)
 	await process_frame
 	check(window.content != null and window.content.get_child_count() >= 10 and window.overview.get_child_count() >= 9, "janelas de atributos e secundários renderizam juntas")
-	var row: HBoxContainer = window.content.get_child(3)
+	var row: HBoxContainer = window.content.get_child(5)
 	var add_button: Button = row.get_child(2)
 	check(not add_button.disabled, "botão habilitado quando há saldo")
 	add_button.pressed.emit()
