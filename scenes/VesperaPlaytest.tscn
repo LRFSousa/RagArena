@@ -11,3 +11,5 @@ use_vespera_map = true
 [node name="VesperaMap" parent="." instance=ExtResource("3_map")]
 
 [node name="TestActor3D" parent="." instance=ExtResource("2_actor")]
+position = Vector3(0, 0, 42)
+use_3d_model = true

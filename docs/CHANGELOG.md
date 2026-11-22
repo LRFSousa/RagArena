@@ -1,5 +1,10 @@
 # Changelog
 
+## Véspera — Espadachim visível na entrada
+
+- O modelo 3D é habilitado na própria cena antes da criação do personagem. O ponto inicial fica na via central, próximo ao portão sul, voltado para a praça.
+- Adicionado teste para confirmar o carregamento do modelo e a posição inicial. A exportação Web inclui explicitamente o GLB usado em tempo de execução.
+
 ## Véspera — cidade de teste, inventário e equipamentos
 
 - Incluídos igreja elevada, escadaria com rampa física, praça, ruas e oito casas na arena fechada Véspera. As casas e a igreja bloqueiam passagem; não há entrada nem portais.

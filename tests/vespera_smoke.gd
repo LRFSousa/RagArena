@@ -19,6 +19,8 @@ func _run() -> void:
 	for i in range(4):
 		await physics_frame
 	assert(scene.use_vespera_map and scene.actor != null and scene.camera != null and scene.controls != null)
+	assert(scene.actor.model_3d != null and scene.actor.walk_model_3d != null and scene.actor.model_3d.visible)
+	assert(scene.actor.global_position == Vector3(0, 0, 42))
 	assert(scene.markers.size() == 3 and scene.map_bounds == Rect2(-80, -80, 160, 160))
 	assert(scene.actor.ramp_passages.size() == 1)
 	assert(map.get_node("Cidade/TerracoIgreja") != null)
