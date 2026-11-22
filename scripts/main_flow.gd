@@ -4,6 +4,7 @@ class_name MainFlow
 const ArenaScene = preload("res://scenes/arena.tscn")
 const ProfileStore = preload("res://scripts/local_profile_store.gd")
 const AttributePanel = preload("res://scripts/attribute_window.gd")
+const SkillPanel = preload("res://scripts/skill_window.gd")
 const CLASS_IDS := ["paladin", "mage", "assassin", "archer"]
 const CLASS_NAMES := ["Paladino", "Mago", "Assassino", "Arqueiro"]
 const CHARACTER_CLASS_IDS := ["swordsman", "mage", "archer", "acolyte", "thief"]
@@ -20,6 +21,7 @@ var participation_settled := false
 var edit_id := ""
 var keyboard_panel: PanelContainer
 var attribute_window: AttributeWindow
+var skill_window: SkillWindow
 
 func _ready() -> void:
 	store = ProfileStore.new()
@@ -134,6 +136,7 @@ func show_menu() -> void:
 	if not selected.is_empty():
 		label("%s  |  Base %d  Job %d" % [selected["name"], selected["base_level"], selected["job_level"]], 18)
 		button("Atributos", func(): show_attributes(str(selected["id"])))
+		button("Habilidades", func(): show_skills(str(selected["id"])))
 	button("Arena", func(): show_characters(true))
 	button("Personagens", func(): show_characters(false))
 	button("Perfil", show_profile)
@@ -188,6 +191,20 @@ func show_attributes(character_id: String) -> void:
 	attribute_window.closed.connect(func():
 		attribute_window.queue_free()
 		attribute_window = null
+		show_menu())
+
+func show_skills(character_id: String) -> void:
+	if store.find_character(character_id).is_empty():
+		return
+	if is_instance_valid(skill_window):
+		skill_window.queue_free()
+	skill_window = SkillPanel.new()
+	skill_window.store = store
+	skill_window.character_id = character_id
+	screen.add_child(skill_window)
+	skill_window.closed.connect(func():
+		skill_window.queue_free()
+		skill_window = null
 		show_menu())
 
 func show_profile() -> void:

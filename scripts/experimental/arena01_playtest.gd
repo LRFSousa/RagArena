@@ -6,6 +6,7 @@ const Controls = preload("res://scripts/experimental/mobile_arena_controls_3d.gd
 const OrbitCamera = preload("res://scripts/experimental/orbit_camera_3d.gd")
 const ProfileStore = preload("res://scripts/local_profile_store.gd")
 const AttributePanel = preload("res://scripts/attribute_window.gd")
+const SkillPanel = preload("res://scripts/skill_window.gd")
 const Derived = preload("res://scripts/arena_derived_stats.gd")
 
 @onready var actor: MountainTestActor3D = $TestActor3D
@@ -31,6 +32,7 @@ var effect: MeshInstance3D
 var effect_time := 0.0
 var profile_store: LocalProfileStore
 var attribute_window: AttributeWindow
+var skill_window: SkillWindow
 var ui_layer: CanvasLayer
 
 func _ready() -> void:
@@ -75,6 +77,12 @@ func _ready() -> void:
 	exp_button.custom_minimum_size = Vector2(145, 43)
 	exp_button.pressed.connect(_grant_test_exp)
 	ui_layer.add_child(exp_button)
+	var skills_button := Button.new()
+	skills_button.text = "Habilidades"
+	skills_button.position = Vector2(330, 92)
+	skills_button.size = Vector2(145, 43)
+	skills_button.pressed.connect(show_skills)
+	ui_layer.add_child(skills_button)
 	hud = Label.new()
 	hud.position = Vector2(20, 20)
 	hud.add_theme_font_size_override("font_size", 20)
@@ -215,7 +223,7 @@ func _create_target(target_name: String, foot: Vector3, color: Color) -> void:
 
 func _physics_process(delta: float) -> void:
 	if controls != null:
-		actor.move_input = Vector2.ZERO if is_instance_valid(attribute_window) else (Input.get_vector("move_left", "move_right", "move_up", "move_down") + controls.movement).limit_length(1)
+		actor.move_input = Vector2.ZERO if is_instance_valid(attribute_window) or is_instance_valid(skill_window) else (Input.get_vector("move_left", "move_right", "move_up", "move_down") + controls.movement).limit_length(1)
 	attack_cooldown = maxf(0, attack_cooldown - delta)
 	shield_time = maxf(0, shield_time - delta)
 	determination_time = maxf(0, determination_time - delta)
@@ -231,7 +239,7 @@ func _process(_delta: float) -> void:
 		hud.text = "ARENA 01 | HP %d/%d | Alvo %d: %d HP | Acertos %d\n%s" % [player_hp, player_max_hp, selected_marker + 1, target_hp[selected_marker], hits_landed, feedback]
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_instance_valid(attribute_window):
+	if is_instance_valid(attribute_window) or is_instance_valid(skill_window):
 		return
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
@@ -248,6 +256,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_action("FOR")
 		KEY_C:
 			show_attributes()
+		KEY_K:
+			show_skills()
 
 func _ensure_test_character() -> String:
 	if profile_store == null:
@@ -271,7 +281,7 @@ func _ensure_test_character() -> String:
 
 func show_attributes() -> void:
 	var id := _ensure_test_character()
-	if id == "" or is_instance_valid(attribute_window):
+	if id == "" or is_instance_valid(attribute_window) or is_instance_valid(skill_window):
 		return
 	controls.movement = Vector2.ZERO
 	attribute_window = AttributePanel.new()
@@ -283,6 +293,19 @@ func show_attributes() -> void:
 	attribute_window.closed.connect(func():
 		attribute_window.queue_free()
 		attribute_window = null)
+
+func show_skills() -> void:
+	var id := _ensure_test_character()
+	if id == "" or is_instance_valid(skill_window) or is_instance_valid(attribute_window):
+		return
+	controls.movement = Vector2.ZERO
+	skill_window = SkillPanel.new()
+	skill_window.store = profile_store
+	skill_window.character_id = id
+	ui_layer.add_child(skill_window)
+	skill_window.closed.connect(func():
+		skill_window.queue_free()
+		skill_window = null)
 
 func _grant_test_exp() -> void:
 	var id := _ensure_test_character()

@@ -1,5 +1,11 @@
 # Changelog
 
+## Progressão — distribuição de habilidades do Espadachim
+
+- Mantida a recompensa persistente Base/Job EXP por participação válida, eliminações, assistências e conclusão da partida. A subida de Base concede pontos de atributos; a de Job concede pontos de habilidade.
+- Criada árvore persistente do Espadachim com sete habilidades principais, ranks até 10 e pré-requisitos. Cada compra gasta um ponto do personagem e é salva. Três habilidades adicionais de missão aparecem como futuras.
+- Adicionada janela de habilidades ao menu e à Arena01. A janela bloqueia controles da arena enquanto aberta. Os efeitos de combate das skills ainda não foram ativados nesta etapa.
+
 ## Arena01 — atributos secundários e ATK do Espadachim
 
 - O menu de atributos abre dois painéis juntos: distribuição dos seis atributos e visão geral de HP, SP, regeneração, ATK, M.ATK, DEF, M.DEF, acerto, esquiva e velocidades.

@@ -39,6 +39,13 @@ func _run() -> void:
 	scene.attribute_window.closed.emit()
 	await process_frame
 	assert(not is_instance_valid(scene.attribute_window), "Janela fecha sem bloquear a arena")
+	scene.show_skills()
+	assert(is_instance_valid(scene.skill_window) and scene.skill_window.list.get_child_count() > 10, "Árvore de habilidades abre na Arena01")
+	scene.controls._input(modal_click)
+	assert(scene.hits_landed == hits_before_modal, "Janela de habilidades bloqueia ataque por baixo")
+	scene.skill_window.closed.emit()
+	await process_frame
+	assert(not is_instance_valid(scene.skill_window), "Janela de habilidades fecha")
 	assert(is_equal_approx(scene.actor.speed, 8.0), "Arena ampliada deve usar deslocamento dobrado")
 	assert(scene.markers.size() == 3)
 	assert(Vector2(scene.get_node("MorroOeste").position.x, scene.get_node("MorroOeste").position.z).distance_to(Vector2(scene.get_node("MorroOeste2").position.x, scene.get_node("MorroOeste2").position.z)) > 100)

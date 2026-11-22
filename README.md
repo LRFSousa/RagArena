@@ -73,3 +73,5 @@ O APK de depuração e as instruções de instalação estão descritos em `docs
 Jogue no navegador em https://lrfsousa.github.io/RagArena/ (preferencialmente em paisagem). Veja `docs/WEB_TESTE.md` para exportação e hospedagem.
 
 A Arena01 de 160 × 160 m é a cena inicial 3D do projeto. Teste com câmera orbital, minimapa, poções, habilidades e ataques em bonecos de treino: https://lrfsousa.github.io/RagArena/arena01-playtest/.
+
+Na Arena01, abra **Atributos** para distribuir pontos Base e **Habilidades** para gastar pontos de Job do Espadachim. **EXP teste** simula uma recompensa de partida; os bonecos da prévia 3D ainda não representam jogadores nem pagam EXP automaticamente. No fluxo de partidas 2D, a recompensa persistente já considera tempo ativo, eliminações, assistências, conclusão e vitória.

@@ -7,6 +7,7 @@ const MAX_CHARACTERS := 9
 const DEFAULT_PATH := "user://profile_v1.json"
 const ProgressionScript = preload("res://scripts/arena_progression.gd")
 const AttributesScript = preload("res://scripts/arena_attributes.gd")
+const SkillTree = preload("res://scripts/swordsman_skill_tree.gd")
 
 var path := DEFAULT_PATH
 var data: Dictionary = {}
@@ -63,6 +64,9 @@ func load_profile() -> bool:
 			character["skill_points"] = maxi(0, int(character.get("job_level", 1)) - 1)
 			character["skill_awarded_through_level"] = int(character.get("job_level", 1))
 			needs_upgrade = true
+		if not character.has("skill_ranks"):
+			character["skill_ranks"] = {}
+			needs_upgrade = true
 	if was_legacy and str(data["account_id"]) != "":
 		var old_class := "swordsman"
 		var legacy_preset := find_preset(str(data["selected_id"]))
@@ -104,7 +108,7 @@ func save_profile() -> bool:
 	return true
 
 static func new_character(id: String, character_name: String, class_id: String) -> Dictionary:
-	return {"id": id, "name": character_name, "class_id": class_id, "base_level": 1, "base_exp": 0, "job_level": 1, "job_exp": 0, "attributes": AttributesScript.initial_values(), "attribute_points": 0, "skill_points": 0, "attribute_awarded_through_level": 1, "skill_awarded_through_level": 1}
+	return {"id": id, "name": character_name, "class_id": class_id, "base_level": 1, "base_exp": 0, "job_level": 1, "job_exp": 0, "attributes": AttributesScript.initial_values(), "attribute_points": 0, "skill_points": 0, "skill_ranks": {}, "attribute_awarded_through_level": 1, "skill_awarded_through_level": 1}
 
 func create_character(character_name: String, class_id: String) -> String:
 	if not has_identity() or not valid_character_name(character_name) or not CHARACTER_CLASS_IDS.has(class_id) or data["characters"].size() >= MAX_CHARACTERS:
@@ -201,6 +205,20 @@ func spend_attribute_point(character_id: String, key: String) -> bool:
 	var before := character.duplicate(true)
 	character["attributes"][key] = base + 1
 	character["attribute_points"] = int(character["attribute_points"]) - cost
+	if not save_profile():
+		character.clear()
+		character.merge(before)
+		return false
+	return true
+
+func spend_skill_point(character_id: String, skill_id: String) -> bool:
+	var character := find_character(character_id)
+	if character.is_empty() or not SkillTree.can_spend(character, skill_id):
+		last_error = "Ponto insuficiente, classe incompatível, rank máximo ou pré-requisito pendente."
+		return false
+	var before := character.duplicate(true)
+	character["skill_ranks"][skill_id] = SkillTree.rank(character, skill_id) + 1
+	character["skill_points"] = int(character["skill_points"]) - 1
 	if not save_profile():
 		character.clear()
 		character.merge(before)

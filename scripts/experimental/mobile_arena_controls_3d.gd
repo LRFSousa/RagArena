@@ -103,7 +103,7 @@ func _map_point(world: Vector2, inner: Rect2) -> Vector2:
 	return inner.position + (world - bounds.position) / bounds.size * inner.size
 
 func _input(event: InputEvent) -> void:
-	if arena is Arena01Playtest and is_instance_valid(arena.attribute_window):
+	if arena is Arena01Playtest and (is_instance_valid(arena.attribute_window) or is_instance_valid(arena.skill_window)):
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if _activate_button_at(event.position):
