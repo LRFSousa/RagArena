@@ -97,6 +97,8 @@ Os papéis e nomes das ramificações são propostas para discussão; cada linha
 
 **Decisão posterior:** usar a árvore completa do Espadachim clássico Pre-Renewal como referência de habilidades, em vez de limitar a classe às quatro habilidades da tabela abaixo. Os nomes são provisórios; não importar código, texto descritivo ou arte de terceiros. A tabela abaixo continua válida para as quatro habilidades já discutidas, e as demais estão inventariadas em `docs/research/swordsman_skill_tree_reference.md`.
 
+**Custos e tempos definidos:** manter os valores Pre-Renewal das dez habilidades como registrados no documento de referência. Diferenciar duração do efeito, atraso após uso e recarga; passivas não têm custo de ativação. Isto substitui as lacunas de custo, duração e recarga da tabela abaixo; dano e funcionamento PvP ainda dependem da integração do combate.
+
 | Ação | Tipo e função | Alvo e alcance | Progressão a definir |
 |---|---|---|---|
 | Ataque básico — Golpe físico | Ataque comum com corte e arco luminoso | **Um alvo** inimigo ou objeto destrutível até **2 blocos**, incluindo o bloco adjacente; toque fora do alcance aproxima antes de atacar | Disponível desde o início; dano acompanha atributos e arma |

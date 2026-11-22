@@ -29,4 +29,23 @@ As três últimas aparecem na árvore como habilidades de nível único, mas nã
 
 ## Antes da implementação
 
-Definir a aplicação de Provocar contra jogadores, as três condições de desbloqueio adicionais, consumo de SP, recargas, duração, dano e área em escala da Arena01. O rAthena registra, por exemplo, Golpe Fulminante com 8 SP nos ranks 1–5 e 15 SP nos ranks 6–10, Vigor com 10 SP e recarga de 10 s, e Impacto Explosivo como habilidade de área com custo de HP e SP. Esses números são **verificados na fonte, não balanceamento aprovado para a arena**. Não copiar a tabela de dano diretamente para o PvP antes de testar HP, duração de partida e faixas de nível.
+### Custos e tempos — decisão de 22/11/2026
+
+**Decisão do projeto:** manter os custos, durações e recargas da referência rAthena Pre-Renewal para essas dez habilidades. Os valores abaixo vêm de [`skill_db.yml`](https://github.com/rathena/rathena/blob/dd073ca4720b90e4eaf90fd5788eb7676f1b9146/db/pre-re/skill_db.yml#L147-L359) e das [três habilidades adicionais](https://github.com/rathena/rathena/blob/dd073ca4720b90e4eaf90fd5788eb7676f1b9146/db/pre-re/skill_db.yml#L5089-L5116). Uma habilidade passiva não consome SP ao funcionar. Campo ausente no banco significa que **não há valor próprio declarado**; não inventar uma recarga ou duração.
+
+| Habilidade | Custo ao usar | Duração e intervalo declarados |
+|---|---|---|
+| Perícia com Espada | Nenhum | Passiva contínua |
+| Perícia com Espada de Duas Mãos | Nenhum | Passiva contínua |
+| Aumentar Recuperação de HP | Nenhum | Passiva contínua; frequência da recuperação vem da lógica do servidor, não de `skill_db.yml` |
+| Golpe Fulminante | 8 SP (ranks 1–5); 15 SP (6–10) | Golpe instantâneo; `Duration2: 5000` pertence ao estado secundário de atordoamento, não à duração do golpe; sem `Cooldown` próprio declarado |
+| Provocar | 4–13 SP, somando 1 por rank | Efeito 30 s; recarga 1 s |
+| Impacto Explosivo | 30 SP; HP 20/20/19/19/18/18/17/17/16/16 por rank | Golpe instantâneo; atraso de ação após uso 2 s; efeito secundário 10 s; sem `Cooldown` próprio declarado |
+| Vigor | 10 SP | 10/13/16/19/22/25/28/31/34/37 s por rank; recarga 10 s |
+| Recuperar HP em Movimento | Nenhum | Passiva contínua; habilidade adicional de missão |
+| Golpe Fatal | Nenhum além do custo do Golpe Fulminante que modifica | Modificador passivo; habilidade adicional de missão |
+| Instinto de Sobrevivência | 1 SP ao ativar | Estado ativável; sem duração ou recarga própria declarada; habilidade adicional de missão |
+
+`Duration1`, `Duration2`, `AfterCastActDelay` e `Cooldown` têm papéis diferentes no banco do rAthena. Na implementação, representar esses campos separadamente para não transformar a duração de um estado secundário em recarga de botão. Também preservar os pré-requisitos da árvore: Perícia com Espada 1 para a perícia de duas mãos, Golpe Fulminante 5 para Impacto Explosivo e Provocar 5 para Vigor.
+
+**Ainda requer definição específica da arena:** como obter as três habilidades de missão sem mundo aberto; como Provocar funciona contra outro jogador; como SP se recupera durante a partida; e como os tempos e estados são mostrados na interface. O ataque básico e o Golpe Fulminante continuam com alcance adaptado de dois blocos e um alvo. Não copiar código, arte ou descrições da fonte.
