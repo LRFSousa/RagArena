@@ -63,7 +63,7 @@ func run_tests() -> void:
 	file.store_string(JSON.stringify(legacy))
 	file.close()
 	var migrated := Store.new(LEGACY_PATH)
-	check(migrated.data["version"] == 2 and migrated.data["characters"].size() == 1 and migrated.data["characters"][0]["class_id"] == "mage", "perfil v1 migrado com classe selecionada")
+	check(migrated.data["version"] == 3 and migrated.data["characters"].size() == 1 and migrated.data["characters"][0]["class_id"] == "mage", "perfil v1 migrado com classe selecionada")
 	check(migrated.data["history"].size() == 1 and migrated.data["presets"].size() == 1 and FileAccess.file_exists(LEGACY_PATH + ".v1.bak"), "histórico, presets e cópia v1 preservados")
 	clean(TEST_PATH)
 	clean(LEGACY_PATH)

@@ -6,6 +6,7 @@ const CHARACTER_CLASS_IDS := ["swordsman", "mage", "archer", "acolyte", "thief"]
 const MAX_CHARACTERS := 9
 const DEFAULT_PATH := "user://profile_v1.json"
 const ProgressionScript = preload("res://scripts/arena_progression.gd")
+const AttributesScript = preload("res://scripts/arena_attributes.gd")
 
 var path := DEFAULT_PATH
 var data: Dictionary = {}
@@ -16,7 +17,7 @@ func _init(storage_path: String = DEFAULT_PATH) -> void:
 	load_profile()
 
 func empty_profile() -> Dictionary:
-	return {"version": 2, "account_id": "", "character_name": "", "presets": [], "selected_id": "", "history": [], "characters": [], "selected_character_id": "", "processed_matches": []}
+	return {"version": 3, "account_id": "", "character_name": "", "presets": [], "selected_id": "", "history": [], "characters": [], "selected_character_id": "", "processed_matches": []}
 
 func load_profile() -> bool:
 	data = empty_profile()
@@ -28,12 +29,12 @@ func load_profile() -> bool:
 		return false
 	var parser := JSON.new()
 	var parsed = parser.data if parser.parse(file.get_as_text()) == OK else null
-	if (not parsed is Dictionary or not [1, 2].has(int(parsed.get("version", 0)))) and FileAccess.file_exists(path + ".bak"):
+	if (not parsed is Dictionary or not [1, 2, 3].has(int(parsed.get("version", 0)))) and FileAccess.file_exists(path + ".bak"):
 		var backup_file := FileAccess.open(path + ".bak", FileAccess.READ)
 		if backup_file != null:
 			var backup_parser := JSON.new()
 			parsed = backup_parser.data if backup_parser.parse(backup_file.get_as_text()) == OK else null
-	if not parsed is Dictionary or not [1, 2].has(int(parsed.get("version", 0))):
+	if not parsed is Dictionary or not [1, 2, 3].has(int(parsed.get("version", 0))):
 		last_error = "Perfil local inválido."
 		return false
 	var was_legacy := int(parsed["version"]) == 1
@@ -44,6 +45,24 @@ func load_profile() -> bool:
 		data = empty_profile()
 		last_error = "Perfil local inválido."
 		return false
+	var needs_upgrade := int(parsed["version"]) != 3
+	var attribute_rules := AttributesScript.new()
+	if attribute_rules.config.is_empty():
+		last_error = attribute_rules.last_error
+		return false
+	for character in data["characters"]:
+		if not character is Dictionary:
+			last_error = "Personagem inválido no perfil."
+			return false
+		if not character.has("attributes"):
+			character["attributes"] = AttributesScript.initial_values()
+			character["attribute_points"] = attribute_rules.total_at(int(character.get("base_level", 1))) - 48
+			character["attribute_awarded_through_level"] = int(character.get("base_level", 1))
+			needs_upgrade = true
+		if not character.has("skill_points"):
+			character["skill_points"] = maxi(0, int(character.get("job_level", 1)) - 1)
+			character["skill_awarded_through_level"] = int(character.get("job_level", 1))
+			needs_upgrade = true
 	if was_legacy and str(data["account_id"]) != "":
 		var old_class := "swordsman"
 		var legacy_preset := find_preset(str(data["selected_id"]))
@@ -60,8 +79,10 @@ func load_profile() -> bool:
 		if backup != null:
 			backup.store_string(JSON.stringify(parsed, "\t"))
 			backup.flush()
-		if not save_profile():
-			return false
+		needs_upgrade = true
+	data["version"] = 3
+	if needs_upgrade and not save_profile():
+		return false
 	last_error = ""
 	return true
 
@@ -83,7 +104,7 @@ func save_profile() -> bool:
 	return true
 
 static func new_character(id: String, character_name: String, class_id: String) -> Dictionary:
-	return {"id": id, "name": character_name, "class_id": class_id, "base_level": 1, "base_exp": 0, "job_level": 1, "job_exp": 0}
+	return {"id": id, "name": character_name, "class_id": class_id, "base_level": 1, "base_exp": 0, "job_level": 1, "job_exp": 0, "attributes": AttributesScript.initial_values(), "attribute_points": 0, "skill_points": 0, "attribute_awarded_through_level": 1, "skill_awarded_through_level": 1}
 
 func create_character(character_name: String, class_id: String) -> String:
 	if not has_identity() or not valid_character_name(character_name) or not CHARACTER_CLASS_IDS.has(class_id) or data["characters"].size() >= MAX_CHARACTERS:
@@ -126,10 +147,15 @@ func settle_match(character_id: String, report: Dictionary) -> Dictionary:
 		last_error = "Participação já processada."
 		return {}
 	var progression := ProgressionScript.new()
+	var attribute_rules := AttributesScript.new()
 	if progression.config.is_empty():
 		last_error = progression.last_error
 		return {}
+	if attribute_rules.config.is_empty():
+		last_error = attribute_rules.last_error
+		return {}
 	var reward: Dictionary = progression.reward(report)
+	var before := character.duplicate(true)
 	var old_base := int(character["base_level"])
 	var old_job := int(character["job_level"])
 	var old_base_exp := int(character["base_exp"])
@@ -138,13 +164,19 @@ func settle_match(character_id: String, report: Dictionary) -> Dictionary:
 	character["job_exp"] = progression.capped_total(old_job_exp + int(reward["job"]), "job")
 	character["base_level"] = progression.level_for(int(character["base_exp"]), "base")
 	character["job_level"] = progression.level_for(int(character["job_exp"]), "job")
+	var base_from := int(character.get("attribute_awarded_through_level", old_base))
+	var job_from := int(character.get("skill_awarded_through_level", old_job))
+	var attribute_gain := attribute_rules.points_between(base_from, int(character["base_level"]))
+	var skill_gain := maxi(0, int(character["job_level"]) - job_from)
+	character["attribute_points"] = int(character.get("attribute_points", 0)) + attribute_gain
+	character["skill_points"] = int(character.get("skill_points", 0)) + skill_gain
+	character["attribute_awarded_through_level"] = maxi(base_from, int(character["base_level"]))
+	character["skill_awarded_through_level"] = maxi(job_from, int(character["job_level"]))
 	data["processed_matches"].append(key)
 	data["history"].append({"character_id": character_id, "match_id": match_id, "winner": str(report.get("winner", "")), "reason": str(report.get("reason", "")), "base_reward": int(reward["base"]), "job_reward": int(reward["job"]), "played_at": Time.get_datetime_string_from_system(true)})
 	if not save_profile():
-		character["base_exp"] = old_base_exp
-		character["job_exp"] = old_job_exp
-		character["base_level"] = old_base
-		character["job_level"] = old_job
+		character.clear()
+		character.merge(before)
 		data["processed_matches"].pop_back()
 		data["history"].pop_back()
 		return {}
@@ -152,7 +184,28 @@ func settle_match(character_id: String, report: Dictionary) -> Dictionary:
 	reward["job_awarded"] = int(character["job_exp"]) - old_job_exp
 	reward["base_levels"] = int(character["base_level"]) - old_base
 	reward["job_levels"] = int(character["job_level"]) - old_job
+	reward["attribute_points_awarded"] = attribute_gain
+	reward["skill_points_awarded"] = skill_gain
 	return reward
+
+func spend_attribute_point(character_id: String, key: String) -> bool:
+	var character := find_character(character_id)
+	if character.is_empty() or not AttributesScript.KEYS.has(key):
+		last_error = "Personagem ou atributo inválido."
+		return false
+	var base := AttributesScript.base_value(character, key)
+	var cost := AttributesScript.next_cost(base)
+	if base >= 99 or int(character.get("attribute_points", 0)) < cost:
+		last_error = "Pontos insuficientes ou atributo no limite."
+		return false
+	var before := character.duplicate(true)
+	character["attributes"][key] = base + 1
+	character["attribute_points"] = int(character["attribute_points"]) - cost
+	if not save_profile():
+		character.clear()
+		character.merge(before)
+		return false
+	return true
 
 static func valid_character_name(value: String) -> bool:
 	if value.length() < 3 or value.length() > 16:

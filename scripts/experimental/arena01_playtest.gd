@@ -4,6 +4,8 @@ class_name Arena01Playtest
 const Probe = preload("res://scripts/experimental/height_attack_probe.gd")
 const Controls = preload("res://scripts/experimental/mobile_arena_controls_3d.gd")
 const OrbitCamera = preload("res://scripts/experimental/orbit_camera_3d.gd")
+const ProfileStore = preload("res://scripts/local_profile_store.gd")
+const AttributePanel = preload("res://scripts/attribute_window.gd")
 
 @onready var actor: MountainTestActor3D = $TestActor3D
 
@@ -25,6 +27,9 @@ var map_bounds := Rect2(-80, -80, 160, 160)
 var map_regions: Array[Rect2] = [Rect2(-80, -80, 160, 160), Rect2(-60, -60, 24, 24), Rect2(36, 36, 24, 24)]
 var effect: MeshInstance3D
 var effect_time := 0.0
+var profile_store: LocalProfileStore
+var attribute_window: AttributeWindow
+var ui_layer: CanvasLayer
 
 func _ready() -> void:
 	_configure_geometry()
@@ -48,12 +53,26 @@ func _ready() -> void:
 	_create_target("AlvoPiso", Vector3(0, 0, -21), Color("d77258"))
 	_create_target("AlvoMorroOeste", Vector3(-48, 5, -48), Color("edc568"))
 	_create_target("AlvoMorroLeste", Vector3(48, 5, 48), Color("82cce0"))
-	var layer := CanvasLayer.new()
-	add_child(layer)
+	ui_layer = CanvasLayer.new()
+	add_child(ui_layer)
 	controls = Controls.new()
 	controls.arena = self
-	layer.add_child(controls)
+	ui_layer.add_child(controls)
 	controls.action_pressed.connect(_on_action)
+	var attributes_button := Button.new()
+	attributes_button.text = "Atributos"
+	attributes_button.position = Vector2(20, 92)
+	attributes_button.size = Vector2(145, 43)
+	attributes_button.custom_minimum_size = Vector2(145, 43)
+	attributes_button.pressed.connect(show_attributes)
+	ui_layer.add_child(attributes_button)
+	var exp_button := Button.new()
+	exp_button.text = "EXP teste"
+	exp_button.position = Vector2(175, 92)
+	exp_button.size = Vector2(145, 43)
+	exp_button.custom_minimum_size = Vector2(145, 43)
+	exp_button.pressed.connect(_grant_test_exp)
+	ui_layer.add_child(exp_button)
 	hud = Label.new()
 	hud.position = Vector2(20, 20)
 	hud.add_theme_font_size_override("font_size", 20)
@@ -61,7 +80,7 @@ func _ready() -> void:
 	hud.add_theme_color_override("font_shadow_color", Color.BLACK)
 	hud.add_theme_constant_override("shadow_offset_x", 2)
 	hud.add_theme_constant_override("shadow_offset_y", 2)
-	layer.add_child(hud)
+	ui_layer.add_child(hud)
 	effect = MeshInstance3D.new()
 	var sphere := SphereMesh.new()
 	sphere.radius = 0.65
@@ -191,7 +210,7 @@ func _create_target(target_name: String, foot: Vector3, color: Color) -> void:
 
 func _physics_process(delta: float) -> void:
 	if controls != null:
-		actor.move_input = (Input.get_vector("move_left", "move_right", "move_up", "move_down") + controls.movement).limit_length(1)
+		actor.move_input = Vector2.ZERO if is_instance_valid(attribute_window) else (Input.get_vector("move_left", "move_right", "move_up", "move_down") + controls.movement).limit_length(1)
 	attack_cooldown = maxf(0, attack_cooldown - delta)
 	shield_time = maxf(0, shield_time - delta)
 	determination_time = maxf(0, determination_time - delta)
@@ -207,6 +226,8 @@ func _process(_delta: float) -> void:
 		hud.text = "ARENA 01 | HP %d/100 | Alvo %d: %d HP | Acertos %d\n%s" % [player_hp, selected_marker + 1, target_hp[selected_marker], hits_landed, feedback]
 
 func _unhandled_input(event: InputEvent) -> void:
+	if is_instance_valid(attribute_window):
+		return
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
 	match event.physical_keycode:
@@ -220,6 +241,56 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_action("CURA")
 		KEY_F:
 			_on_action("FOR")
+		KEY_C:
+			show_attributes()
+
+func _ensure_test_character() -> String:
+	if profile_store == null:
+		profile_store = ProfileStore.new()
+	if not profile_store.has_identity() and not profile_store.create_identity("Jogador"):
+		feedback = profile_store.last_error
+		return ""
+	var selected := profile_store.find_character(str(profile_store.data["selected_character_id"]))
+	if not selected.is_empty() and str(selected["class_id"]) == "swordsman":
+		return str(selected["id"])
+	for character in profile_store.data["characters"]:
+		if str(character.get("class_id", "")) == "swordsman":
+			profile_store.select_character(str(character["id"]))
+			return str(character["id"])
+	var id := profile_store.create_character("Espadachim", "swordsman")
+	if id == "":
+		feedback = "Crie um Espadachim no menu de personagens: %s" % profile_store.last_error
+		return ""
+	profile_store.select_character(id)
+	return id
+
+func show_attributes() -> void:
+	var id := _ensure_test_character()
+	if id == "" or is_instance_valid(attribute_window):
+		return
+	controls.movement = Vector2.ZERO
+	attribute_window = AttributePanel.new()
+	attribute_window.store = profile_store
+	attribute_window.character_id = id
+	attribute_window.derived_stats = {"HP": 100, "ATQ": 20, "Velocidade": actor.speed, "Alcance": "2 blocos"}
+	ui_layer.add_child(attribute_window)
+	attribute_window.closed.connect(func():
+		attribute_window.queue_free()
+		attribute_window = null)
+
+func _grant_test_exp() -> void:
+	var id := _ensure_test_character()
+	if id == "":
+		return
+	var match_id := "teste-" + Crypto.new().generate_random_bytes(16).hex_encode()
+	var reward := profile_store.settle_match(id, {"match_id": match_id, "active_seconds": 480.0, "arena_limit_seconds": 480.0, "kills": 5, "assists": 5, "effective_skills": 5, "completed_with_winner": true, "won": true})
+	if reward.is_empty():
+		feedback = profile_store.last_error
+		return
+	var character := profile_store.find_character(id)
+	feedback = "EXP teste: Base +%d, Job +%d | Base %d, Job %d | Pontos +%d/+%d" % [reward["base_awarded"], reward["job_awarded"], character["base_level"], character["job_level"], reward["attribute_points_awarded"], reward["skill_points_awarded"]]
+	if is_instance_valid(attribute_window):
+		attribute_window.refresh()
 
 func _on_action(action: String) -> void:
 	match action:

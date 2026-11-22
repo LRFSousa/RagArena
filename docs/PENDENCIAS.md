@@ -1,5 +1,8 @@
 # Pendências
 
+- Atributos V1: validar em celular a legibilidade e o toque na janela, a persistência após fechar e reabrir o navegador e o ritmo dos pontos em partidas reais. O botão “EXP teste” é temporário e deverá ser removido antes de uma build pública de produção.
+- Definir bônus de classe/Job, impacto de FOR/AGI/VIT/INT/DES/SOR nas fórmulas PvP, limites finais e árvore de habilidades. Os pontos de habilidade são acumulados, mas ainda não podem ser gastos.
+
 - Validar no celular a velocidade de 8 m/s e as bordas das quatro rampas da Arena01 após o ajuste de colisão lateral.
 
 ## Redesenho antes do próximo desenvolvimento

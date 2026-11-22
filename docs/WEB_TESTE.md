@@ -17,7 +17,7 @@ Sirva a pasta `web_build` por HTTP/HTTPS; abrir `index.html` diretamente como `f
 
 Arena 3D com barra de habilidades, poções, minimapa e câmera orbital: https://lrfsousa.github.io/RagArena/arena-3d-mobile/. Abra em paisagem. Use o controle esquerdo para andar, arraste uma região livre para girar, use pinça ou +/− para zoom. O cenário é provisório e autoral; os mapas do cliente Ragnarok continuam fora do pacote público.
 
-Teste da Arena01 de 160 × 160 m: https://lrfsousa.github.io/RagArena/arena01-playtest/. Mantém os mesmos controles e inclui os dois morros com rampas, ruínas, cercas, rochas e três alvos. O zoom máximo enquadra toda a arena. Veja `docs/ARENA01_VALIDACAO.md`.
+Teste da Arena01 de 160 × 160 m: https://lrfsousa.github.io/RagArena/arena01-playtest/. Mantém os mesmos controles e inclui os dois morros com rampas, ruínas, cercas, rochas e três alvos. O zoom máximo enquadra toda a arena. Toque em **EXP teste** para receber uma recompensa simulada e em **Atributos** para distribuir pontos; feche e reabra a página para conferir persistência local. Veja `docs/ARENA01_VALIDACAO.md` e `docs/RELATORIOS/RELATORIO_ATRIBUTOS_V1.md`.
 
 No computador, use o clique esquerdo nos ícones de ataque, habilidades, poções, alvo e zoom. O botão direito do mouse gira a câmera e a roda aproxima ou afasta; WASD move o personagem.
 

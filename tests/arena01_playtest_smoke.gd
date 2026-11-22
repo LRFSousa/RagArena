@@ -1,11 +1,16 @@
 extends SceneTree
 
 const Probe = preload("res://scripts/experimental/height_attack_probe.gd")
+const Store = preload("res://scripts/local_profile_store.gd")
+const PROFILE_PATH := "res://../arena01_attributes_ui_test.json"
 
 func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
+	for suffix in ["", ".bak"]:
+		if FileAccess.file_exists(PROFILE_PATH + suffix):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(PROFILE_PATH + suffix))
 	var backup: Node3D = load("res://scenes/Arena01_80x80_backup.tscn").instantiate()
 	assert((backup.get_node("Piso") as CSGBox3D).size == Vector3(80, 1, 80))
 	var scene: Arena01Playtest = load("res://scenes/Arena01.tscn").instantiate()
@@ -17,6 +22,23 @@ func _run() -> void:
 	assert(scene.controls._map_point(Vector2(-80, -80), Rect2(0, 0, 100, 100)) == Vector2.ZERO)
 	assert(scene.controls._map_point(Vector2(80, 80), Rect2(0, 0, 100, 100)) == Vector2(100, 100))
 	assert(scene.actor.model_3d != null and scene.camera != null and scene.controls != null)
+	scene.profile_store = Store.new(PROFILE_PATH)
+	assert(scene.profile_store.create_identity("Conta_Arena") and scene.profile_store.create_character("Espada_Arena", "swordsman") != "")
+	scene._grant_test_exp()
+	var test_id: String = str(scene.profile_store.data["selected_character_id"])
+	assert(int(scene.profile_store.find_character(test_id)["attribute_points"]) > 0, "EXP de teste deve conceder pontos na Arena01")
+	scene.show_attributes()
+	assert(is_instance_valid(scene.attribute_window) and scene.attribute_window.content.get_child_count() >= 11)
+	var hits_before_modal: int = scene.hits_landed
+	var modal_click := InputEventMouseButton.new()
+	modal_click.button_index = MOUSE_BUTTON_LEFT
+	modal_click.pressed = true
+	modal_click.position = scene.controls._button_center("ATK")
+	scene.controls._input(modal_click)
+	assert(scene.hits_landed == hits_before_modal, "Janela aberta bloqueia ataque por baixo")
+	scene.attribute_window.closed.emit()
+	await process_frame
+	assert(not is_instance_valid(scene.attribute_window), "Janela fecha sem bloquear a arena")
 	assert(is_equal_approx(scene.actor.speed, 8.0), "Arena ampliada deve usar deslocamento dobrado")
 	assert(scene.markers.size() == 3)
 	assert(Vector2(scene.get_node("MorroOeste").position.x, scene.get_node("MorroOeste").position.z).distance_to(Vector2(scene.get_node("MorroOeste2").position.x, scene.get_node("MorroOeste2").position.z)) > 100)
@@ -142,4 +164,7 @@ func _run() -> void:
 	scene.camera.zoom_by_steps(-100)
 	assert(is_equal_approx(scene.camera.distance, scene.camera.min_distance))
 	print("PASS: Arena01 160x160, backup, quatro rampas, ataque orientado, minimapa e zoom")
+	for suffix in ["", ".bak"]:
+		if FileAccess.file_exists(PROFILE_PATH + suffix):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(PROFILE_PATH + suffix))
 	quit()

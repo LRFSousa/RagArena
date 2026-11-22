@@ -1,5 +1,7 @@
 # Primeira implementação — Base EXP e Job EXP na Arena
 
+> Registro histórico da primeira entrega. A etapa posterior de pontos e janela de atributos está descrita em `docs/RELATORIOS/RELATORIO_ATRIBUTOS_V1.md`; as frases abaixo que dizem que ainda não há pontos se referem apenas à entrega inicial.
+
 Especificação da primeira entrega de progressão permanente. Substitui o rascunho anterior após o backlog detalhado enviado pelo responsável. O sistema foi separado da progressão temporária de combate e não depende dos visuais, permitindo migração futura do mapa para 3D.
 
 ## Personagens

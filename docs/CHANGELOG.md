@@ -1,5 +1,12 @@
 # Changelog
 
+## Atributos V1 — pontos Base e Job persistentes
+
+- Adicionada tabela configurável de pontos acumulados até Base 40, com 48 pontos iniciais consumidos pelos seis atributos base 5. O saldo de novos pontos usa a diferença entre níveis consecutivos.
+- Implementados FOR, AGI, VIT, INT, DES e SOR com base, bônus reservado e valor efetivo. O custo progressivo segue a referência Pre-Renewal; os atributos ainda não alteram o combate.
+- Cada Job Level alcançado concede um ponto de habilidade para uso futuro. Perfis v1/v2 migram para v3, preservando personagens, EXP e histórico; pagamentos repetidos não concedem pontos novamente.
+- Incluída janela de atributos no menu de personagens e na Arena01 3D, mais botão de EXP de teste para validar a progressão no celular.
+
 ## Arena01 — deslocamento e bordas das rampas
 
 - Dobrada de 4 para 8 m/s a velocidade do Espadachim apenas na Arena01 ampliada.

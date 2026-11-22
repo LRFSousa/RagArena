@@ -1,5 +1,9 @@
 # RagnArena
 
+## Arena 01 atual e atributos
+
+A entrada atual do projeto é `scenes/Arena01.tscn`, uma prévia 3D. Use WASD ou o joystick para caminhar. Toque em **Atributos** (ou pressione `C`) para ver FOR, AGI, VIT, INT, DES e SOR; o botão `+` gasta pontos disponíveis. **EXP teste** concede uma recompensa simulada para validar Base/Job Level e pontos sem aguardar uma partida completa. A prévia usa um Espadachim local; na primeira abertura dos atributos, cria um perfil local caso não exista. Esses atributos ainda não modificam dano, HP ou velocidade. A janela de atributos também está disponível no menu da cena `scenes/main.tscn`, que contém o fluxo anterior de partidas e progressão.
+
 Protótipo offline top-down em Godot 4. A release 0.5 acrescenta perfil e configurações locais ao ciclo de partida offline.
 
 Bots próximos disparam projéteis vermelhos. O HP diminui apenas quando um disparo atinge o personagem; paredes e movimento podem evitar o impacto.

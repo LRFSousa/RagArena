@@ -3,6 +3,7 @@ class_name MainFlow
 
 const ArenaScene = preload("res://scenes/arena.tscn")
 const ProfileStore = preload("res://scripts/local_profile_store.gd")
+const AttributePanel = preload("res://scripts/attribute_window.gd")
 const CLASS_IDS := ["paladin", "mage", "assassin", "archer"]
 const CLASS_NAMES := ["Paladino", "Mago", "Assassino", "Arqueiro"]
 const CHARACTER_CLASS_IDS := ["swordsman", "mage", "archer", "acolyte", "thief"]
@@ -18,6 +19,7 @@ var current_character_id := ""
 var participation_settled := false
 var edit_id := ""
 var keyboard_panel: PanelContainer
+var attribute_window: AttributeWindow
 
 func _ready() -> void:
 	store = ProfileStore.new()
@@ -131,6 +133,7 @@ func show_menu() -> void:
 	var selected := store.find_character(str(store.data["selected_character_id"]))
 	if not selected.is_empty():
 		label("%s  |  Base %d  Job %d" % [selected["name"], selected["base_level"], selected["job_level"]], 18)
+		button("Atributos", func(): show_attributes(str(selected["id"])))
 	button("Arena", func(): show_characters(true))
 	button("Personagens", func(): show_characters(false))
 	button("Perfil", show_profile)
@@ -172,6 +175,24 @@ func show_characters(for_arena: bool) -> void:
 				else:
 					show_menu(), row)
 	button("Voltar ao menu", show_menu)
+
+func show_attributes(character_id: String) -> void:
+	if store.find_character(character_id).is_empty():
+		return
+	if is_instance_valid(attribute_window):
+		attribute_window.queue_free()
+	var character := store.find_character(character_id)
+	var class_id := str(COMBAT_CLASS_IDS.get(str(character["class_id"]), "paladin"))
+	var stats := ClassBalance.new().stats(class_id)
+	attribute_window = AttributePanel.new()
+	attribute_window.store = store
+	attribute_window.character_id = character_id
+	attribute_window.derived_stats = {"HP": stats["hp"], "ATQ": stats["damage"], "DEF": stats["defense"], "Velocidade": stats["speed"], "Alcance": stats["range"], "Cadência": stats["interval"]}
+	screen.add_child(attribute_window)
+	attribute_window.closed.connect(func():
+		attribute_window.queue_free()
+		attribute_window = null
+		show_menu())
 
 func show_profile() -> void:
 	make_screen("Perfil")
