@@ -1,5 +1,7 @@
 # Pendências
 
+- Árvore de habilidades: substituir símbolos provisórios por ícones próprios, validar no celular tamanho dos botões e leitura das três áreas. Implementar em etapa própria os efeitos reais dos ranks, consumo de SP e desbloqueio das habilidades adicionais; a tela já permite distribuir e salvar os pontos Job.
+
 - Véspera cidade: testar visualmente no celular a escala de igreja, casas e escada, além de subir e descer a escadaria. As escadas laterais são visuais nesta versão; só a escadaria central tem rampa física. Confirmar desempenho e legibilidade do minimapa.
 - Inventário V1 local: definir capacidade, peso, aquisição real, raridade, descarte, moedas e upgrades. Os alvos de treino entregam itens provisórios; partidas PvP, atribuição segura de drops e sincronização online ainda não existem. Ajustar ATK/DEF/HP de equipamento com dados de partidas reais.
 

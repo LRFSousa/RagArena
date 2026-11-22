@@ -1,5 +1,12 @@
 # Changelog
 
+## Véspera — linhas de habilidades do Espadachim
+
+- Substituída a lista única por uma tela de três áreas: linhas à esquerda, habilidades ao centro e detalhes do nó selecionado à direita. Incluídos Combate, Defesa, Espadas, Recuperação e Especiais, com espaços bloqueados para segunda e terceira classe.
+- Ranks, pontos Job e pré-requisitos continuam usando a persistência já existente. Golpe Fulminante e Impacto Explosivo mantêm a dependência rank 5; Provocar e Vigor também. Habilidades adicionais permanecem bloqueadas.
+- O painel informa custos e alcance documentados, distinguindo passivas, ativas e suporte. Ícones tipográficos são provisórios; efeitos de combate 3D continuam pendentes.
+- Testado carregamento da tela, seleção de linhas, ranks, desbloqueio, salvamento e carregamento do perfil.
+
 ## Véspera — janela de atributos redesenhada
 
 - A janela de distribuição ganhou visual escuro e dourado, saldo de pontos em destaque, seis linhas com base, bônus, custo e botão de toque, e painel de resultados com gráfico dos atributos.

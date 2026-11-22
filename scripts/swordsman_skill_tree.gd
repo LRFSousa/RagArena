@@ -18,6 +18,36 @@ const QUEST_SKILLS := [
 	{"id": "SM_AUTOBERSERK", "name": "Instinto de Sobrevivência"}
 ]
 
+# Organização visual independente dos IDs e ranks persistidos.
+const LINES := [
+	{"id": "combat", "name": "Combate", "icon": "⚔", "skills": ["SM_BASH", "SM_MAGNUM"]},
+	{"id": "defense", "name": "Defesa", "icon": "◆", "skills": ["SM_PROVOKE", "SM_ENDURE"]},
+	{"id": "swords", "name": "Espadas", "icon": "✦", "skills": ["SM_SWORD", "SM_TWOHAND"]},
+	{"id": "recovery", "name": "Recuperação", "icon": "✚", "skills": ["SM_RECOVERY"]},
+	{"id": "special", "name": "Especiais", "icon": "✧", "skills": ["SM_MOVINGRECOVERY", "SM_FATALBLOW", "SM_AUTOBERSERK"]}
+]
+const DETAILS := {
+	"SM_BASH": {"kind": "Ativa", "text": "Golpe físico em um alvo.", "range": "2 blocos", "cost": "8 SP (ranks 1–5); 15 SP (6–10)"},
+	"SM_MAGNUM": {"kind": "Ativa", "text": "Ataque de área ao redor do personagem.", "range": "Área próxima", "cost": "30 SP e HP conforme o rank"},
+	"SM_PROVOKE": {"kind": "Ativa", "text": "Enfraquece um alvo. O efeito PvP ainda será definido.", "range": "Alvo", "cost": "4–13 SP conforme o rank"},
+	"SM_ENDURE": {"kind": "Suporte", "text": "Reduz a reação ao receber ataques.", "range": "Pessoal", "cost": "10 SP"},
+	"SM_SWORD": {"kind": "Passiva", "text": "Aumenta a perícia com espada de uma mão.", "range": "Pessoal", "cost": "Sem SP"},
+	"SM_TWOHAND": {"kind": "Passiva", "text": "Aumenta a perícia com espada de duas mãos.", "range": "Pessoal", "cost": "Sem SP"},
+	"SM_RECOVERY": {"kind": "Passiva", "text": "Melhora a recuperação de HP.", "range": "Pessoal", "cost": "Sem SP"}
+}
+
+static func line(id: String) -> Dictionary:
+	for item in LINES:
+		if item["id"] == id: return item
+	return {}
+
+static func display_definition(id: String) -> Dictionary:
+	var regular := definition(id)
+	if not regular.is_empty(): return regular
+	for item in QUEST_SKILLS:
+		if item["id"] == id: return item
+	return {}
+
 static func definition(id: String) -> Dictionary:
 	for skill in SKILLS:
 		if skill["id"] == id:

@@ -35,7 +35,11 @@ func _run() -> void:
 	panel.character_id = id
 	root.add_child(panel)
 	await process_frame
-	assert(panel.list.get_child_count() > 10, "Janela mostra a árvore")
+	assert(panel.lines.get_child_count() >= 8 and panel.list.get_child_count() >= 3 and panel.details.get_child_count() >= 7, "Janela mostra linhas, habilidades e detalhes")
+	panel._select_line("defense")
+	assert(panel.selected_skill == "SM_PROVOKE" and panel.list.get_child_count() >= 3)
+	panel._select_line("combat")
+	assert(panel.selected_skill == "SM_BASH")
 	panel.queue_free()
 	await process_frame
 	var loaded := Store.new(PATH)
